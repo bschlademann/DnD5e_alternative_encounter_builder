@@ -29,7 +29,7 @@ const getCreaturePowerlevel = (creatureName: string) => {
   return creaturePowerlevel;
 };
 const getPowerlevelTotalOfAllMobs = (allMobs: allMobs) => {
-  allMobs.reduce((powerlevelTotalOfAllMobs, mob) => {
+ return allMobs.reduce((powerlevelTotalOfAllMobs, mob) => {
     const creatureName = mob.name;
     const mobSize = mob.mobSize;
     const creaturePowerlevel = getCreaturePowerlevel(creatureName);
