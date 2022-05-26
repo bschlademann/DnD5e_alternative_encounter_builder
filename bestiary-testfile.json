@@ -1,0 +1,25 @@
+{
+  "monster": [
+    {
+      "name": "Aarakocra",
+      "source": "MM",
+      "otherSources": [
+        {
+          "source": "PotA"
+        },
+        {
+          "source": "SKT"
+        },
+        {
+          "source": "ToA"
+        },
+        {
+          "source": "EGW"
+        },
+        {
+          "source": "IDRotF"
+        }
+      ]
+    }
+  ]
+}
