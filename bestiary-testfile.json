@@ -3,6 +3,7 @@
     {
       "name": "Aarakocra",
       "source": "MM",
+      "cr": "1/8",
       "otherSources": [
         {
           "source": "PotA"
