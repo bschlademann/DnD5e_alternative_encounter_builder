@@ -122,4 +122,4 @@ export const allBestiaryFileNames = [
   "bestiary-wdh.json",
   "bestiary-wdmm.json",
   "bestiary-xge.json"
-]
+] as const;

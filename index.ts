@@ -20,6 +20,12 @@ type classLevelNPCs = {
   level: number;
 }[];
 
+type BestiaryFileName = typeof allBestiaryFileNames[number];
+
+type BestiaryJson = { monster: { name: string; cr: string }[] };
+
+type CreatureStatBlock = { name: string; cr: string };
+
 // type creatureCr = keyof powerlevelByCr;
 // type playerPowerlevel = (valueof?) powerlevelByPlayerLevel;
 
@@ -101,17 +107,38 @@ const getJson = (filePath: string) => {
   });
 };
 
-const getCreatureCr = (creatureName: string, bestiaryJson: { monster: {name: string, cr: number}[] }) => {
-const creatureStatblock = bestiaryJson.monster.find(statblock => statblock.name === creatureName)
-const creatureCr = creatureStatblock?.cr;
-return creatureCr;
+const getCreatureStatBlock = (
+  creatureName: string,
+  bestiaryJson: BestiaryJson
+) => {
+  const creatureStatBlock = bestiaryJson.monster.find(
+    (statBlock: CreatureStatBlock) =>
+      statBlock.name.toLocaleLowerCase() === creatureName.toLocaleLowerCase()
+  );
+  if (creatureStatBlock === undefined) {
+    return false;
+  } else return creatureStatBlock;
+};
+
+// FIXME: cr type !== string -> write type cr = keyof powerlevelByCr
+const getCreatureCr = async (creatureName: string) => {
+  // iterate over files from allBestiaryFileNames[] in ./bestiary/*
+  for (const bestiaryFileName of allBestiaryFileNames) {
+    const filePath = `./bestiary/${bestiaryFileName}`;
+    // read  file, parse to JSON
+    const bestiaryJson = await getJson(filePath);
+    // search if creature is in file, if yes, return cr and break loop
+    const creatureStatblock = getCreatureStatBlock(creatureName, bestiaryJson);
+    // if statblock is found in book, return its CR
+    if (creatureStatblock) {
+     return creatureStatblock.cr;
+    }
+  }
 };
 
 const main = async () => {
-  const creatureName = "Aarakocra";
-  const filePath = "./bestiary-testfile.json";
-  const bestiaryDataJson = await getJson(filePath);  
-  const creatureCr = getCreatureCr(creatureName, bestiaryDataJson);
+  const creatureName = "kobold";
+  const creatureCr = await getCreatureCr(creatureName);
   console.log("creatureCr in main()", creatureCr);
 };
 
