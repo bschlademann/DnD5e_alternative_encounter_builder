@@ -64,20 +64,27 @@ const getCreaturePowerlevel = async (creatureName: string) => {
 };
 
 // FIXME!
-
 const getAllMobsPowerlevel = (allMobs: AllMobs) => {
   // Types of parameters 'powerlevelTotalOfAllMobs' and 'previousValue' are incompatible.
   // Type '{ name: string; mobSize: number; }' is not assignable to type 'number'.
   // Type 'Promise<number>' is not assignable to type 'number'
 
+  // return allMobs.reduce(async (powerlevelTotalOfAllMobs, mob) => {
+  //   const creatureName = mob.name;
+  //   const mobSize = mob.mobSize;
+  //   const creaturePowerlevel = await getCreaturePowerlevel(creatureName);
+  //   const mobPowerlevel = mobSize * creaturePowerlevel;
+  //   return powerlevelTotalOfAllMobs + mobPowerlevel;
+  // }, 0);
 
-  return allMobs.reduce(async (powerlevelTotalOfAllMobs, mob) => {
+let powerlevelTotalOfAllMobs = 0;
+  allMobs.forEach(async mob => {
     const creatureName = mob.name;
     const mobSize = mob.mobSize;
     const creaturePowerlevel = await getCreaturePowerlevel(creatureName);
     const mobPowerlevel = mobSize * creaturePowerlevel;
-    return powerlevelTotalOfAllMobs + mobPowerlevel;
-  }, 0);
+  })
+  return powerlevelTotalOfAllMobs;
 };
 
 const renderDifficulty = async () => {
@@ -127,6 +134,21 @@ const getCreatureStatBlock = (
   } else return creatureStatBlock;
 };
 
+const parseCr = (crString: string) => {
+  // crString is either a stringified whole number or fraction
+  const isFraction = crString.includes("/");
+  if (isFraction) {
+    const split = crString.split("");
+    const onlystringifiedNumbers = split.filter(stringifiedNumber => stringifiedNumber !== "/");
+    const parsedNumbers = onlystringifiedNumbers.map(stringifiedNumber => parseInt(stringifiedNumber))
+    const parsedCr = parsedNumbers[0] / parsedNumbers[1];
+    return parsedCr;
+  } else {
+    const parsedCr = parseInt(crString);
+    return parsedCr;
+  };  
+};
+
 // FIXME: cr type !== string -> write type cr = keyof powerlevelByCr
 // FIXME: what happens if creature is found in none if the books? -> promise<undefined>?
 const getCreatureCr = async (creatureName: string) => {
@@ -145,13 +167,13 @@ const getCreatureCr = async (creatureName: string) => {
   throw new Error("creatureName not found in any book")
 };
 
-const main = async () => {
-  try{
-  const creatureName = "alvnwl";
-  const creatureCr = await getCreatureCr(creatureName);
-  console.log("creatureCr in main()", creatureCr);}
-  catch(err) {console.log(err);
-  }
-};
+// const main = async () => {
+//   try{
+//   const creatureName = "alvnwl";
+//   const creatureCr = await getCreatureCr(creatureName);
+//   console.log("creatureCr in main()", creatureCr);}
+//   catch(err) {console.log(err);
+//   }
+// };
 
-main();
+// main();
