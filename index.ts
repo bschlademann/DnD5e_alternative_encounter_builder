@@ -58,7 +58,7 @@ const getPartyPowerlevel = (party: Party) => {
 };
 
 const getCreaturePowerlevel = async (creatureName: string) => {
-  const creatureCr: string = await getCreatureCr(creatureName);
+  const creatureCr = await getCreatureCr(creatureName);
   const creaturePowerlevel: number = powerlevelByCr[creatureCr];
   return creaturePowerlevel;
 };
@@ -161,7 +161,8 @@ const getCreatureCr = async (creatureName: string) => {
     const creatureStatblock = getCreatureStatBlock(creatureName, bestiaryJson);
     // if statblock is found in book, return its CR
     if (creatureStatblock) {
-     return creatureStatblock.cr;
+      const parsedCr = parseCr(creatureStatblock.cr);
+     return parsedCr;
     }
   }
   throw new Error("creatureName not found in any book")
