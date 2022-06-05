@@ -15,10 +15,10 @@ type Mob = { creatureName: string; mobSize: number };
 
 type AllMobs = Mob[];
 
-type classLevelNPCs = {
+type LeveledNPC = {
   name: string;
   level: number;
-}[];
+};
 
 type BestiaryFileName = typeof allBestiaryFileNames[number];
 
@@ -30,23 +30,35 @@ type CreatureStatBlock = { name: string; cr: string };
 // type playerPowerlevel = (valueof?) powerlevelByPlayerLevel;
 
 const party = {
-  playerCharacters: ["Linea", "Nix", "Ninas_Char", "Fabians_Char", "Dörte"],
+  playerCharacters: ["Linea", "Nix", "Noa", "Fabians_Char", "Dörte"],
   level: 4,
 };
 
-const allMobs = [
+const allMobs: AllMobs | [] = [
+  // {
+  //   creatureName: "monodrone",
+  //   mobSize: 4,
+  // },
+  // {
+  //   creatureName: "duodrone",
+  //   mobSize: 1,
+  // },
+  // {
+  //   creatureName: "tridrone",
+  //   mobSize: 1,
+  // },
+  // {
+  //   creatureName: "quadrone",
+  //   mobSize: 2,
+  // },
   {
-    creatureName: "kobold",
-    mobSize: 8,
+    creatureName: "cat",
+    mobSize: 40,
   },
-  {
-    creatureName: "kobold scale sorcerer",
-    mobSize: 1,
-  },
-  {
-    creatureName: "kobold inventor",
-    mobSize: 1,
-  },
+];
+
+const leveledNPCs: LeveledNPC[] | [] = [
+  // { name: "Dolgrim", level: 4 }
 ];
 
 const getPartyPowerlevel = (party: Party) => {
@@ -70,23 +82,15 @@ const getAllMobsPowerlevel = async (allMobs: AllMobs) => {
     const creaturePowerlevel = await getCreaturePowerlevel(creatureName);
     const mobPowerlevel = mobSize * creaturePowerlevel;
     powerlevelTotalOfAllMobs += mobPowerlevel;
-    // console.log(`
-    // creatureName:${creatureName}
-    // mobSize:${mobSize}
-    // creaturePowerlevel:${creaturePowerlevel}
-    // mobPowerlevel:${mobPowerlevel}
-    // new total: ${powerlevelTotalOfAllMobs}
-    // `);
-  };  
+    console.log(`
+    creatureName:${creatureName}
+    mobSize:${mobSize}
+    creaturePowerlevel:${creaturePowerlevel}
+    mobPowerlevel:${mobPowerlevel}
+    new total: ${powerlevelTotalOfAllMobs}
+    `);
+  }
   return powerlevelTotalOfAllMobs;
-};
-
-// does nothing yet!
-const mixedGroup = (allMobs: AllMobs, ...classLevelNPCs: classLevelNPCs) => {
-  // const allMobsPowerlevel = getAllMobsPowerlevel(allMobs);
-  // const allClassLevelNPCs = [...classLevelNPCs];
-  // iterate over allClassLevelNPCs and sum their powerlevels
-  // add this sum to allMobsPowerlevel and return
 };
 
 const getJson = (filePath: string) => {
@@ -128,14 +132,10 @@ const parseCr = (crString: string) => {
 };
 
 const getCreatureCr = async (creatureName: string) => {
-  // iterate over files from allBestiaryFileNames[] in ./bestiary/*
   for (const bestiaryFileName of allBestiaryFileNames) {
     const filePath = `./bestiary/${bestiaryFileName}`;
-    // read file, parse to JSON
     const bestiaryJson = await getJson(filePath);
-    // search if creature is in file, if yes, return cr and break loop
     const creatureStatblock = getCreatureStatBlock(creatureName, bestiaryJson);
-    // if statblock is found in book, return its CR
     if (creatureStatblock) {
       const parsedCr = parseCr(creatureStatblock.cr);
       return parsedCr;
@@ -144,21 +144,27 @@ const getCreatureCr = async (creatureName: string) => {
   throw new Error(`ERROR: "${creatureName}" not found in any book`);
 };
 
-// const main = async () => {
-//   try{
-//   const creatureName = "alvnwl";
-//   const creatureCr = await getCreatureCr(creatureName);
-//   console.log("creatureCr in main()", creatureCr);}
-//   catch(err) {console.log(err);
-//   }
-// };
-
-// main();
-
 const difficulty = async () => {
-  const powerlevelTotalOfAllMobs: number = await getAllMobsPowerlevel(allMobs);
+  // what if (allBons.length === 0) ?
+  const mobsPresent = allMobs.length > 0;
+  let powerlevelTotalOfAllMobs = 0;
+  if (mobsPresent) {
+    powerlevelTotalOfAllMobs = await getAllMobsPowerlevel(allMobs);
+  }  
+
+  const leveledNPCsPresent = leveledNPCs.length > 0;
+  let leveledNPCsPowerlevel = 0;
+  if (leveledNPCsPresent) {
+    for (const npc of leveledNPCs) {
+      const { level } = npc;
+      const powerlevel = powerlevelByPlayerLevel[level];
+      leveledNPCsPowerlevel += powerlevel;
+    }
+  }
+
   const partyPowerlevel: number = getPartyPowerlevel(party);
-  const difficultyValue: number = powerlevelTotalOfAllMobs / partyPowerlevel;
+  const difficultyValue: number =
+    (powerlevelTotalOfAllMobs + leveledNPCsPowerlevel) / partyPowerlevel;
 
   let description = "";
   if (difficultyValue <= 0.4) {
@@ -172,7 +178,12 @@ const difficulty = async () => {
   } else if (difficultyValue > 1) {
     description = "absurd";
   }
-  return `${description} (${difficultyValue * 100}%)`;
+  return `
+  partyPowerlevel:${partyPowerlevel}
+  powerlevelTotalOfAllMobs:${powerlevelTotalOfAllMobs}
+  leveledNPCsPowerlevel:${leveledNPCsPowerlevel}
+  difficulty: ${description} (${difficultyValue * 100}%)
+  `;
 };
 
 const main = async () => {
@@ -181,10 +192,3 @@ const main = async () => {
 };
 
 main();
-
-// const main = async () => {
-//   const diff = await difficulty()
-//   console.log(diff);
-// };
-
-// main()
