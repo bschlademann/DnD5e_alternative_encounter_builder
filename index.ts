@@ -6,34 +6,17 @@ import {
 import * as fs from "fs/promises";
 import { stringify } from "querystring";
 
-type Party = {
-  playerCharacters: string[];
-  level: number;
-};
-
+type Party = { playerCharacters: string[]; level: number };
 type Mob = { creatureName: string; mobSize: number };
-
 type AllMobs = Mob[];
-
-type LeveledNPC = {
-  name: string;
-  level: number;
-};
-
-type BestiaryFileName = typeof allBestiaryFileNames[number];
-
+type Character = { name: string; level: number };
 type BestiaryJson = { monster: { name: string; cr: string }[] };
-
 type CreatureStatBlock = { name: string; cr: string };
 
-// type creatureCr = keyof powerlevelByCr;
-// type playerPowerlevel = (valueof?) powerlevelByPlayerLevel;
-
-const party = {
+const party: Party = {
   playerCharacters: ["Linea", "Nix", "Noa", "Fabians_Char", "Dörte"],
   level: 4,
 };
-
 const allMobs: AllMobs | [] = [
   // {
   //   creatureName: "monodrone",
@@ -56,8 +39,7 @@ const allMobs: AllMobs | [] = [
     mobSize: 40,
   },
 ];
-
-const leveledNPCs: LeveledNPC[] | [] = [
+const leveledNPCs: Character[] | [] = [
   // { name: "Dolgrim", level: 4 }
 ];
 
@@ -68,13 +50,57 @@ const getPartyPowerlevel = (party: Party) => {
   const partyPowerlevel: number = partySize * powerLevelPerCharacter;
   return partyPowerlevel;
 };
-
+const getJson = (filePath: string) => {
+  return fs.readFile(filePath, { encoding: "utf-8" }).then((jsonString) => {
+    return JSON.parse(jsonString);
+  });
+};
+const getCreatureStatBlock = (
+  creatureName: string,
+  bestiaryJson: BestiaryJson
+) => {
+  const creatureStatBlock = bestiaryJson.monster.find(
+    (statBlock: CreatureStatBlock) =>
+      statBlock.name.toLocaleLowerCase() === creatureName.toLocaleLowerCase()
+  );
+  if (creatureStatBlock === undefined) {
+    return false;
+  } else return creatureStatBlock;
+};
+const parseCr = (crString: string) => {
+  const isFraction = crString.includes("/");
+  if (isFraction) {
+    const split = crString.split("");
+    const onlystringifiedNumbers = split.filter(
+      (stringifiedNumber) => stringifiedNumber !== "/"
+    );
+    const parsedNumbers = onlystringifiedNumbers.map((stringifiedNumber) =>
+      parseInt(stringifiedNumber)
+    );
+    const parsedCr = parsedNumbers[0] / parsedNumbers[1];
+    return parsedCr;
+  } else {
+    const parsedCr = parseInt(crString);
+    return parsedCr;
+  }
+};
+const getCreatureCr = async (creatureName: string) => {
+  for (const bestiaryFileName of allBestiaryFileNames) {
+    const filePath = `./bestiary/${bestiaryFileName}`;
+    const bestiaryJson = await getJson(filePath);
+    const creatureStatblock = getCreatureStatBlock(creatureName, bestiaryJson);
+    if (creatureStatblock) {
+      const parsedCr = parseCr(creatureStatblock.cr);
+      return parsedCr;
+    }
+  }
+  throw new Error(`ERROR: "${creatureName}" not found in any book`);
+};
 const getCreaturePowerlevel = async (creatureName: string) => {
   const creatureCr = await getCreatureCr(creatureName);
   const creaturePowerlevel: number = powerlevelByCr[creatureCr];
   return creaturePowerlevel;
 };
-
 const getAllMobsPowerlevel = async (allMobs: AllMobs) => {
   let powerlevelTotalOfAllMobs = 0;
   for (const mob of allMobs) {
@@ -92,68 +118,16 @@ const getAllMobsPowerlevel = async (allMobs: AllMobs) => {
   }
   return powerlevelTotalOfAllMobs;
 };
-
-const getJson = (filePath: string) => {
-  return fs.readFile(filePath, { encoding: "utf-8" }).then((jsonString) => {
-    return JSON.parse(jsonString);
-  });
-};
-
-const getCreatureStatBlock = (
-  creatureName: string,
-  bestiaryJson: BestiaryJson
-) => {
-  const creatureStatBlock = bestiaryJson.monster.find(
-    (statBlock: CreatureStatBlock) =>
-      statBlock.name.toLocaleLowerCase() === creatureName.toLocaleLowerCase()
-  );
-  if (creatureStatBlock === undefined) {
-    return false;
-  } else return creatureStatBlock;
-};
-
-const parseCr = (crString: string) => {
-  // crString is either a stringified whole number or fraction
-  const isFraction = crString.includes("/");
-  if (isFraction) {
-    const split = crString.split("");
-    const onlystringifiedNumbers = split.filter(
-      (stringifiedNumber) => stringifiedNumber !== "/"
-    );
-    const parsedNumbers = onlystringifiedNumbers.map((stringifiedNumber) =>
-      parseInt(stringifiedNumber)
-    );
-    const parsedCr = parsedNumbers[0] / parsedNumbers[1];
-    return parsedCr;
-  } else {
-    const parsedCr = parseInt(crString);
-    return parsedCr;
-  }
-};
-
-const getCreatureCr = async (creatureName: string) => {
-  for (const bestiaryFileName of allBestiaryFileNames) {
-    const filePath = `./bestiary/${bestiaryFileName}`;
-    const bestiaryJson = await getJson(filePath);
-    const creatureStatblock = getCreatureStatBlock(creatureName, bestiaryJson);
-    if (creatureStatblock) {
-      const parsedCr = parseCr(creatureStatblock.cr);
-      return parsedCr;
-    }
-  }
-  throw new Error(`ERROR: "${creatureName}" not found in any book`);
-};
-
 const difficulty = async () => {
-  // what if (allBons.length === 0) ?
-  const mobsPresent = allMobs.length > 0;
   let powerlevelTotalOfAllMobs = 0;
+  let leveledNPCsPowerlevel = 0;
+
+  const mobsPresent = allMobs.length > 0;
   if (mobsPresent) {
     powerlevelTotalOfAllMobs = await getAllMobsPowerlevel(allMobs);
-  }  
+  }
 
   const leveledNPCsPresent = leveledNPCs.length > 0;
-  let leveledNPCsPowerlevel = 0;
   if (leveledNPCsPresent) {
     for (const npc of leveledNPCs) {
       const { level } = npc;
@@ -185,10 +159,8 @@ const difficulty = async () => {
   difficulty: ${description} (${difficultyValue * 100}%)
   `;
 };
-
 const main = async () => {
   const result = await difficulty();
   console.log(result);
 };
-
 main();
