@@ -8,8 +8,9 @@ import { stringify } from "querystring";
 
 type Party = { playerCharacters: string[]; level: number };
 type Mob = { creatureName: string; mobSize: number };
-type AllMobs = Mob[];
-type Character = { name: string; level: number };
+type AllMobs = Mob[] | [];
+type LeveledNPC = { name: string; level: number };
+type AllLeveledNPCs = LeveledNPC[] | [];
 type BestiaryJson = { monster: { name: string; cr: string }[] };
 type CreatureStatBlock = { name: string; cr: string };
 
@@ -22,25 +23,24 @@ const allMobs: AllMobs | [] = [
   //   creatureName: "monodrone",
   //   mobSize: 4,
   // },
-  // {
-  //   creatureName: "duodrone",
-  //   mobSize: 1,
-  // },
-  // {
-  //   creatureName: "tridrone",
-  //   mobSize: 1,
-  // },
-  // {
-  //   creatureName: "quadrone",
-  //   mobSize: 2,
-  // },
   {
-    creatureName: "cat",
-    mobSize: 40,
+    creatureName: "duodrone",
+    mobSize: 1,
+  },
+  {
+    creatureName: "tridrone",
+    mobSize: 1,
+  },
+  {
+    creatureName: "quadrone",
+    mobSize: 2,
   },
 ];
-const leveledNPCs: Character[] | [] = [
-  // { name: "Dolgrim", level: 4 }
+const allLeveledNPCs: AllLeveledNPCs = [
+  { name: "Dolgrim", level: 5 },
+  // { name: "Ilyas", level: 5 },
+  // { name: "Bres", level: 5 },
+  // { name: "Nif", level: 5 },
 ];
 
 const getPartyPowerlevel = (party: Party) => {
@@ -103,42 +103,48 @@ const getCreaturePowerlevel = async (creatureName: string) => {
 };
 const getAllMobsPowerlevel = async (allMobs: AllMobs) => {
   let powerlevelTotalOfAllMobs = 0;
-  for (const mob of allMobs) {
-    const { creatureName, mobSize } = mob;
-    const creaturePowerlevel = await getCreaturePowerlevel(creatureName);
-    const mobPowerlevel = mobSize * creaturePowerlevel;
-    powerlevelTotalOfAllMobs += mobPowerlevel;
-    console.log(`
-    creatureName:${creatureName}
-    mobSize:${mobSize}
-    creaturePowerlevel:${creaturePowerlevel}
-    mobPowerlevel:${mobPowerlevel}
-    new total: ${powerlevelTotalOfAllMobs}
-    `);
+  const mobsPresent = allMobs.length > 0;
+  if (mobsPresent) {
+    for (const mob of allMobs) {
+      const { creatureName, mobSize } = mob;
+      const creaturePowerlevel = await getCreaturePowerlevel(creatureName);
+      const mobPowerlevel = mobSize * creaturePowerlevel;
+      powerlevelTotalOfAllMobs += mobPowerlevel;
+      console.log(`
+        creatureName:${creatureName}
+        mobSize:${mobSize}
+        creaturePowerlevel:${creaturePowerlevel}
+        mobPowerlevel:${mobPowerlevel}
+        new powerlevelTotalOfAllMobs: ${powerlevelTotalOfAllMobs}
+        `);
+    }
   }
   return powerlevelTotalOfAllMobs;
 };
-const difficulty = async () => {
-  let powerlevelTotalOfAllMobs = 0;
-  let leveledNPCsPowerlevel = 0;
-
-  const mobsPresent = allMobs.length > 0;
-  if (mobsPresent) {
-    powerlevelTotalOfAllMobs = await getAllMobsPowerlevel(allMobs);
-  }
-
-  const leveledNPCsPresent = leveledNPCs.length > 0;
+const getAllLeveledNPCsPowerlevel = (allLeveledNPCs: AllLeveledNPCs) => {
+  let allLeveledNPCsPowerlevel = 0;
+  const leveledNPCsPresent = allLeveledNPCs.length > 0;
   if (leveledNPCsPresent) {
-    for (const npc of leveledNPCs) {
-      const { level } = npc;
+    for (const leveledNPC of allLeveledNPCs) {
+      const { level } = leveledNPC;
       const powerlevel = powerlevelByPlayerLevel[level];
-      leveledNPCsPowerlevel += powerlevel;
+      allLeveledNPCsPowerlevel += powerlevel;
+      console.log(`
+      leveledNPC:${leveledNPC.name}
+      level:${level}
+      new allLeveledNPCsPowerlevel: ${allLeveledNPCsPowerlevel}
+      `);
     }
   }
+  return allLeveledNPCsPowerlevel;
+};
 
+const difficulty = async () => {
+  const powerlevelTotalOfAllMobs = await getAllMobsPowerlevel(allMobs);
+  const allLeveledNPCsPowerlevel = getAllLeveledNPCsPowerlevel(allLeveledNPCs);
   const partyPowerlevel: number = getPartyPowerlevel(party);
   const difficultyValue: number =
-    (powerlevelTotalOfAllMobs + leveledNPCsPowerlevel) / partyPowerlevel;
+    (powerlevelTotalOfAllMobs + allLeveledNPCsPowerlevel) / partyPowerlevel;
 
   let description = "";
   if (difficultyValue <= 0.4) {
@@ -155,10 +161,11 @@ const difficulty = async () => {
   return `
   partyPowerlevel:${partyPowerlevel}
   powerlevelTotalOfAllMobs:${powerlevelTotalOfAllMobs}
-  leveledNPCsPowerlevel:${leveledNPCsPowerlevel}
+  leveledNPCsPowerlevel:${allLeveledNPCsPowerlevel}
   difficulty: ${description} (${difficultyValue * 100}%)
   `;
 };
+
 const main = async () => {
   const result = await difficulty();
   console.log(result);
