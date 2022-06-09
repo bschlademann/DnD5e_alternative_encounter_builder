@@ -66,7 +66,6 @@ const getPartyPowerlevel = (party: Party): number => {
   return partyPowerlevel;
 };
 
-// immer parsen oder validieren, wenn ich daten von außen rein bekomme
 const bestiaryJsonSchema: z.ZodSchema<BestiaryJson> = z.object({
   monster: z.array(
     z.object({ 
@@ -101,34 +100,18 @@ const getCreatureStatBlock = (
   } else return creatureStatBlock;
 };
 
-const stringToNumber = z.string().regex(/^\d+$/).transform(Number);
-
-
 const parseCr = (crString: string): number => {
   const split = crString.split("/");
+  const stringToNumber = z.string().regex(/^\d+$/).transform(Number);
   const fraction = z.union([
     z.tuple([stringToNumber, stringToNumber]).transform(([a, b]) => a/b),
     z.tuple([stringToNumber]).transform(([a]) => a),
   ]);
   
   return fraction.parse(split);
-
-
-  // const isFraction = crString.includes("/");
-  // if (isFraction) {
-  //   const split = crString.split("/");
-  //   const parsedNumbers = split.map((stringifiedNumber) =>
-  //     parseInt(stringifiedNumber)
-  //   );
-  //   const parsedCr = parsedNumbers[0] / parsedNumbers[1];
-  //   return parsedCr;
-  // } else {
-  //   const parsedCr = parseInt(crString);
-  //   return parsedCr;
-  // }
 };
 
-async function* readFiles (creatureName: string) {
+async function* readFiles (creatureName: string): AsyncGenerator<BestiaryJson, void, unknown> {
   for (const bestiaryFileName of allBestiaryFileNames) {
     const filePath = `./bestiary/${bestiaryFileName}`;
     yield await getJson(filePath);
@@ -143,26 +126,16 @@ const getCreatureCr = async (creatureName: string): Promise<number> => {
       return parsedCr;
     }
   }
-
-  // for (const bestiaryFileName of allBestiaryFileNames) {
-  //   const filePath = `./bestiary/${bestiaryFileName}`;
-  //   const bestiaryJson = await getJson(filePath);
-  //   const creatureStatblock = getCreatureStatBlock(creatureName, bestiaryJson);
-  //   if (creatureStatblock) {
-  //     const parsedCr = parseCr(creatureStatblock.cr);
-  //     return parsedCr;
-  //   }
-  // }
   throw new Error(`ERROR: "${creatureName}" not found in any book`);
 };
 
-const getCreaturePowerlevel = async (creatureName: string) => {
+const getCreaturePowerlevel = async (creatureName: string): Promise<number> => {
   const creatureCr = await getCreatureCr(creatureName);
   const creaturePowerlevel: number = powerlevelByCr[creatureCr];
   return creaturePowerlevel;
 };
 
-const getAllMobsPowerlevel = async (allMobs: Mob[]) => {
+const getAllMobsPowerlevel = async (allMobs: Mob[]): Promise<number> => {
   let powerlevelTotalOfAllMobs = 0;
   for (const mob of allMobs) {
     const { creatureName, mobSize } = mob;
@@ -180,29 +153,15 @@ const getAllMobsPowerlevel = async (allMobs: Mob[]) => {
   return powerlevelTotalOfAllMobs;
 };
 
-const getAllLeveledNPCsPowerlevel = (allLeveledNPCs: LeveledNPC[]) => {
+const getAllLeveledNPCsPowerlevel = (allLeveledNPCs: LeveledNPC[]): number => {
 
   return allLeveledNPCs.reduce((allLeveledNPCsPowerlevel, leveledNPC) => {
     const powerlevel = powerlevelByPlayerLevel[leveledNPC.level];
     return allLeveledNPCsPowerlevel += powerlevel;
   },0)
-
-  let allLeveledNPCsPowerlevel = 0;
-  for (const leveledNPC of allLeveledNPCs) {
-    const { level } = leveledNPC;
-    const powerlevel = powerlevelByPlayerLevel[level];
-    allLeveledNPCsPowerlevel += powerlevel;
-    console.log(`
-    leveledNPC:${leveledNPC.name}
-    level:${level}
-    new allLeveledNPCsPowerlevel: ${allLeveledNPCsPowerlevel}
-    `);
-  }
-  return allLeveledNPCsPowerlevel;
 };
 
-
-const difficulty = async () => {
+const difficulty = async (): Promise<string> => {
   const powerlevelTotalOfAllMobs = await getAllMobsPowerlevel(allMobs);
   const allLeveledNPCsPowerlevel = getAllLeveledNPCsPowerlevel(allLeveledNPCs);
   const partyPowerlevel: number = getPartyPowerlevel(party);
@@ -229,7 +188,7 @@ const difficulty = async () => {
   `;
 };
 
-const main = async () => {
+const main = async (): Promise<void> => {
   const result = await difficulty();
   console.log(result);
 };
