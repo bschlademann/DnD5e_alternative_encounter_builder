@@ -22,18 +22,18 @@ const allMobs: Mob[] = [
   //   creatureName: "monodrone",
   //   mobSize: 4,
   // },
-  // {
-  //   creatureName: "duodrone",
-  //   mobSize: 1,
-  // },
-  // {
-  //   creatureName: "tridrone",
-  //   mobSize: 1,
-  // },
-  // {
-  //   creatureName: "quadrone",
-  //   mobSize: 2,
-  // },
+  {
+    creatureName: "duodrone",
+    mobSize: 1,
+  },
+  {
+    creatureName: "tridrone",
+    mobSize: 1,
+  },
+  {
+    creatureName: "quadrone",
+    mobSize: 2,
+  },
   // {
   //   creatureName: "kobold scale sorcerer",
   //   mobSize: 1,
@@ -53,7 +53,7 @@ const allMobs: Mob[] = [
 ];
 
 const allLeveledNPCs: LeveledNPC[] = [
-  // { name: "Dolgrim", level: 5 },
+  { name: "Dolgrim", level: 5 },
   // { name: "Ilyas", level: 5 },
   // { name: "Bres", level: 5 },
   // { name: "Nif", level: 5 },
@@ -68,9 +68,9 @@ const getPartyPowerlevel = (party: Party): number => {
 
 const bestiaryJsonSchema: z.ZodSchema<BestiaryJson> = z.object({
   monster: z.array(
-    z.object({ 
-        cr: z.string(), 
-        name: z.string() 
+    z.object({
+      cr: z.string(),
+      name: z.string(),
     })
   ),
 });
@@ -83,7 +83,8 @@ const parseBestiaryJson = (u: unknown): BestiaryJson =>
 
 const getJson = (filePath: string): Promise<BestiaryJson> => {
   return fs.readFile(filePath, { encoding: "utf-8" }).then((jsonString) => {
-    return parseBestiaryJson(JSON.parse(jsonString));
+    return JSON.parse(jsonString);
+    // return parseBestiaryJson(JSON.parse(jsonString));
   });
 };
 
@@ -104,19 +105,21 @@ const parseCr = (crString: string): number => {
   const split = crString.split("/");
   const stringToNumber = z.string().regex(/^\d+$/).transform(Number);
   const fraction = z.union([
-    z.tuple([stringToNumber, stringToNumber]).transform(([a, b]) => a/b),
+    z.tuple([stringToNumber, stringToNumber]).transform(([a, b]) => a / b),
     z.tuple([stringToNumber]).transform(([a]) => a),
   ]);
-  
+
   return fraction.parse(split);
 };
 
-async function* readFiles (creatureName: string): AsyncGenerator<BestiaryJson, void, unknown> {
+async function* readFiles(
+  creatureName: string
+): AsyncGenerator<BestiaryJson, void, unknown> {
   for (const bestiaryFileName of allBestiaryFileNames) {
     const filePath = `./bestiary/${bestiaryFileName}`;
     yield await getJson(filePath);
   }
-};
+}
 
 const getCreatureCr = async (creatureName: string): Promise<number> => {
   for await (const bestiaryJson of readFiles(creatureName)) {
@@ -142,26 +145,33 @@ const getAllMobsPowerlevel = async (allMobs: Mob[]): Promise<number> => {
     const creaturePowerlevel = await getCreaturePowerlevel(creatureName);
     const mobPowerlevel = mobSize * creaturePowerlevel;
     powerlevelTotalOfAllMobs += mobPowerlevel;
-    console.log(`
-      creatureName:${creatureName}
-      mobSize:${mobSize}
-      creaturePowerlevel:${creaturePowerlevel}
-      mobPowerlevel:${mobPowerlevel}
-      new powerlevelTotalOfAllMobs: ${powerlevelTotalOfAllMobs}
-      `);
+    // console.log(`
+    //   creatureName:${creatureName}
+    //   mobSize:${mobSize}
+    //   creaturePowerlevel:${creaturePowerlevel}
+    //   mobPowerlevel:${mobPowerlevel}
+    //   new powerlevelTotalOfAllMobs: ${powerlevelTotalOfAllMobs}
+    //   `);
   }
   return powerlevelTotalOfAllMobs;
 };
 
 const getAllLeveledNPCsPowerlevel = (allLeveledNPCs: LeveledNPC[]): number => {
-
   return allLeveledNPCs.reduce((allLeveledNPCsPowerlevel, leveledNPC) => {
     const powerlevel = powerlevelByPlayerLevel[leveledNPC.level];
-    return allLeveledNPCsPowerlevel += powerlevel;
-  },0)
+    return (allLeveledNPCsPowerlevel += powerlevel);
+  }, 0);
 };
 
-const difficulty = async (): Promise<string> => {
+type Difficulty = {
+  partyPowerlevel: number;
+  powerlevelTotalOfAllMobs: number;
+  allLeveledNPCsPowerlevel: number;
+  difficultyValue: number;
+  description: string;
+};
+
+const difficulty = async (): Promise<Difficulty> => {
   const powerlevelTotalOfAllMobs = await getAllMobsPowerlevel(allMobs);
   const allLeveledNPCsPowerlevel = getAllLeveledNPCsPowerlevel(allLeveledNPCs);
   const partyPowerlevel: number = getPartyPowerlevel(party);
@@ -180,17 +190,30 @@ const difficulty = async (): Promise<string> => {
   } else if (difficultyValue > 1) {
     description = "absurd";
   }
-  return `
-  partyPowerlevel:${partyPowerlevel}
-  powerlevelTotalOfAllMobs:${powerlevelTotalOfAllMobs}
-  leveledNPCsPowerlevel:${allLeveledNPCsPowerlevel}
-  difficulty: ${description} (${difficultyValue * 100}%)
-  `;
+
+  return {
+    partyPowerlevel: partyPowerlevel,
+    powerlevelTotalOfAllMobs: powerlevelTotalOfAllMobs,
+    allLeveledNPCsPowerlevel: allLeveledNPCsPowerlevel,
+    difficultyValue: difficultyValue,
+    description: description,
+  };
 };
 
 const main = async (): Promise<void> => {
-  const result = await difficulty();
-  console.log(result);
+  const {
+    partyPowerlevel,
+    powerlevelTotalOfAllMobs,
+    allLeveledNPCsPowerlevel,
+    difficultyValue,
+    description,
+  } = await difficulty();
+  console.log(`
+partyPowerlevel:${partyPowerlevel}
+powerlevelTotalOfAllMobs:${powerlevelTotalOfAllMobs}
+allLeveledNPCsPowerlevel:${allLeveledNPCsPowerlevel}
+difficulty: ${description} (${difficultyValue * 100}%)
+`);
 };
 
 main();
