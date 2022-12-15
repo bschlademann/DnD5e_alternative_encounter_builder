@@ -1,5 +1,5 @@
 ## D&D 5e combat difficulty calculator
-This is an attempt at estimating the difficulty of a cpmbat encounter more accurately. Right now it still uses the challenge ratings (CR) of creatures and levels of players as input. Both are transformed into powerlevel equivalent values. The difficulty assigned to the encounter (trivial/easy/medium/hard/deadly/absurd) stems from the powerlevel equivalent of the party compared to that of the opposing side.
+This is an attempt at estimating the difficulty of a combat encounter more accurately. Right now it still uses the challenge ratings (CR) of creatures and levels of players as input. Both are transformed into powerlevel equivalent values. The difficulty assigned to the encounter (trivial/easy/medium/hard/deadly/absurd) stems from the powerlevel equivalent of the party compared to that of the opposing side.
 
 # use
 
