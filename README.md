@@ -1,5 +1,6 @@
 ## D&D 5e combat difficulty calculator
-Using only the challenge ratings of creatures to estimate the difficulty of a combat encounter often is a shot in the dark, especially so with a rising number of participants. This is an attempt to estimate the difficulty more accurately. It still uses the number of creatures and their levels/challange ratings as a base, but those are transformed and used in a different formula than the classical one from 5e.
+This is an attempt at estimating the difficulty of a cpmbat encounter more accurately. Right now it still uses the challenge ratings (CR) of creatures and levels of players as input. Both are transformed into powerlevel equivalent values. The difficulty assigned to the encounter (trivial/easy/medium/hard/deadly/absurd) stems from the powerlevel equivalent of the party compared to that of the opposing side.
+
 # use
 
 enter values into 
@@ -20,6 +21,9 @@ enter values into
 
 currently there is no front-end and the results are simply logged in the console via
 npm run dev
+
+## credits
+The idea of estimating the difficulty this way is not mine but unfortunately I am unable to find the source in my notes or online. I'm sure it was a post on enworld.com. If you know who the original author of this system is, please contact me so I can credit them here.
 
 # to do:
 - build front-end
