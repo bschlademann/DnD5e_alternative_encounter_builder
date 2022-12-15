@@ -1,5 +1,5 @@
 ## D&D 5e combat difficulty calculator
-only using the challenge ratings (CR) of creatures to estimate the difficulty of a combat encounter always has been kind of inaccurate, especially so with a rising number of participants. This is an attempt to estimate the difficulty more accurately. It still uses the number of creatures and their levels/challange ratings as a base, but those are transformed and used in a different formula than the classical one from 5e.
+Using only the challenge ratings of creatures to estimate the difficulty of a combat encounter often is a shot in the dark, especially so with a rising number of participants. This is an attempt to estimate the difficulty more accurately. It still uses the number of creatures and their levels/challange ratings as a base, but those are transformed and used in a different formula than the classical one from 5e.
 # use
 
 enter values into 
