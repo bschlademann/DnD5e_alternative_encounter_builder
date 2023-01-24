@@ -26,6 +26,7 @@ npm run dev
 The idea of estimating the difficulty this way is not mine but unfortunately I am unable to find the source in my notes or online. I'm sure it was a post on enworld.com. If you know who the original author of this system is, please contact me so I can credit them here.
 
 # to do:
+- hash table with creature names for faster search
 - build front-end
 ? increase accuracy further with more concrete data 
     - import character sheet data from foundry vtt
