@@ -5,6 +5,22 @@ import {
 } from "./data.js";
 import * as fs from "fs/promises";
 import * as z from "zod";
+import { getBestiaryFileNamesFromRepoUrl } from "./domain";
+
+
+
+export type BestiaryFileNames = string[];
+
+const fetchBestiaryData = (bestiaryFileNames: BestiaryFileNames) => {
+  bestiaryFileNames.map((bestiaryFileName) => {
+    fetch(
+      `https://raw.githubusercontent.com/5etools-mirror-1/5etools-mirror-1.github.io/master/data/bestiary/${bestiaryFileName}`
+    )
+      .then((res) => res.json())
+      .then((bestiaryJson) => bestiaryJson);
+  });
+};
+
 
 type Party = { playerCharacters: string[]; level: number };
 type Mob = { creatureName: string; mobSize: number };
@@ -13,50 +29,23 @@ type BestiaryJson = { monster: { name: string; cr: string }[] };
 type CreatureStatBlock = { name: string; cr: string };
 
 const party: Party = {
-  playerCharacters: ["Linea", "Nix", "Noa", "Golan", "Dörte"],
-  level: 4,
+  playerCharacters: ["Player_1", "Player_2", "Player_3"],
+  level: 3,
 };
 
 const allMobs: Mob[] = [
-  // {
-  //   creatureName: "monodrone",
-  //   mobSize: 4,
-  // },
   {
-    creatureName: "duodrone",
-    mobSize: 1,
+    creatureName: "harengon brigand",
+    mobSize: 4,
   },
   {
-    creatureName: "tridrone",
-    mobSize: 1,
-  },
-  {
-    creatureName: "quadrone",
+    creatureName: "harengon sniper",
     mobSize: 2,
   },
-  // {
-  //   creatureName: "kobold scale sorcerer",
-  //   mobSize: 1,
-  // },
-  // {
-  //   creatureName: "kobold inventor",
-  //   mobSize: 1,
-  // },
-  // {
-  //   creatureName: "kobold dragonshield",
-  //   mobSize: 3,
-  // },
-  // {
-  //   creatureName: "kobold",
-  //   mobSize: 9,
-  // },
 ];
 
 const allLeveledNPCs: LeveledNPC[] = [
-  { name: "Dolgrim", level: 5 },
-  // { name: "Ilyas", level: 5 },
-  // { name: "Bres", level: 5 },
-  // { name: "Nif", level: 5 },
+  // { name: "NPC_1", level: 3 },
 ];
 
 const getPartyPowerlevel = (party: Party): number => {
@@ -94,7 +83,7 @@ const getCreatureStatBlock = (
 ): false | { name: string; cr: string } => {
   const creatureStatBlock = bestiaryJson.monster.find(
     (statBlock: CreatureStatBlock) =>
-      statBlock.name.toLocaleLowerCase() === creatureName.toLocaleLowerCase()
+      statBlock.name.toLowerCase() === creatureName.toLowerCase()
   );
   if (creatureStatBlock === undefined) {
     return false;
@@ -129,7 +118,7 @@ const getCreatureCr = async (creatureName: string): Promise<number> => {
       return parsedCr;
     }
   }
-  throw new Error(`ERROR: "${creatureName}" not found in any book`);
+  throw new Error(`"${creatureName}" not found in any book`);
 };
 
 const getCreaturePowerlevel = async (creatureName: string): Promise<number> => {
@@ -145,13 +134,6 @@ const getAllMobsPowerlevel = async (allMobs: Mob[]): Promise<number> => {
     const creaturePowerlevel = await getCreaturePowerlevel(creatureName);
     const mobPowerlevel = mobSize * creaturePowerlevel;
     powerlevelTotalOfAllMobs += mobPowerlevel;
-    // console.log(`
-    //   creatureName:${creatureName}
-    //   mobSize:${mobSize}
-    //   creaturePowerlevel:${creaturePowerlevel}
-    //   mobPowerlevel:${mobPowerlevel}
-    //   new powerlevelTotalOfAllMobs: ${powerlevelTotalOfAllMobs}
-    //   `);
   }
   return powerlevelTotalOfAllMobs;
 };
@@ -192,28 +174,36 @@ const difficulty = async (): Promise<Difficulty> => {
   }
 
   return {
-    partyPowerlevel: partyPowerlevel,
-    powerlevelTotalOfAllMobs: powerlevelTotalOfAllMobs,
-    allLeveledNPCsPowerlevel: allLeveledNPCsPowerlevel,
-    difficultyValue: difficultyValue,
-    description: description,
-  };
-};
-
-const main = async (): Promise<void> => {
-  const {
     partyPowerlevel,
     powerlevelTotalOfAllMobs,
     allLeveledNPCsPowerlevel,
     difficultyValue,
     description,
-  } = await difficulty();
-  console.log(`
-partyPowerlevel:${partyPowerlevel}
-powerlevelTotalOfAllMobs:${powerlevelTotalOfAllMobs}
-allLeveledNPCsPowerlevel:${allLeveledNPCsPowerlevel}
-difficulty: ${description} (${difficultyValue * 100}%)
-`);
+  };
 };
 
+const parseToTwoDecimals = (n: number) =>  parseFloat(n.toFixed(2))
+
+const formatDifficultyOutput = (difficulty: Difficulty) => {
+  const {
+        partyPowerlevel,
+        powerlevelTotalOfAllMobs,
+        allLeveledNPCsPowerlevel,
+        difficultyValue,
+        description,
+      } = difficulty;
+return {
+        partyPowerlevel: parseToTwoDecimals(partyPowerlevel),
+        powerlevelTotalOfAllMobs: parseToTwoDecimals(powerlevelTotalOfAllMobs),
+        allLeveledNPCsPowerlevel: parseToTwoDecimals(allLeveledNPCsPowerlevel),
+        difficulty: `${description} (${parseToTwoDecimals(difficultyValue * 100)}%)`,
+      };
+};
+
+const main = () => {
+  difficulty()
+  .then(formatDifficultyOutput)
+  .then(console.table)
+};
+ 
 main();
