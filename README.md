@@ -22,6 +22,7 @@ currently there is no front-end and the results are simply logged in the console
 npm run dev
 
 # to do:
+- hash table with creature names for faster search
 - build front-end
 ? increase accuracy further with more concrete data 
     - import character sheet data from foundry vtt
