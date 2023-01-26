@@ -1,3 +1,34 @@
+## file and folder structure
+// lib: general code, has nothing to do with your app (string manipulation, object transformations, array stuff)
+// infrastructure: concrete database connection, request stuff from apis, code for reading 5e tools data, etc
+// entry points: index.ts(x) / cli.ts, this is "first" file that runs (e.g. via vite, via node, etc)
+// "domain" -> starts as one file, then lots of sub-folders
+
+// const party2: Party2 = {
+//   PLAYER_CHARACTERS_FINAL: "Player_1, Player_2, Player_3",
+//   level: 3,
+// };
+
+// api.ts OR api/5e-tools.ts
+// const get5eDataFromApi = async () => {
+//  const data: Party2 = await getStuffFrom5e();
+//  const myDomainData = parse5eData(data);
+// }
+
+// main.ts / index.ts / cli.ts
+// const main = async () => {
+//   const domainData = await get5eDataFromApi();
+//   const coolStuff = calculateWithDomainData(domainData);
+// }
+
+// the evil outside world
+// ----------- infrastructure -------------
+// ^ the boundary of your app
+// [ domain ]
+
+// Party.ts / domain.ts / domain/Party.ts
+// type Party
+
 ## development (wenn du lokal entwickelst)
 
 ```sh
