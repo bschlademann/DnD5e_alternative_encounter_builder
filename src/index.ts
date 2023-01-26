@@ -1,40 +1,67 @@
-import {
-  powerlevelByCr,
-  powerlevelByPlayerLevel,
-  allBestiaryFileNames,
-} from "./data.js";
+import { powerlevelByCr, powerlevelByPlayerLevel } from "./data.js";
 import * as z from "zod";
 import { getBestiaryFileNamesFromRepoUrl } from "./5etools-repository";
 
-// lib: general code, has nothing to do with your app (string manipulation, object transformations, array stuff)
-// infrastructure: concrete database connection, request stuff from apis, code for reading 5e tools data, etc
-// entry points: index.ts(x) / cli.ts, this is "first" file that runs (e.g. via vite, via node, etc)
-// "domain" -> starts as one file, then lots of sub-folders
+type BestiaryFileNames = string[];
+type BestiaryJson = { monster: {}[] };
+type CreatureJson = { name: string; cr: string };
+type ParsedCreatureData = { name: string; cr: string };
 
-// const party2: Party2 = {
-//   PLAYER_CHARACTERS_FINAL: "Player_1, Player_2, Player_3",
-//   level: 3,
-// };
+const bestiaryJsonSchema: z.ZodSchema<BestiaryJson> = z.object({
+  monster: z.array(z.object({})),
+});
 
-// api.ts OR api/5e-tools.ts
-// const get5eDataFromApi = async () => {
-//  const data: Party2 = await getStuffFrom5e();
-//  const myDomainData = parse5eData(data);
-// }
+const isBestiaryJson = (u: unknown): u is BestiaryJson =>
+  bestiaryJsonSchema.safeParse(u).success;
 
-// main.ts / index.ts / cli.ts
-// const main = async () => {
-//   const domainData = await get5eDataFromApi();
-//   const coolStuff = calculateWithDomainData(domainData);
-// }
+const creatureJsonSchema: z.ZodSchema<CreatureJson> = z.object({
+  cr: z.string(),
+  name: z.string(),
+});
 
-// the evil outside world
-// ----------- infrastructure -------------
-// ^ the boundary of your app
-// [ domain ]
+const isCreatureJson = (u: unknown): u is CreatureJson =>
+  creatureJsonSchema.safeParse(u).success;
 
-// Party.ts / domain.ts / domain/Party.ts
-// type Party
+const fetchBestiaryData = (bestiaryFileNames: BestiaryFileNames) => {
+  return Promise.all(bestiaryFileNames.map((bestiaryFileName) =>
+    fetch(
+      `https://raw.githubusercontent.com/5etools-mirror-1/5etools-mirror-1.github.io/master/data/bestiary/${bestiaryFileName}`
+    )
+      .then((res) => res.json())
+      .then((promise: Promise<BestiaryJson>) => Promise.resolve(promise))
+  ));
+};
+
+const filterBestiaryJsons = (jsons: BestiaryJson[]) => {
+  return jsons.filter(isBestiaryJson);
+};
+
+const filterCreatureJsons = (bestiaryJsons: BestiaryJson[]) => {
+  return bestiaryJsons
+    .map((bestiaryJson) => bestiaryJson.monster.filter(isCreatureJson))
+    .flat();
+};
+
+const parseCreatureJsons = (creatureJsons: CreatureJson[]) => {
+  return creatureJsons.map((creatureJson) => {
+    const { name, cr } = creatureJson;
+    return { name, cr };
+  });
+};
+
+const main = () => {
+  // 1. fetch data, parse into domain types
+  getBestiaryFileNamesFromRepoUrl()
+    .then(fetchBestiaryData)
+    .then(filterBestiaryJsons)
+    .then(filterCreatureJsons)
+    .then(parseCreatureJsons);
+  // 2. put that stuff into a variable _here_, called state (later localStorage / useState)
+  // 3. calculate stuff, using state as input
+  // getDifficulty().then(formatDifficultyOutput).then(console.table);
+};
+
+main();
 
 type Party = { playerCharacters: string[]; level: number };
 const party: Party = {
@@ -65,52 +92,6 @@ const allLeveledNPCs: LeveledNPC[] = [
   // { name: "NPC_1", level: 3 },
 ];
 
-type BestiaryJson = { monster: {}[] };
-const bestiaryJsonSchema: z.ZodSchema<BestiaryJson> = z.object({
-  monster: z.array(z.object({})),
-});
-const isBestiaryJson = (u: unknown): u is BestiaryJson =>
-  bestiaryJsonSchema.safeParse(u).success;
-
-type CreatureJson = { name: string; cr: string };
-const creatureJsonSchema: z.ZodSchema<CreatureJson> = z.object({
-  cr: z.string(),
-  name: z.string(),
-});
-const isCreatureJson = (u: unknown): u is CreatureJson =>
-  creatureJsonSchema.safeParse(u).success;
-
-type BestiaryFileNames = string[];
-type BestiaryData = { monster: { name: string; cr: string }[] }[];
-const fetchBestiaryData = (
-  bestiaryFileNames: BestiaryFileNames
-)=> {
-  return bestiaryFileNames.map((bestiaryFileName) =>
-    fetch(
-      `https://raw.githubusercontent.com/5etools-mirror-1/5etools-mirror-1.github.io/master/data/bestiary/${bestiaryFileName}`
-    ).then((res) => res.json())
-  );
-};
-
-const filterBestiaryJsons = (bestiaryData: BestiaryData) =>
-  bestiaryData.filter(isBestiaryJson);
-
-const filterCreatureJsons = (bestiaryJsons: BestiaryJson[]) => {
-  return bestiaryJsons
-    .map((bestiaryJson) => bestiaryJson.monster.filter(isCreatureJson))
-    .flat();
-};
-
-type ParsedCreatureData = { name: string; cr: string }[];
-const parseCreatureJsons = (
-  creatureJsons: CreatureJson[]
-): ParsedCreatureData => {
-  return creatureJsons.map((creatureJson) => {
-    const { name, cr } = creatureJson;
-    return { name, cr };
-  });
-};
-
 // const parseBestiaryJson = (u: unknown): BestiaryJson =>
 //   bestiaryJsonSchema.parse(u);
 
@@ -121,19 +102,18 @@ const parseCreatureJsons = (
 //   });
 // };
 
-type CreatureStatBlock = { name: string; cr: string };
-const getCreatureStatBlock = (
-  creatureName: string,
-  bestiaryJson: BestiaryJson
-): false | { name: string; cr: string } => {
-  const creatureStatBlock = bestiaryJson.monster.find(
-    (statBlock: CreatureStatBlock) =>
-      statBlock.name.toLowerCase() === creatureName.toLowerCase()
-  );
-  if (creatureStatBlock === undefined) {
-    return false;
-  } else return creatureStatBlock;
-};
+// const getCreatureStatBlock = (
+//   creatureName: string,
+//   bestiaryJson: BestiaryJson
+// ): false | { name: string; cr: string } => {
+//   const creatureStatBlock = bestiaryJson.monster.find(
+//     (statBlock: CreatureStatBlock) =>
+//       statBlock.name.toLowerCase() === creatureName.toLowerCase()
+//   );
+//   if (creatureStatBlock === undefined) {
+//     return false;
+//   } else return creatureStatBlock;
+// };
 
 const parseCr = (crString: string): number => {
   const split = crString.split("/");
@@ -146,25 +126,31 @@ const parseCr = (crString: string): number => {
   return fraction.parse(split);
 };
 
-async function* readFiles(
-  creatureName: string
-): AsyncGenerator<BestiaryJson, void, unknown> {
-  for (const bestiaryFileName of allBestiaryFileNames) {
-    const filePath = `./bestiary/${bestiaryFileName}`;
-    yield await getJson(filePath);
-  }
-}
+// async function* readFiles(
+//   creatureName: string
+// ): AsyncGenerator<BestiaryJson, void, unknown> {
+//   for (const bestiaryFileName of allBestiaryFileNames) {
+//     const filePath = `./bestiary/${bestiaryFileName}`;
+//     yield await getJson(filePath);
+//   }
+// }
 
-const getCreatureCr = async (creatureName: string): Promise<number> => {
-  for await (const bestiaryJson of readFiles(creatureName)) {
-    const creatureStatblock = getCreatureStatBlock(creatureName, bestiaryJson);
-    if (creatureStatblock) {
-      const parsedCr = parseCr(creatureStatblock.cr);
-      return parsedCr;
-    }
-  }
-  throw new Error(`"${creatureName}" not found in any book`);
+// const getCreatureCr = async (creatureName: string): Promise<number> => {
+//   for await (const bestiaryJson of readFiles(creatureName)) {
+//     const creatureStatblock = getCreatureStatBlock(creatureName, bestiaryJson);
+//     if (creatureStatblock) {
+//       const parsedCr = parseCr(creatureStatblock.cr);
+//       return parsedCr;
+//     }
+//   }
+//   throw new Error(`"${creatureName}" not found in any book`);
+// };
+
+const getCreature = (creatureName: string) => {
+  // FIXME: .find(creatureObj => creatureObj.name === creatureName) creature in localstorage
 };
+const getCreatureCr = (parsedCreatureData: ParsedCreatureData) =>
+  parseCr(parsedCreatureData.cr);
 
 const getCreaturePowerlevel = async (creatureName: string): Promise<number> => {
   const creatureCr = await getCreatureCr(creatureName);
@@ -245,17 +231,3 @@ const formatDifficultyOutput = (difficulty: Difficulty) => {
     )}%)`,
   };
 };
-
-const main = () => {
-  // 1. fetch data, parse into domain types
-  getBestiaryFileNamesFromRepoUrl()
-    .then(fetchBestiaryData)
-    .then(filterBestiaryJsons)
-    .then(filterCreatureJsons)
-    .then(parseCreatureJsons);
-  // 2. put that stuff into a variable _here_, called state (later localStorage / useState)
-  // 3. calculate stuff, using state as input
-  // getDifficulty().then(formatDifficultyOutput).then(console.table);
-};
-
-// main();
