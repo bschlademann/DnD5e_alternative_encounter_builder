@@ -1,3 +1,14 @@
+// no stuff in localStorage
+// 1. fetch all data
+// 2. persist in localStorage: `{lastUpdatedAt: new Date(), data: ...}`
+// https://api.github.com/repos/5etools-mirror-1/5etools-mirror-1.github.io/commits?since=... {Date}
+
+// stuff in localStorage
+// 1. /commits for this repository, get last commit
+// 2. localStorage.lastUpdatedAt < lastCommit.createdAt
+// 2a: if true, fetch and regenerate localStorage
+// 2b: if false, just use localStorage
+
 export type Json = {
   sha: string;
   url: string;
@@ -24,6 +35,7 @@ export const findSubfolderUrl = (json: Json, subfolder: string) => {
   }
 };
 
+// lib: fetchJSON ('repoUrl' -> 'url')
 export const getJsonFromRepoUrl = (repoUrl: string) => {
   return fetch(repoUrl).then((res) => res.json());
 };
