@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import {main} from "./index";
-import './App.css';
+import { useState } from "react";
+import { setLocalStorage } from "./lib";
+import "./App.css";
 
 function App() {
-  const [count, setState] = useState({})
-main()
-  return (
-    <div className="App">
-    </div>
-  )
+  const [state, setState] = useState({});
+
+  type State = { name: string; cr: number }[];
+  const setStateToLocalStorageKey = setLocalStorage(state);
+
+  return <div className="App"></div>;
 }
 
-export default App
+export default App;

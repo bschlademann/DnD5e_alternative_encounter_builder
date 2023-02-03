@@ -1,15 +1,5 @@
-// no stuff in localStorage
-// 1. fetch all data
-// 2. persist in localStorage: `{lastUpdatedAt: new Date(), data: ...}`
-// https://api.github.com/repos/5etools-mirror-1/5etools-mirror-1.github.io/commits?since=... {Date}
-
-// stuff in localStorage
-// 1. /commits for this repository, get last commit
-// 2. localStorage.lastUpdatedAt < lastCommit.createdAt
-// 2a: if true, fetch and regenerate localStorage
-// 2b: if false, just use localStorage
 import * as z from "zod";
-import { getJsonFromUrl } from "./lib";
+import { getJsonFromUrl, getSetArray } from "./lib";
 
 export type Json = {
   sha: string;
@@ -67,23 +57,23 @@ export const getBestiaryFileNamesFromRepoUrl =
       .then(getBestiaryFileNames);
   };
 
-type BestiaryJson = { monster: {}[] };
-type CreatureJson = { name: string; cr: string };
+export type BestiaryData = { monster: {}[] };
+type CreatureData = { name: string; cr: string };
 type ParsedCreatureData = { name: string; cr: string };
 
-export const bestiaryJsonSchema: z.ZodSchema<BestiaryJson> = z.object({
+export const bestiaryJsonSchema: z.ZodSchema<BestiaryData> = z.object({
   monster: z.array(z.object({})),
 });
 
-export const isBestiaryJson = (u: unknown): u is BestiaryJson =>
+export const isBestiaryData = (u: unknown): u is BestiaryData =>
   bestiaryJsonSchema.safeParse(u).success;
 
-export const creatureJsonSchema: z.ZodSchema<CreatureJson> = z.object({
+export const creatureJsonSchema: z.ZodSchema<CreatureData> = z.object({
   cr: z.string(),
   name: z.string(),
 });
 
-export const isCreatureJson = (u: unknown): u is CreatureJson =>
+export const isCreatureData = (u: unknown): u is CreatureData =>
   creatureJsonSchema.safeParse(u).success;
 
 export const fetchBestiaryData = (bestiaryFileNames: BestiaryFileNames) => {
@@ -93,24 +83,27 @@ export const fetchBestiaryData = (bestiaryFileNames: BestiaryFileNames) => {
         `https://raw.githubusercontent.com/5etools-mirror-1/5etools-mirror-1.github.io/master/data/bestiary/${bestiaryFileName}`
       )
         .then((res) => res.json())
-        .then((promise: Promise<BestiaryJson>) => Promise.resolve(promise))
+        .then((promise: Promise<BestiaryData>) => Promise.resolve(promise))
     )
   );
 };
 
-export const filterBestiaryJsons = (jsons: BestiaryJson[]) => {
-  return jsons.filter(isBestiaryJson);
+export const filterBestiaryData = (jsons: BestiaryData[]) => {
+  return jsons.filter(isBestiaryData);
 };
 
-export const filterCreatureJsons = (bestiaryJsons: BestiaryJson[]) => {
-  return bestiaryJsons
-    .map((bestiaryJson) => bestiaryJson.monster.filter(isCreatureJson))
-    .flat();
+export const filterCreatureData = (bestiaryJsons: BestiaryData[]) => {
+  return bestiaryJsons.flatMap((bestiaryJson) =>
+    bestiaryJson.monster.filter(isCreatureData)
+  );
 };
 
-export const parseCreatureJsons = (creatureJsons: CreatureJson[]) => {
-  return creatureJsons.map((creatureJson) => {
-    const { name, cr } = creatureJson;
-    return { name, cr };
-  });
+export const parseCreatureData = (creatureJsons: CreatureData[]) => {
+  return creatureJsons.map(({ name, cr }) => ({ name, cr }));
+  // return creatureJsons.map((creatureJson) => {
+  //   const { name, cr } = creatureJson;
+  //   return { name, cr };
+  // });
 };
+
+export const getSetArrayFromParsedCreatureData = (parsedCreatureData: ParsedCreatureData[]):ParsedCreatureData[] => getSetArray(parsedCreatureData);
