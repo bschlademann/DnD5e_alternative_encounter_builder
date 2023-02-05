@@ -59,7 +59,7 @@ export const getBestiaryFileNamesFromRepoUrl =
 
 export type BestiaryData = { monster: {}[] };
 type CreatureData = { name: string; cr: string };
-type ParsedCreatureData = { name: string; cr: string };
+type ParsedCreatureData = { name: string; cr: number };
 
 export const bestiaryJsonSchema: z.ZodSchema<BestiaryData> = z.object({
   monster: z.array(z.object({})),
@@ -98,8 +98,19 @@ export const filterCreatureData = (bestiaryJsons: BestiaryData[]) => {
   );
 };
 
+export const parseCr = (crString: string): number => {
+  const split = crString.split("/");
+  const stringToNumber = z.string().regex(/^\d$/).transform(Number);
+  const fraction = z.union([
+    z.tuple([stringToNumber, stringToNumber]).transform(([a, b]) => a / b),
+    z.tuple([stringToNumber]).transform(([a]) => a),
+  ]);
+
+  return fraction.parse(split);
+};
+
 export const parseCreatureData = (creatureJsons: CreatureData[]) => {
-  return creatureJsons.map(({ name, cr }) => ({ name, cr }));
+  return creatureJsons.map(({ name, cr }) => ({ name, cr: parseCr(cr) }));
   // return creatureJsons.map((creatureJson) => {
   //   const { name, cr } = creatureJson;
   //   return { name, cr };

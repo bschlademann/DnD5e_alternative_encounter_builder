@@ -53,17 +53,6 @@ export const allLeveledNPCs: LeveledNPC[] = [
 //   } else return creatureStatBlock;
 // };
 
-export const parseCr = (crString: string): number => {
-  const split = crString.split("/");
-  const stringToNumber = z.string().regex(/^\d$/).transform(Number);
-  const fraction = z.union([
-    z.tuple([stringToNumber, stringToNumber]).transform(([a, b]) => a / b),
-    z.tuple([stringToNumber]).transform(([a]) => a),
-  ]);
-
-  return fraction.parse(split);
-};
-
 // async function* readFiles(
 //   creatureName: string
 // ): AsyncGenerator<BestiaryJson, void, unknown> {
