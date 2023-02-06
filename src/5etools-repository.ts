@@ -118,3 +118,12 @@ export const parseCreatureData = (creatureJsons: CreatureData[]) => {
 };
 
 export const getSetArrayFromParsedCreatureData = (parsedCreatureData: ParsedCreatureData[]):ParsedCreatureData[] => getSetArray(parsedCreatureData);
+
+export const getCreatureDataForLocalStorage = () => {
+  return getBestiaryFileNamesFromRepoUrl()
+    .then(fetchBestiaryData)
+    .then(filterBestiaryData)
+    .then(filterCreatureData)
+    .then(parseCreatureData)
+    .then(getSetArrayFromParsedCreatureData);
+};

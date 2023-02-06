@@ -1,4 +1,4 @@
-import { getCreatureDataForLocalStorage } from "./index";
+import { getCreatureDataForLocalStorage } from "./5etools-repository";
 
 type CreatureData = { name: string; cr: number };
 type State = {
@@ -9,10 +9,11 @@ type State = {
 // localStorage: bennis_app_lastUpdatedAt, bennis_app_data
 // declare function getLastUpdatedAt(): Date | undefined;
 // declare function setLastUpdatedAt(date: Date): void;
-declare function saveState(state: State): void;
+// declare function saveState(state: State): void;
 declare function loadState(): State;
 
 // type ParsedLocalStorageData = { localStorageLastUpdatedAt: number };
+
 export const getLocalStorageLastUpdatedAt = () => {
   const localStorageState = localStorage.getItem(
     "5e_combat_difficulty_calculator"
@@ -41,31 +42,37 @@ export const getRepoLastUpdatedAt = () => {
     .then(getLastCommitDate);
 };
 
-export const setLocalStorage = (creatureData: CreatureData[]) => {
-  const date = Date.now()
+export const localStorageIsEmpty = () => {
+  return getLocalStorageLastUpdatedAt() === undefined;
+};
+
+const compareWitchLocalStorageLastUpdatedAt = () => (repoLastUpdatedAt: number) => {
+  const localStorageLastUpdatedAt = getLocalStorageLastUpdatedAt();
+  // localstorage empty
+  if (!localStorageLastUpdatedAt) {
+    return true;
+    // localstorage outdated?
+  } else {
+    return repoLastUpdatedAt > localStorageLastUpdatedAt;
+  }
+};
+
+export const localStorageUpdateNeeded = () => {
+  return getRepoLastUpdatedAt().then(compareWitchLocalStorageLastUpdatedAt);
+};
+
+export const updateLocalStorage = (creatureData: CreatureData[]) => {
+  const date = Date.now();
   localStorage.setItem(
     "5e_combat_difficulty_calculator",
     `{ "lastUpdatetAt": ${date}, "creatureData": ${creatureData.toString()} }`
   );
 };
 
-// FIXME: refactor into more logical succession
-// export const localStorageUpdateNeeded = () => {
-//   return getRepoLastUpdatedAt().then((repoLastUpdatedAt) => {
-//     const localStorageLastUpdatedAt = getLocalStorageLastUpdatedAt();
-//     if (!localStorageLastUpdatedAt) {
-//       return true;
-//     } else {return repoLastUpdatedAt > localStorageLastUpdatedAt}
-//   });
-// };
-
-// const updateLocalStorage = (localStorageUpdateNeeded: boolean) => {
-//   if (localStorageUpdateNeeded) {
-//     return getCreatureDataForState()
-//   };
-// };
-
-// const manageLocalStorage = () => {
-//   localStorageUpdateNeeded()
-//   .then(updateLocalStorage);
-// }
+export const keepLocalStorageUpToDate = async () => {
+  if (await localStorageUpdateNeeded()) {
+    console.log("updating local storage");
+    getCreatureDataForLocalStorage()
+    .then(updateLocalStorage);
+  }
+};
