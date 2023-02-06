@@ -1,6 +1,8 @@
 import * as z from "zod";
 import { getJsonFromUrl, getSetArray } from "./lib";
 
+type Parser<Output, Input = unknown> = z.ZodSchema<Output, z.ZodTypeDef, Input>
+
 export type Json = {
   sha: string;
   url: string;
@@ -15,8 +17,7 @@ export type Json = {
 };
 export type BestiaryFileNames = string[];
 export type BestiaryData = { monster: {}[] };
-export type CreatureData = { name: string; cr: string };
-export type ParsedCreatureData = { name: string; cr: string };
+export type CreatureData = { name: string; cr: number };
 
 export const findSubfolderUrl = (json: Json, subfolder: string) => {
   const subfolderObjArr = json.tree.filter((node) => node.path === subfolder);
@@ -59,15 +60,25 @@ export const getBestiaryFileNamesFromRepoUrl =
       .then(getBestiaryFileNames);
   };
 
-export const bestiaryJsonSchema: z.ZodSchema<BestiaryData> = z.object({
+export const bestiaryJsonSchema: Parser<BestiaryData> = z.object({
   monster: z.array(z.object({})),
 });
 
 export const isBestiaryData = (u: unknown): u is BestiaryData =>
   bestiaryJsonSchema.safeParse(u).success;
 
-export const creatureJsonSchema: z.ZodSchema<CreatureData> = z.object({
-  cr: z.string(),
+
+const stringToNumber = z.string().pipe(z.coerce.number());
+
+export const fractionalString = z.string().transform(s => s.split("/")).pipe(
+  z.union([
+    z.tuple([stringToNumber, stringToNumber]).transform(([a, b]) => a / b),
+    z.tuple([stringToNumber]).transform(([a]) => a),
+  ])
+);
+
+export const creatureJsonSchema: Parser<CreatureData> = z.object({
+  cr: fractionalString,
   name: z.string(),
 });
 
@@ -96,24 +107,13 @@ export const filterCreatureData = (bestiaryJsons: BestiaryData[]) => {
   );
 };
 
-export const parseCr = (crString: string): number => {
-  const split = crString.split("/");
-  const stringToNumber = z.string().regex(/^\d$/).transform(Number);
-  const fraction = z.union([
-    z.tuple([stringToNumber, stringToNumber]).transform(([a, b]) => a / b),
-    z.tuple([stringToNumber]).transform(([a]) => a),
-  ]);
-
-  return fraction.parse(split);
-};
-
-export const parseCreatureData = (creatureJsons: CreatureData[]) => {
+export const parseCreatureData = (creatureJsons: CreatureData[]): CreatureData[] => {
   return creatureJsons.map(({ name, cr }) => ({ name, cr }));
 };
 
 export const getSetArrayFromParsedCreatureData = (
-  parsedCreatureData: ParsedCreatureData[]
-): ParsedCreatureData[] => getSetArray(parsedCreatureData);
+  parsedCreatureData: CreatureData[]
+): CreatureData[] => getSetArray(parsedCreatureData);
 
 export const getCreatureData = () => {
   return getBestiaryFileNamesFromRepoUrl()
