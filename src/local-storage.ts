@@ -1,20 +1,26 @@
 import { getCreatureDataForLocalStorage } from "./5etools-repository";
 
 type CreatureData = { name: string; cr: number };
-type State = {
+type ParsedLocalStorageData = {
   lastUpdatedAt: number;
   creatureData: CreatureData[];
 };
 
-export const getLocalStorageLastUpdatedAt = () => {
+export const parseLocalStorageData = () => {
   const localStorageData = localStorage.getItem(
     "5e_combat_difficulty_calculator"
   );
   if (localStorageData) {
-    const parsedLocalStorageData: State = JSON.parse(localStorageData);
-    return parsedLocalStorageData.lastUpdatedAt;
+    const parsedLocalStorageData: ParsedLocalStorageData = JSON.parse(localStorageData);
+    return parsedLocalStorageData;
+  } else {
+    throw new Error("parsedLocalStorageData is undefined")
   }
 };
+
+export const getLocalStorageLastUpdatedAt = () => parseLocalStorageData().lastUpdatedAt;
+
+export const getCreatureDataFromLocalStorage = () => parseLocalStorageData().creatureData;
 
 type Commit = {
   commit: {
@@ -68,4 +74,4 @@ export const keepLocalStorageUpToDate = async () => {
     .then(updateLocalStorage);
   }
 };
-export default keepLocalStorageUpToDate;
+

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import keepLocalStorageUpToDate from "./local-storage";
+import {keepLocalStorageUpToDate, getCreatureDataFromLocalStorage} from "./local-storage";
 import "./App.css";
 
 function App() {
-  const [state, setState] = useState({});
+  const [creatureData, setCreatureData] = useState({});
 
   useEffect(() => {
     keepLocalStorageUpToDate();
+    const creatureData = getCreatureDataFromLocalStorage();
+    setCreatureData(creatureData);
   }, []);
 
   return (
