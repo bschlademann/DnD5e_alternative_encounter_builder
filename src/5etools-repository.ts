@@ -13,8 +13,10 @@ export type Json = {
     url: string;
   }[];
 };
-
 export type BestiaryFileNames = string[];
+export type BestiaryData = { monster: {}[] };
+export type CreatureData = { name: string; cr: string };
+export type ParsedCreatureData = { name: string; cr: string };
 
 export const findSubfolderUrl = (json: Json, subfolder: string) => {
   const subfolderObjArr = json.tree.filter((node) => node.path === subfolder);
@@ -56,10 +58,6 @@ export const getBestiaryFileNamesFromRepoUrl =
       .then(getJsonFromUrl)
       .then(getBestiaryFileNames);
   };
-
-export type BestiaryData = { monster: {}[] };
-type CreatureData = { name: string; cr: string };
-type ParsedCreatureData = { name: string; cr: number };
 
 export const bestiaryJsonSchema: z.ZodSchema<BestiaryData> = z.object({
   monster: z.array(z.object({})),
@@ -110,16 +108,14 @@ export const parseCr = (crString: string): number => {
 };
 
 export const parseCreatureData = (creatureJsons: CreatureData[]) => {
-  return creatureJsons.map(({ name, cr }) => ({ name, cr: parseCr(cr) }));
-  // return creatureJsons.map((creatureJson) => {
-  //   const { name, cr } = creatureJson;
-  //   return { name, cr };
-  // });
+  return creatureJsons.map(({ name, cr }) => ({ name, cr }));
 };
 
-export const getSetArrayFromParsedCreatureData = (parsedCreatureData: ParsedCreatureData[]):ParsedCreatureData[] => getSetArray(parsedCreatureData);
+export const getSetArrayFromParsedCreatureData = (
+  parsedCreatureData: ParsedCreatureData[]
+): ParsedCreatureData[] => getSetArray(parsedCreatureData);
 
-export const getCreatureDataForLocalStorage = () => {
+export const getCreatureData = () => {
   return getBestiaryFileNamesFromRepoUrl()
     .then(fetchBestiaryData)
     .then(filterBestiaryData)

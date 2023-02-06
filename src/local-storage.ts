@@ -1,7 +1,6 @@
-import { getCreatureDataForLocalStorage } from "./5etools-repository";
+import { getCreatureData, CreatureData } from "./5etools-repository";
 
-type CreatureData = { name: string; cr: number };
-type ParsedLocalStorageData = {
+export type ParsedLocalStorageData = {
   lastUpdatedAt: number;
   creatureData: CreatureData[];
 };
@@ -14,7 +13,7 @@ export const parseLocalStorageData = () => {
     const parsedLocalStorageData: ParsedLocalStorageData = JSON.parse(localStorageData);
     return parsedLocalStorageData;
   } else {
-    throw new Error("parsedLocalStorageData is undefined")
+    throw new Error("localStorage is empty")
   }
 };
 
@@ -44,10 +43,10 @@ export const localStorageIsEmpty = () => {
   return getLocalStorageLastUpdatedAt() === undefined;
 };
 
-const compareWitchLocalStorageLastUpdatedAt = () => (repoLastUpdatedAt: number) => {
+const compareWithLocalStorageLastUpdatedAt = () => (repoLastUpdatedAt: number) => {
   const localStorageLastUpdatedAt = getLocalStorageLastUpdatedAt();
   // localstorage empty
-  if (!localStorageLastUpdatedAt) {
+  if (localStorageIsEmpty()) {
     return true;
     // localstorage outdated?
   } else {
@@ -56,21 +55,20 @@ const compareWitchLocalStorageLastUpdatedAt = () => (repoLastUpdatedAt: number) 
 };
 
 export const localStorageUpdateNeeded = () => {
-  return getRepoLastUpdatedAt().then(compareWitchLocalStorageLastUpdatedAt);
+  return getRepoLastUpdatedAt().then(compareWithLocalStorageLastUpdatedAt);
 };
 
 export const updateLocalStorage = (creatureData: CreatureData[]) => {
   const date = Date.now();
   localStorage.setItem(
-    "5e_combat_difficulty_calculator",
-    `{ "lastUpdatetAt": ${date}, "creatureData": ${creatureData.toString()} }`
+    "5e_combat_difficulty_calculator", JSON.stringify({lastUpdatedAt: date, creatureData: creatureData})
   );
 };
 
 export const keepLocalStorageUpToDate = async () => {
   if (await localStorageUpdateNeeded()) {
     console.log("updating local storage");
-    getCreatureDataForLocalStorage()
+    return getCreatureData()
     .then(updateLocalStorage);
   }
 };
