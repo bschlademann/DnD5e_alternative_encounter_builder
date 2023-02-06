@@ -123,3 +123,21 @@ export const getCreatureData = () => {
     .then(parseCreatureData)
     .then(getSetArrayFromParsedCreatureData);
 };
+
+type Commit = {
+  commit: {
+    committer: {
+      date: string;
+    };
+  };
+};
+export const getLastCommitDate = (commits: Commit[]) =>
+  Date.parse(commits[0].commit.committer.date);
+
+export const getRepoLastUpdatedAt = () => {
+  return fetch(
+    "https://api.github.com/repos/5etools-mirror-1/5etools-mirror-1.github.io/commits"
+  )
+    .then((res) => res.json())
+    .then(getLastCommitDate);
+};
