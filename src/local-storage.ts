@@ -1,9 +1,10 @@
-import {getCreatureDataForState} from "./index"
+import { getCreatureDataForLocalStorage } from "./index";
 
-export type State = {
-  name: string;
-  cr: number;
-}[];
+type CreatureData = { name: string; cr: number };
+type State = {
+  lastUpdatedAt: number;
+  creatureData: CreatureData[];
+};
 
 // localStorage: bennis_app_lastUpdatedAt, bennis_app_data
 // declare function getLastUpdatedAt(): Date | undefined;
@@ -11,26 +12,14 @@ export type State = {
 declare function saveState(state: State): void;
 declare function loadState(): State;
 
-export const setLocalStorageLastUpdatedAt = (date: number) => {
-  localStorage.setItem(
-    "5e_combat_difficulty_calculator",
-    `{ "lastUpdatetAt": ${date} }`
-  );
-};
-
-type ParsedLocalStorageData = { localStorageLastUpdatedAt: number };
+// type ParsedLocalStorageData = { localStorageLastUpdatedAt: number };
 export const getLocalStorageLastUpdatedAt = () => {
-  const localStorageData = localStorage.getItem(
+  const localStorageState = localStorage.getItem(
     "5e_combat_difficulty_calculator"
   );
-  if (localStorageData) {
-    const parsedLocalStorageData: ParsedLocalStorageData =
-      JSON.parse(localStorageData);
-    const localStorageLastUpdatedAt =
-      parsedLocalStorageData.localStorageLastUpdatedAt;
-    if (localStorageLastUpdatedAt) {
-      return localStorageLastUpdatedAt;
-    }
+  if (localStorageState) {
+    const parsedLocalStorageState: State = JSON.parse(localStorageState);
+    return parsedLocalStorageState.lastUpdatedAt;
   }
 };
 
@@ -42,19 +31,23 @@ type Commit = {
   };
 };
 export const getLastCommitDate = (commits: Commit[]) =>
-  new Date(commits[0].commit.committer.date);
-
-export const parseDateToNumber = (date: Date) => Date.parse(date.toString());
+  Date.parse(commits[0].commit.committer.date);
 
 export const getRepoLastUpdatedAt = () => {
   return fetch(
     "https://api.github.com/repos/5etools-mirror-1/5etools-mirror-1.github.io/commits"
   )
     .then((res) => res.json())
-    .then(getLastCommitDate)
-    .then(parseDateToNumber);
+    .then(getLastCommitDate);
 };
 
+export const setLocalStorage = (creatureData: CreatureData[]) => {
+  const date = Date.now()
+  localStorage.setItem(
+    "5e_combat_difficulty_calculator",
+    `{ "lastUpdatetAt": ${date}, "creatureData": ${creatureData.toString()} }`
+  );
+};
 
 // FIXME: refactor into more logical succession
 // export const localStorageUpdateNeeded = () => {
