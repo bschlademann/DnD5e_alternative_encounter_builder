@@ -1,5 +1,3 @@
-import keepLocalStorageUpToDate from "./local-storage";
-
 export const main = () => {
   // keepLocalStorageUpToDate();
   // save localStorage to State
