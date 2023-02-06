@@ -1,11 +1,10 @@
-import * as repo from "./5etools-repository";
-import * as ls from "./local-storage";
-// import { pipe } from "fp-ts/lib/function";
-// import { BestiaryJson } from "./5etools-repository";
+import keepLocalStorageUpToDate from "./local-storage";
 
-const { keepLocalStorageUpToDate } = ls;
-
-
+export const main = () => {
+  // keepLocalStorageUpToDate();
+  // save localStorage to State
+  // calc difficulty with entered userdata
+}
 
 
 

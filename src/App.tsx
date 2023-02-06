@@ -1,8 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import keepLocalStorageUpToDate from "./local-storage";
 import "./App.css";
 
 function App() {
   const [state, setState] = useState({});
+
+  useEffect(() => {
+    keepLocalStorageUpToDate();
+  }, []);
 
   return (
     <div className="App">

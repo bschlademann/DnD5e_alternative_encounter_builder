@@ -6,21 +6,13 @@ type State = {
   creatureData: CreatureData[];
 };
 
-// localStorage: bennis_app_lastUpdatedAt, bennis_app_data
-// declare function getLastUpdatedAt(): Date | undefined;
-// declare function setLastUpdatedAt(date: Date): void;
-// declare function saveState(state: State): void;
-declare function loadState(): State;
-
-// type ParsedLocalStorageData = { localStorageLastUpdatedAt: number };
-
 export const getLocalStorageLastUpdatedAt = () => {
-  const localStorageState = localStorage.getItem(
+  const localStorageData = localStorage.getItem(
     "5e_combat_difficulty_calculator"
   );
-  if (localStorageState) {
-    const parsedLocalStorageState: State = JSON.parse(localStorageState);
-    return parsedLocalStorageState.lastUpdatedAt;
+  if (localStorageData) {
+    const parsedLocalStorageData: State = JSON.parse(localStorageData);
+    return parsedLocalStorageData.lastUpdatedAt;
   }
 };
 
@@ -76,3 +68,4 @@ export const keepLocalStorageUpToDate = async () => {
     .then(updateLocalStorage);
   }
 };
+export default keepLocalStorageUpToDate;
