@@ -2,9 +2,7 @@ export const main = () => {
   // keepLocalStorageUpToDate();
   // save localStorage to State
   // calc difficulty with entered userdata
-}
-
-
+};
 
 // export const filterStuff = (
 //   jsons: BestiaryJson[]

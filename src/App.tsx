@@ -1,24 +1,28 @@
 import { useEffect, useState, createContext } from "react";
 import { getOrUpdateLocalStorage } from "./local-storage";
 import "./App.css";
-import { CreatureData } from "./5etools";
+import { Monster } from "./5etools";
 
-const StateContext = createContext<CreatureData[]>([]);
+const StateContext = createContext<Monster[]>([]);
 
-const Creature = ({name}: CreatureData) => {
-  return <div>{name}</div>
-}
+const Creature = ({ cr }: Monster) => {
+  return <div>{cr}</div>;
+};
 
 const Creatures = () => {
-  return <StateContext.Consumer>
-    {creatureData => creatureData.map((creature, i) => <Creature key={i} {...creature} />)}
-  </StateContext.Consumer>
-}
+  return (
+    <StateContext.Consumer>
+      {(creatureData) =>
+        creatureData.map((creature, i) => <Creature key={i} {...creature} />)
+      }
+    </StateContext.Consumer>
+  );
+};
 
 function App() {
-  const [creatureData, setCreatureData] = useState<CreatureData[]>([]);
+  const [creatureData, setCreatureData] = useState<Monster[]>([]);
   useEffect(() => {
-    // localStorage.clear();
+    localStorage.clear();
 
     getOrUpdateLocalStorage().then((creatureData) => {
       console.log({ creatureData });
@@ -29,7 +33,7 @@ function App() {
   return (
     <StateContext.Provider value={creatureData}>
       <div className="App">
-        {/* <Creatures /> */}
+        <Creatures />
         <form action="">
           <div className="party">
             <label htmlFor="party-number">party-number</label>
