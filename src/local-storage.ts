@@ -1,8 +1,8 @@
-import { getCreatureData, Monster, getRepoLastUpdatedAt } from "./5etools";
+import { getCreatureData, Creature, getRepoLastUpdatedAt } from "./5etools";
 
 export type ParsedLocalStorageData = {
   lastUpdatedAt: number;
-  creatureData: Monster[];
+  creatureData: Creature[];
 };
 
 export const parseLocalStorageData = (): ParsedLocalStorageData | undefined => {
@@ -18,7 +18,7 @@ export const parseLocalStorageData = (): ParsedLocalStorageData | undefined => {
   }
 };
 
-export const updateLocalStorage = (creatureData: Monster[]) => {
+export const updateLocalStorage = (creatureData: Creature[]) => {
   const date = Date.now();
   localStorage.setItem(
     "5e_combat_difficulty_calculator",
@@ -26,7 +26,7 @@ export const updateLocalStorage = (creatureData: Monster[]) => {
   );
 };
 
-export const getOrUpdateLocalStorage = async (): Promise<Monster[]> => {
+export const getOrUpdateLocalStorage = async (): Promise<Creature[]> => {
   const localStorageData = parseLocalStorageData();
   const repoLastUpdatedAt = await getRepoLastUpdatedAt();
   const repoHasUpdates =

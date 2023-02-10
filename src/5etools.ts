@@ -21,20 +21,20 @@ export type Json = {
 };
 export type BestiaryFileNames = string[];
 
-export type Monster = { name: string; cr: number };
+export type Creature = { name: string; cr: number };
 
-export const creatureDataSchema: Parser<Monster> = z.object({
+export const creatureDataSchema: Parser<Creature> = z.object({
   cr: stringToFractionalNumber,
   name: z.string(),
 });
 
-type RawMonster = {
+type RawCreature = {
   name: string;
   cr?: "Unknown" | number | Record<string, unknown>;
 };
 
 export type RawData = {
-  monster: RawMonster[];
+  monster: RawCreature[];
 };
 
 const rawDataSchema: Parser<RawData> = z.object({
@@ -49,7 +49,7 @@ const rawDataSchema: Parser<RawData> = z.object({
   ),
 });
 
-const isMonster = (input: RawMonster): input is Monster =>
+const isCreature = (input: RawCreature): input is Creature =>
   typeof input.cr === "number";
 
 const findSubfolderUrl = (json: Json, subfolder: string) => {
@@ -105,14 +105,14 @@ const fetchRawData = (bestiaryFileNames: BestiaryFileNames) => {
 const parseRawData = (rawData: unknown[]): RawData[] =>
   rawDataSchema.array().parse(rawData);
 
-const filterMonsters = (parsedDataArray: RawData[]): Monster[] =>
-  parsedDataArray.flatMap((parsedData) => parsedData.monster.filter(isMonster));
+const filterCreatures = (parsedDataArray: RawData[]): Creature[] =>
+  parsedDataArray.flatMap((parsedData) => parsedData.monster.filter(isCreature));
 
 export const getCreatureData = () => {
   return getBestiaryFileNamesFromRepoUrl()
     .then(fetchRawData)
     .then(parseRawData)
-    .then(filterMonsters)
+    .then(filterCreatures)
     .then(unique);
 };
 

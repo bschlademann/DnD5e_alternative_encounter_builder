@@ -1,37 +1,33 @@
 import { useEffect, useState, createContext } from "react";
 import { getOrUpdateLocalStorage } from "./local-storage";
 import "./App.css";
-import { Monster } from "./5etools";
+import { Creature } from "./5etools";
 
-const StateContext = createContext<Monster[]>([]);
+export const CreatureContext = createContext<Creature[]>([]);
 
-const Creature = ({ cr }: Monster) => {
+const Creature = ({ cr }: Creature) => {
   return <div>{cr}</div>;
 };
 
 const Creatures = () => {
   return (
-    <StateContext.Consumer>
+    <CreatureContext.Consumer>
       {(creatureData) =>
         creatureData.map((creature, i) => <Creature key={i} {...creature} />)
       }
-    </StateContext.Consumer>
+    </CreatureContext.Consumer>
   );
 };
 
 function App() {
-  const [creatureData, setCreatureData] = useState<Monster[]>([]);
+  const [creatures, setCreatures] = useState<Creature[]>([]);
   useEffect(() => {
     localStorage.clear();
-
-    getOrUpdateLocalStorage().then((creatureData) => {
-      console.log({ creatureData });
-      setCreatureData(creatureData);
-    });
+    getOrUpdateLocalStorage().then(setCreatures);
   }, []);
 
   return (
-    <StateContext.Provider value={creatureData}>
+    <CreatureContext.Provider value={creatures}>
       <div className="App">
         <Creatures />
         <form action="">
@@ -58,7 +54,7 @@ function App() {
           <button type="submit">Submit</button>
         </form>
       </div>
-    </StateContext.Provider>
+    </CreatureContext.Provider>
   );
 }
 
