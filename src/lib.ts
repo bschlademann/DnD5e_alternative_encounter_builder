@@ -17,3 +17,11 @@ export const fractionalString = z
       z.tuple([stringToNumber]).transform(([a]) => a),
     ])
   );
+
+  export const getRange = (range: [number, number]) => {
+    let arr = [];
+    for (let i = Math.min(...range); i <= Math.max(...range); i++) {
+      arr.push(i);
+    }
+    return arr;
+  };
