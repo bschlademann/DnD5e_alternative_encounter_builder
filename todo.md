@@ -1,21 +1,12 @@
-- create list of bestiaryFileNames on LOCAL
-- fetch list of bestiary file names from SERVER
-- exclude "-ua-" files
-- compare SERVERlist with LOCALlist
-```ts
-const newBestiaries = SERVERlist.map(bestiary => {if (!LOCALlist.includes(bestiary)) => bestiary})
-if (!exists(file)) {
-let newBestiaries = []
-fetch file and write to bestiary folder
-newBestiaries.push(file)
-newBestiaries.map check if creatures already exists in creatureMasterList, if not, add them
-}
+- components:
+  - PartyComposer 
+    - 2 dropdowns
+      - number of PCs (max: 10)
+      - level of those PCs (max: 20) 
+      - add-button if not all PCs are of same level
+  - CreatureList:
+    - table: {addButton}, {substractButton}, create.name, creature.cr
+      - scrollable, max size: {window.height - input.height}
+    - input above list used for filtering table for name
 
-// parse bestiary files into new object: Bestiary
-for faster access
-type Bestiary = {
-  name: string;
-  cr?: string; // maybe parse to number before
-  source?: string[];
-}[];
-```
+- 
