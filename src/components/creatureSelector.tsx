@@ -1,11 +1,6 @@
-import { createContext, useContext, useState } from "react";
-import { Creature } from "../5etools";
-import { Mob } from "../domain";
+import { useContext, useState } from "react";
+import { CreatureContext, MobsContext } from "../contexts";
 
-export const CreatureContext = createContext<Creature[]>([]);
-export const MobsContext = createContext<
-  [Mob[], React.Dispatch<React.SetStateAction<Mob[]>>]
->([[], () => undefined]);
 
 export const CreatureSelector = () => {
   const [filterQuery, setFilterQuery] = useState("");

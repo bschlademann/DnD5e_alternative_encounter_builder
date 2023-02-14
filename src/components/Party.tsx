@@ -1,4 +1,5 @@
 import React, { createContext, useContext } from "react";
+import { PartyContext } from "../contexts";
 import { getRange } from "../lib";
 
 const Option = (props: { value: number }) => {
@@ -6,15 +7,6 @@ const Option = (props: { value: number }) => {
   return <option value={value}>{value}</option>;
 };
 export type Party = { count: number; level: number };
-
-export type PartyProps = {
-  party: Party;
-  setParty: React.Dispatch<React.SetStateAction<Party>>;
-};
-
-export const PartyContext = createContext<
-  [Party, React.Dispatch<React.SetStateAction<Party>>]
->([{ count: 1, level: 1 }, () => undefined]);
 
 export const Party = () => {
   const [party, setParty] = useContext(PartyContext);
