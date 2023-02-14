@@ -39,7 +39,7 @@ export const Party = () => {
         ))}
       </select>
 
-      <label htmlFor="character-level">number of characters</label>
+      <label htmlFor="character-level">level</label>
       <select id="character-count" value={party.level} onChange={onChangeLevel}>
         {validLevels.map((value) => (
           <Option value={value} key={`level-${value}`} />
