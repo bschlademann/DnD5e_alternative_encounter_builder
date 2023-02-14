@@ -1,12 +1,11 @@
 - components:
-  - PartyComposer 
-    - 2 dropdowns
-      - number of PCs (max: 10)
-      - level of those PCs (max: 20) 
-      - add-button if not all PCs are of same level
-  - CreatureList:
+  - Party
+    - add-button if not all PCs are of same level
+  - CreatureSelector:
     - table: {addButton}, {substractButton}, create.name, creature.cr
       - scrollable, max size: {window.height - input.height}
-    - input above list used for filtering table for name
+      - {addbutton} / {substractButton} ade/remove mobs and in-/decrease mobsize in {mobs}-state 
+    - add keys to <tr> filteredCreatures.map((creature) => {...}
+      - {creature.name}-{creature.cr} is not enough, produces duplicates, add ids to all entries in {creatures-state}
 
 - 
