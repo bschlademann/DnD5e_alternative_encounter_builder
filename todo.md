@@ -4,7 +4,8 @@
   - CreatureSelector:
     - table: {addButton}, {substractButton}, create.name, creature.cr
       - scrollable, max size: {window.height - input.height}
-      - {addbutton} / {substractButton} ade/remove mobs and in-/decrease mobsize in {mobs}-state 
+      - {addbutton} / {substractButton} ade/remove mobs and in-/decrease mobsize in {mobs}-state
+      - use table-heads for sorting entries, indicate via symbols in heads
     - add keys to <tr> filteredCreatures.map((creature) => {...}
       - {creature.name}-{creature.cr} is not enough, produces duplicates, add ids to all entries in {creatures-state}
 
