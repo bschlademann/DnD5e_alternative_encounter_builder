@@ -3,6 +3,7 @@ import {
   getJsonFromUrl,
   unique,
   fractionalString as stringToFractionalNumber,
+  addIds,
 } from "./lib";
 
 type Parser<Output, Input = unknown> = z.ZodSchema<Output, z.ZodTypeDef, Input>;
@@ -21,11 +22,12 @@ export type Json = {
 };
 export type BestiaryFileNames = string[];
 
-export type Creature = { name: string; cr: number };
+export type Creature = { name: string; cr: number, id: number };
 
 export const creatureDataSchema: Parser<Creature> = z.object({
   cr: stringToFractionalNumber,
   name: z.string(),
+  id: z.number()
 });
 
 type RawCreature = {
@@ -108,12 +110,13 @@ const parseRawData = (rawData: unknown[]): RawData[] =>
 const filterCreatures = (parsedDataArray: RawData[]): Creature[] =>
   parsedDataArray.flatMap((parsedData) => parsedData.monster.filter(isCreature));
 
-export const getCreatureData = () => {
+export const getCreatureData = (): Promise<Creature[]> => {
   return getBestiaryFileNamesFromRepoUrl()
     .then(fetchRawData)
     .then(parseRawData)
     .then(filterCreatures)
-    .then(unique);
+    .then(unique)
+    .then(addIds);
 };
 
 type Commit = {
@@ -123,6 +126,7 @@ type Commit = {
     };
   };
 };
+
 const getLastCommitDate = (commits: Commit[]) =>
   Date.parse(commits[0].commit.committer.date);
 
