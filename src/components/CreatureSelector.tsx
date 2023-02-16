@@ -1,3 +1,4 @@
+import { findIndex } from "fp-ts/lib/Array";
 import { useContext, useState } from "react";
 import { Creature } from "../5etools";
 import { CreatureContext, MobsContext } from "../contexts";
@@ -37,35 +38,39 @@ export const CreatureSelector = () => {
     !!mobs.find((mob) => mob.creatureId === creature.id);
 
   const incrementMob = (creature: Creature): void => {
-    // if creature exists in mobs
     if (existsAsMob(creature)) {
-      // mobsize++
-      const creatureInMobs = mobs.find(
-        (mob: Mob) => mob.creatureId === creature.id
+      setMobs((prevMobs) =>
+        prevMobs.map((mob) =>
+          mob.creatureId === creature.id
+            ? { ...mob, mobSize: mob.mobSize + 1 }
+            : mob
+        )
       );
-      const indexCreatureInMobs = mobs.indexOf(creatureInMobs);
-      setMobs((prevMobs) => {
-        console.log("increase mobSize by 1");
-        return [
-          ...prevMobs,
-          (prevMobs[indexCreatureInMobs].mobSize =
-            parseInt(prevMobs[indexCreatureInMobs].mobSize) + 1),
-        ];
-      });
-      // if creature does not exist in mobs yet
     } else {
-      // add creature to mobs
-      // set mobSize=1
-      setMobs((prevMobs) => {
-        return [
-          ...prevMobs,
-          { creatureName: creature.name, creatureId: creature.id, mobSize: 1 },
-        ];
-      });
+      setMobs((prevMobs) =>
+        prevMobs.concat({
+          creatureName: creature.name,
+          creatureId: creature.id,
+          mobSize: 1,
+        })
+      );
     }
   };
 
-  // const decrementMob = (e: React.ChangeEvent<HTMLInputElement>): void => {}
+  const decrementMob = (creature: Creature): void => {
+    if (existsAsMob(creature)) {
+      setMobs((prevMobs) =>
+        prevMobs.map((mob) =>
+          mob.creatureId === creature.id
+            ? { ...mob, mobSize: mob.mobSize - 1 }
+            : mob
+        )
+      );
+      // if mobSize <= 0 -> delete creature from mobs
+      
+
+    }
+  };
 
   const filterCreatureNames = (e: React.ChangeEvent<HTMLInputElement>) =>
     setFilterQuery(e.target.value);
@@ -92,7 +97,7 @@ export const CreatureSelector = () => {
               return (
                 <tr key={`${creature.name}-${creature.cr}-${creature.id}`}>
                   <button onClick={() => incrementMob(creature)}>+</button>
-                  <button>-</button>
+                  <button onClick={() => decrementMob(creature)}>-</button>
                   <td>{creature.name}</td>
                   <td>{creature.cr}</td>
                 </tr>

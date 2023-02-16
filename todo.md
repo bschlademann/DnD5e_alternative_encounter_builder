@@ -1,5 +1,6 @@
 # components
 - {CreatureSelector}:
+  - refactor mobs-state: Array -> Map or Object
   - table: {addButton}, {substractButton}, create.name, creature.cr
     - scrollable, max size: {window.height - input.height}
     - {addbutton} / {substractButton} add/remove mobs and in-/decrease mobsize in {mobs}-state
