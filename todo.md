@@ -1,11 +1,11 @@
 # components
-  - Party
-    - add-button if not all PCs are of same level
-  - CreatureSelector:
-    - table: {addButton}, {substractButton}, create.name, creature.cr
-      - scrollable, max size: {window.height - input.height}
-      - {addbutton} / {substractButton} ade/remove mobs and in-/decrease mobsize in {mobs}-state
-      - use table-heads for sorting entries, indicate via symbols in heads
+- {CreatureSelector}:
+  - table: {addButton}, {substractButton}, create.name, creature.cr
+    - scrollable, max size: {window.height - input.height}
+    - {addbutton} / {substractButton} add/remove mobs and in-/decrease mobsize in {mobs}-state
+    - use table-heads for sorting entries, indicate via symbols in heads
+- Party
+  - add-button if not all PCs are of same level
 
 # fix
 - handle empty party array more gracefully

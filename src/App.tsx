@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { getOrUpdateLocalStorage } from "./local-storage";
-import "./App.css";
+// import "./App.css";
 import type { Creature } from "./5etools";
 
 import { Party } from "./components/Party";
-import { CreatureSelector } from "./components/CreatureSelector";
-import { Mob } from "./domain";
+import { CreatureSelector, Mob } from "./components/CreatureSelector";
 import { CreatureContext, MobsContext, PartyContext } from "./contexts";
 
 
@@ -24,6 +23,7 @@ function App() {
       <CreatureContext.Provider value={creatures}>
         <PartyContext.Provider value={[party, setParty]}>
           <div className="App">
+            <div>mobs: {mobs.map(mob => JSON.stringify(mob))}</div>
             <Party />
             <CreatureSelector />
           </div>
