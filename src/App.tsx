@@ -1,9 +1,37 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getOrUpdateLocalStorage } from "./local-storage";
 import "./App.css";
+import type { Creature } from "./5etools";
+
+import { Party } from "./components/Party";
+import {
+  CreatureSelector,
+} from "./components/CreatureSelector";
+import { Mob } from "./domain";
+import { CreatureContext, MobsContext, PartyContext } from "./contexts";
 
 function App() {
-  const [state, setState] = useState({});
-  return <div className="App"></div>;
+  const [party, setParty] = useState({ count: 1, level: 1 });
+  const [creatures, setCreatures] = useState<Creature[]>([]);
+  const [mobs, setMobs] = useState<Mob[]>([]);
+
+  useEffect(() => {
+    // localStorage.clear();
+    getOrUpdateLocalStorage().then(setCreatures);
+  }, []);
+
+  return (
+    <MobsContext.Provider value={[mobs, setMobs]}>
+      <CreatureContext.Provider value={creatures}>
+        <PartyContext.Provider value={[party, setParty]}>
+          <div className="App">
+            <Party />
+            <CreatureSelector />
+          </div>
+        </PartyContext.Provider>
+      </CreatureContext.Provider>
+    </MobsContext.Provider>
+  );
 }
 
 export default App;

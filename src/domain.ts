@@ -73,16 +73,14 @@ export const allLeveledNPCs: LeveledNPC[] = [
 //   throw new Error(`"${creatureName}" not found in any book`);
 // };
 
-export const getCreatureCr = (creatureName: string) => {
-  // FIXME: .find(creatureObj => creatureObj.name === creatureName) creature in localstorage
-  // return parsed cr for that creature
-  // parseCr(parsedCreatureData.cr);
-  // return
+
+export const getCreatureCr = (creatureName: string): number => {
+  return state.find(creaturaData => creaturaData[creatureName]).cr
 };
 
 export const getCreaturePowerlevel = async (creatureName: string): Promise<number> => {
   const creatureCr = await getCreatureCr(creatureName);
-  const creaturePowerlevel: number = powerlevelByCr[creatureCr];
+  const creaturePowerlevel = powerlevelByCr[creatureCr];
   return creaturePowerlevel;
 };
 
@@ -111,6 +109,7 @@ export type Difficulty = {
   difficultyValue: number;
   description: string;
 };
+
 export const getDifficulty = async (): Promise<Difficulty> => {
   const powerlevelTotalOfAllMobs = await getAllMobsPowerlevel(allMobs);
   const allLeveledNPCsPowerlevel = getAllLeveledNPCsPowerlevel(allLeveledNPCs);

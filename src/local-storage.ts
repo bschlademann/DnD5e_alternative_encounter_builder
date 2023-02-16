@@ -1,71 +1,43 @@
-import { getCreatureDataForLocalStorage } from "./index";
+import { getCreatureData, Creature, getRepoLastUpdatedAt } from "./5etools";
 
-type CreatureData = { name: string; cr: number };
-type State = {
+export type ParsedLocalStorageData = {
   lastUpdatedAt: number;
-  creatureData: CreatureData[];
+  creatureData: Creature[];
 };
 
-// localStorage: bennis_app_lastUpdatedAt, bennis_app_data
-// declare function getLastUpdatedAt(): Date | undefined;
-// declare function setLastUpdatedAt(date: Date): void;
-declare function saveState(state: State): void;
-declare function loadState(): State;
-
-// type ParsedLocalStorageData = { localStorageLastUpdatedAt: number };
-export const getLocalStorageLastUpdatedAt = () => {
-  const localStorageState = localStorage.getItem(
+export const parseLocalStorageData = (): ParsedLocalStorageData | undefined => {
+  const localStorageData = localStorage.getItem(
     "5e_combat_difficulty_calculator"
   );
-  if (localStorageState) {
-    const parsedLocalStorageState: State = JSON.parse(localStorageState);
-    return parsedLocalStorageState.lastUpdatedAt;
+  if (localStorageData) {
+    const parsedLocalStorageData: ParsedLocalStorageData =
+      JSON.parse(localStorageData);
+    return parsedLocalStorageData;
+  } else {
+    return undefined;
   }
 };
 
-type Commit = {
-  commit: {
-    committer: {
-      date: string;
-    };
-  };
-};
-export const getLastCommitDate = (commits: Commit[]) =>
-  Date.parse(commits[0].commit.committer.date);
-
-export const getRepoLastUpdatedAt = () => {
-  return fetch(
-    "https://api.github.com/repos/5etools-mirror-1/5etools-mirror-1.github.io/commits"
-  )
-    .then((res) => res.json())
-    .then(getLastCommitDate);
-};
-
-export const setLocalStorage = (creatureData: CreatureData[]) => {
-  const date = Date.now()
+export const updateLocalStorage = (creatureData: Creature[]) => {
+  const date = Date.now();
   localStorage.setItem(
     "5e_combat_difficulty_calculator",
-    `{ "lastUpdatetAt": ${date}, "creatureData": ${creatureData.toString()} }`
+    JSON.stringify({ lastUpdatedAt: date, creatureData: creatureData })
   );
 };
 
-// FIXME: refactor into more logical succession
-// export const localStorageUpdateNeeded = () => {
-//   return getRepoLastUpdatedAt().then((repoLastUpdatedAt) => {
-//     const localStorageLastUpdatedAt = getLocalStorageLastUpdatedAt();
-//     if (!localStorageLastUpdatedAt) {
-//       return true;
-//     } else {return repoLastUpdatedAt > localStorageLastUpdatedAt}
-//   });
-// };
+export const getOrUpdateLocalStorage = async (): Promise<Creature[]> => {
+  const localStorageData = parseLocalStorageData();
+  const repoLastUpdatedAt = await getRepoLastUpdatedAt();
+  const repoHasUpdates =
+    repoLastUpdatedAt > (localStorageData?.lastUpdatedAt || 0);
 
-// const updateLocalStorage = (localStorageUpdateNeeded: boolean) => {
-//   if (localStorageUpdateNeeded) {
-//     return getCreatureDataForState()
-//   };
-// };
-
-// const manageLocalStorage = () => {
-//   localStorageUpdateNeeded()
-//   .then(updateLocalStorage);
-// }
+  if (localStorageData === undefined || repoHasUpdates) {
+    console.log("updating local storage");
+    const data = await getCreatureData();
+    updateLocalStorage(data);
+    return data;
+  } else {
+    return localStorageData.creatureData;
+  }
+};
