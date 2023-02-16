@@ -5,26 +5,7 @@ import { CreatureContext, MobsContext } from "../contexts";
 
 // import "./CreatureSelector.css"
 
-// click on button
-// get creature
-// setMobs(prevMobs => ...prevMobs, {creatureName: creature.name, mobSize: })
-// type Mob = {
-//   creatureName: string;
-//   mobSize: number;
-// }
-// const incrementAbilityScore = (ability: Domain.Ability) => {
-//   setState((prevState: Domain.State) => {
-//     return {
-//       ...prevState,
-//       abilitiesByValue: {
-//         ...prevState.abilitiesByValue,
-//         [ability]: prevState.abilitiesByValue[ability] + 1,
-//       },
-//     };
-//   });
-// };
-
-export type Mob = { creatureName: string; creatureId: number; mobSize: number };
+export type Mob = { creatureName: string; mobSize: number };
 
 export const CreatureSelector = () => {
   const [filterQuery, setFilterQuery] = useState("");
@@ -34,42 +15,18 @@ export const CreatureSelector = () => {
     creature.name.toLowerCase().includes(filterQuery)
   );
 
-  const existsAsMob = (creature: Creature): boolean =>
-    !!mobs.find((mob) => mob.creatureId === creature.id);
+  const existsAsMob = (creature: Creature): boolean => !!mobs[creature.id];
 
-  const incrementMob = (creature: Creature): void => {
-    if (existsAsMob(creature)) {
-      setMobs((prevMobs) =>
-        prevMobs.map((mob) =>
-          mob.creatureId === creature.id
-            ? { ...mob, mobSize: mob.mobSize + 1 }
-            : mob
-        )
-      );
-    } else {
-      setMobs((prevMobs) =>
-        prevMobs.concat({
+  const incrementMob = (creature: Creature) => {
+    setMobs((prevMobs) => {
+      return {
+        ...prevMobs,
+        [creature.id]: {
           creatureName: creature.name,
-          creatureId: creature.id,
-          mobSize: 1,
-        })
-      );
-    }
-  };
-
-  const decrementMob = (creature: Creature): void => {
-    if (existsAsMob(creature)) {
-      setMobs((prevMobs) =>
-        prevMobs.map((mob) =>
-          mob.creatureId === creature.id
-            ? { ...mob, mobSize: mob.mobSize - 1 }
-            : mob
-        )
-      );
-      // if mobSize <= 0 -> delete creature from mobs
-      
-
-    }
+          mobSize: existsAsMob(creature) ? mobs[creature.id].mobSize + 1 : 1,
+        },
+      };
+    });
   };
 
   const filterCreatureNames = (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -97,7 +54,7 @@ export const CreatureSelector = () => {
               return (
                 <tr key={`${creature.name}-${creature.cr}-${creature.id}`}>
                   <button onClick={() => incrementMob(creature)}>+</button>
-                  <button onClick={() => decrementMob(creature)}>-</button>
+                  <button>-</button>
                   <td>{creature.name}</td>
                   <td>{creature.cr}</td>
                 </tr>
