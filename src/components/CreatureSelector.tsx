@@ -29,6 +29,30 @@ export const CreatureSelector = () => {
     });
   };
 
+  const mustBeRemovedFromMobs = (creature: Creature) =>
+    mobs[creature.id].mobSize <= 0;
+
+  // FIXME: remove entry from mobs when mobs[creature.id].mobSize <= 0
+  const decrementMob = (creature: Creature) => {
+    const newMobSize = mobs[creature.id].mobSize - 1;
+    if (newMobSize && newMobSize <= 0) {
+      setMobs((prevMobs) => {
+        delete prevMobs[creature.id];
+        return prevMobs;
+      });
+    } else {
+      setMobs((prevMobs) => {
+        return {
+          ...prevMobs,
+          [creature.id]: {
+            creatureName: creature.name,
+            mobSize: mobs[creature.id].mobSize - 1,
+          },
+        };
+      });
+    }
+  };
+
   const filterCreatureNames = (e: React.ChangeEvent<HTMLInputElement>) =>
     setFilterQuery(e.target.value);
 
@@ -54,7 +78,9 @@ export const CreatureSelector = () => {
               return (
                 <tr key={`${creature.name}-${creature.cr}-${creature.id}`}>
                   <button onClick={() => incrementMob(creature)}>+</button>
-                  <button>-</button>
+                  <button onClick={async () => decrementMob(creature)}>
+                    -
+                  </button>
                   <td>{creature.name}</td>
                   <td>{creature.cr}</td>
                 </tr>
