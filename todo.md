@@ -1,18 +1,27 @@
+# refactor
+- refactor state[creatures] from Array to Object
+  - [creatureId: number]: {name: string, cr: number}
+
 # difficulty calculation logic
-- make logic use data from states
-- output formatted result in browser
-- handle empty party array
+- implement leveledNpcs: state, context, include in difficulty calculation
+- handle empty party array more gracefully
 
 # components
-- {CreatureSelector}:
+- {MobsSelector}:
   - handle click on decrement-button for elements that are not present in state
   - use table-heads for sorting entries, indicate via symbols in heads
 
-- {Party}
-  - add-button if not all PCs are of same level
+- {LeveledNpcs}
+  - 
 
+- {Party}
+  - add-button to add multiple levels of PCs
+    - remove number of already selected level from validLevels
+  
 # maybe
+? add alternate mode in copmpoent[Party]: instead of 2 selects add each character seperately with name and level
 ? increase accuracy further with more concrete data 
     - import character sheet data from foundry vtt
     - use hp/ac/dmg of character sheets and creature data for calculation instead of just CR
+
 
