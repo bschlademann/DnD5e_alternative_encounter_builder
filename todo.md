@@ -1,11 +1,9 @@
 # components
 - {CreatureSelector}:
-  - refactor mobs-state: Array -> Map or Object
-  - table: {addButton}, {substractButton}, create.name, creature.cr
-    - scrollable, max size: {window.height - input.height}
-    - {addbutton} / {substractButton} add/remove mobs and in-/decrease mobsize in {mobs}-state
-    - use table-heads for sorting entries, indicate via symbols in heads
-- Party
+  - handle click on decrement-button for elements that are not present in state
+  - use table-heads for sorting entries, indicate via symbols in heads
+
+- {Party}
   - add-button if not all PCs are of same level
 
 # fix

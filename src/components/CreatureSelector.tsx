@@ -32,13 +32,13 @@ export const CreatureSelector = () => {
   const mustBeRemovedFromMobs = (creature: Creature) =>
     mobs[creature.id].mobSize <= 0;
 
-  // FIXME: remove entry from mobs when mobs[creature.id].mobSize <= 0
+  // FIXME: handle click on decrement-button for elements that are not present in state
   const decrementMob = (creature: Creature) => {
-    const newMobSize = mobs[creature.id].mobSize - 1;
-    if (newMobSize && newMobSize <= 0) {
+    const decrementedMobSize = mobs[creature.id].mobSize - 1;
+    if (decrementedMobSize <= 0) {
       setMobs((prevMobs) => {
-        delete prevMobs[creature.id];
-        return prevMobs;
+        const { [creature.id]: creatureIdToRemove, ...restMobs } = prevMobs;
+        return restMobs;
       });
     } else {
       setMobs((prevMobs) => {
@@ -46,7 +46,7 @@ export const CreatureSelector = () => {
           ...prevMobs,
           [creature.id]: {
             creatureName: creature.name,
-            mobSize: mobs[creature.id].mobSize - 1,
+            mobSize: decrementedMobSize,
           },
         };
       });
