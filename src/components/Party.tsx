@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React, { useContext } from "react";
 import { PartyContext } from "../contexts";
 import { getRange } from "../lib";
 
@@ -12,8 +12,8 @@ export const Party = () => {
   const [party, setParty] = useContext(PartyContext);
   const onChangeCount = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setParty((prevState) => {
-        return { ...prevState, count: parseInt(e.target.value) };
+      setParty((prevParty) => {
+        return { ...prevParty, count: parseInt(e.target.value) };
       });
     },
     []
@@ -21,8 +21,8 @@ export const Party = () => {
 
   const onChangeLevel = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setParty((prevState) => {
-        return { ...prevState, level: parseInt(e.target.value) };
+      setParty((prevParty) => {
+        return { ...prevParty, level: parseInt(e.target.value) };
       });
     },
     []
@@ -35,14 +35,14 @@ export const Party = () => {
       <label htmlFor="character-count">number of characters</label>
       <select id="character-count" value={party.count} onChange={onChangeCount}>
         {validCounts.map((value) => (
-          <Option value={value} key={`count-${value}`} />
+          <Option value={value} key={`character-count-${value}`} />
         ))}
       </select>
 
       <label htmlFor="character-level">level</label>
-      <select id="character-count" value={party.level} onChange={onChangeLevel}>
+      <select id="character-level" value={party.level} onChange={onChangeLevel}>
         {validLevels.map((value) => (
-          <Option value={value} key={`level-${value}`} />
+          <Option value={value} key={`character-level-${value}`} />
         ))}
       </select>
     </div>
