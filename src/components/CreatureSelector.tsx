@@ -28,24 +28,25 @@ export const CreatureSelector = () => {
     });
   };
 
-  // FIXME: handle click on decrement-button for elements that are not present in state
   const decrementMob = (creature: Creature) => {
-    const decrementedMobSize = mobs[creature.id].mobSize - 1;
-    if (decrementedMobSize <= 0) {
-      setMobs((prevMobs) => {
-        const { [creature.id]: creatureIdToRemove, ...restMobs } = prevMobs;
-        return restMobs;
-      });
-    } else {
-      setMobs((prevMobs) => {
-        return {
-          ...prevMobs,
-          [creature.id]: {
-            creatureName: creature.name,
-            mobSize: decrementedMobSize,
-          },
-        };
-      });
+    if (existsAsMob(creature)) {
+      const decrementedMobSize = mobs[creature.id].mobSize - 1;
+      if (decrementedMobSize <= 0) {
+        setMobs((prevMobs) => {
+          const { [creature.id]: creatureIdToRemove, ...restMobs } = prevMobs;
+          return restMobs;
+        });
+      } else {
+        setMobs((prevMobs) => {
+          return {
+            ...prevMobs,
+            [creature.id]: {
+              creatureName: creature.name,
+              mobSize: decrementedMobSize,
+            },
+          };
+        });
+      }
     }
   };
 
