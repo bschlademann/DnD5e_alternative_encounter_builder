@@ -1,122 +1,59 @@
 import { powerlevelByCr, powerlevelByPlayerLevel } from "./powerlevel-data.js";
-import * as z from "zod";
+import { Party } from "./components/Party.js";
+import { useContext } from "react";
+import { CreatureContext, MobsContext, PartyContext } from "./contexts.js";
+import { MobsState } from "./App.js";
+import { parseToTwoDecimals } from "./lib.js";
 
-export type Party = { playerCharacters: string[]; level: number };
-export const party: Party = {
-  playerCharacters: ["Player_1", "Player_2", "Player_3"],
-  level: 3,
-};
-export const getPartyPowerlevel = (party: Party): number => {
-  const partySize = party.playerCharacters.length;
-  const powerLevelPerCharacter = powerlevelByPlayerLevel[party.level];
-  const partyPowerlevel = partySize * powerLevelPerCharacter;
-  return partyPowerlevel;
+export const getPartyPowerlevel = (party: Party): number => {  
+  return party.count * powerlevelByPlayerLevel[party.level];
 };
 
-
-
-export const allMobs: Mob[] = [
-  {
-    creatureName: "harengon brigand",
-    mobSize: 4,
-  },
-  {
-    creatureName: "harengon sniper",
-    mobSize: 2,
-  },
-];
-
-export type LeveledNPC = { name: string; level: number };
-export const allLeveledNPCs: LeveledNPC[] = [
-  // { name: "NPC_1", level: 3 },
-];
-
-// const parseBestiaryJson = (u: unknown): BestiaryJson =>
-//   bestiaryJsonSchema.parse(u);
-
-// const getJson = (filePath: string): Promise<unknown> => {
-//   return fs.readFile(filePath, { encoding: "utf-8" }).then((jsonString) => {
-//     return JSON.parse(jsonString);
-//     // return parseBestiaryJson(JSON.parse(jsonString));
-//   });
-// };
-
-// const getCreatureStatBlock = (
-//   creatureName: string,
-//   bestiaryJson: BestiaryJson
-// ): false | { name: string; cr: string } => {
-//   const creatureStatBlock = bestiaryJson.monster.find(
-//     (statBlock: CreatureStatBlock) =>
-//       statBlock.name.toLowerCase() === creatureName.toLowerCase()
-//   );
-//   if (creatureStatBlock === undefined) {
-//     return false;
-//   } else return creatureStatBlock;
-// };
-
-// async function* readFiles(
-//   creatureName: string
-// ): AsyncGenerator<BestiaryJson, void, unknown> {
-//   for (const bestiaryFileName of allBestiaryFileNames) {
-//     const filePath = `./bestiary/${bestiaryFileName}`;
-//     yield await getJson(filePath);
-//   }
-// }
-
-// const getCreatureCr = async (creatureName: string): Promise<number> => {
-//   for await (const bestiaryJson of readFiles(creatureName)) {
-//     const creatureStatblock = getCreatureStatBlock(creatureName, bestiaryJson);
-//     if (creatureStatblock) {
-//       const parsedCr = parseCr(creatureStatblock.cr);
-//       return parsedCr;
-//     }
-//   }
-//   throw new Error(`"${creatureName}" not found in any book`);
-// };
-
-
-export const getCreatureCr = (creatureName: string): number => {
-  return state.find(creaturaData => creaturaData[creatureName]).cr
+export const getCreaturePowerlevel = (creatureId: number): number => {
+  const creatures = useContext(CreatureContext);
+  const creature = creatures.filter(
+    (creature) => creature.id === creatureId
+  )[0];
+  return powerlevelByCr[creature.cr];
+  // FIXME:
+  // doing it like this means iterating over all creatures until creature with id is found
+  // hastable for creature would be much faster
+  // reactor state[creatures] from Array to Object
 };
 
-export const getCreaturePowerlevel = async (creatureName: string): Promise<number> => {
-  const creatureCr = await getCreatureCr(creatureName);
-  const creaturePowerlevel = powerlevelByCr[creatureCr];
-  return creaturePowerlevel;
-};
-
-export const getAllMobsPowerlevel = async (allMobs: Mob[]): Promise<number> => {
-  let powerlevelTotalOfAllMobs = 0;
-  for (const mob of allMobs) {
-    const { creatureName, mobSize } = mob;
-    const creaturePowerlevel = await getCreaturePowerlevel(creatureName);
-    const mobPowerlevel = mobSize * creaturePowerlevel;
-    powerlevelTotalOfAllMobs += mobPowerlevel;
-  }
-  return powerlevelTotalOfAllMobs;
-};
-
-export const getAllLeveledNPCsPowerlevel = (allLeveledNPCs: LeveledNPC[]): number => {
-  return allLeveledNPCs.reduce((allLeveledNPCsPowerlevel, leveledNPC) => {
-    const powerlevel = powerlevelByPlayerLevel[leveledNPC.level];
-    return (allLeveledNPCsPowerlevel += powerlevel);
+export const getAllMobsPowerlevel = (mobs: MobsState) => {
+  const creatures = useContext(CreatureContext);
+  const creatureIds = Object.keys(mobs).map((str) => parseInt(str));
+  return creatureIds.reduce((totalPowerlevel, creatureId) => {
+    return (totalPowerlevel += getCreaturePowerlevel(creatureId));
   }, 0);
 };
+
+// export const getAllLeveledNPCsPowerlevel = (
+//   allLeveledNPCs: LeveledNPC[]
+// ): number => {
+//   return allLeveledNPCs.reduce((allLeveledNPCsPowerlevel, leveledNPC) => {
+//     const powerlevel = powerlevelByPlayerLevel[leveledNPC.level];
+//     return (allLeveledNPCsPowerlevel += powerlevel);
+//   }, 0);
+// };
 
 export type Difficulty = {
   partyPowerlevel: number;
   powerlevelTotalOfAllMobs: number;
-  allLeveledNPCsPowerlevel: number;
+  // allLeveledNPCsPowerlevel: number;
   difficultyValue: number;
   description: string;
 };
 
-export const getDifficulty = async (): Promise<Difficulty> => {
-  const powerlevelTotalOfAllMobs = await getAllMobsPowerlevel(allMobs);
-  const allLeveledNPCsPowerlevel = getAllLeveledNPCsPowerlevel(allLeveledNPCs);
-  const partyPowerlevel: number = getPartyPowerlevel(party);
-  const difficultyValue: number =
-    (powerlevelTotalOfAllMobs + allLeveledNPCsPowerlevel) / partyPowerlevel;
+export const getDifficulty = () => {
+  const [party] = useContext(PartyContext);
+  const [mobs] = useContext(MobsContext);
+  const powerlevelTotalOfAllMobs = getAllMobsPowerlevel(mobs);
+  // const allLeveledNPCsPowerlevel = getAllLeveledNPCsPowerlevel(allLeveledNPCs);
+  const partyPowerlevel = getPartyPowerlevel(party);
+  const difficultyValue = powerlevelTotalOfAllMobs / partyPowerlevel;
+    // (powerlevelTotalOfAllMobs + allLeveledNPCsPowerlevel) / partyPowerlevel;
 
   let description = "";
   if (difficultyValue <= 0.4) {
@@ -134,26 +71,24 @@ export const getDifficulty = async (): Promise<Difficulty> => {
   return {
     partyPowerlevel,
     powerlevelTotalOfAllMobs,
-    allLeveledNPCsPowerlevel,
+    // allLeveledNPCsPowerlevel,
     difficultyValue,
     description,
   };
 };
 
-export const parseToTwoDecimals = (n: number) => parseFloat(n.toFixed(2));
-
 export const formatDifficultyOutput = (difficulty: Difficulty) => {
   const {
     partyPowerlevel,
     powerlevelTotalOfAllMobs,
-    allLeveledNPCsPowerlevel,
+    // allLeveledNPCsPowerlevel,
     difficultyValue,
     description,
   } = difficulty;
   return {
     partyPowerlevel: parseToTwoDecimals(partyPowerlevel),
     powerlevelTotalOfAllMobs: parseToTwoDecimals(powerlevelTotalOfAllMobs),
-    allLeveledNPCsPowerlevel: parseToTwoDecimals(allLeveledNPCsPowerlevel),
+    // allLeveledNPCsPowerlevel: parseToTwoDecimals(allLeveledNPCsPowerlevel),
     difficulty: `${description} (${parseToTwoDecimals(
       difficultyValue * 100
     )}%)`,

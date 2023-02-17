@@ -3,11 +3,11 @@ import { Creature } from "../5etools";
 import { CreatureContext, MobsContext } from "../contexts";
 import { clampInt } from "../lib";
 
-// import "./CreatureSelector.css"
+// import "./MobsSelector.css"
 
 export type Mob = { creatureName: string; mobSize: number };
 
-export const CreatureSelector = () => {
+export const MobsSelector = () => {
   const [filterQuery, setFilterQuery] = useState("");
   const creatures = useContext(CreatureContext);
   const [mobs, setMobs] = useContext(MobsContext);
@@ -53,14 +53,14 @@ export const CreatureSelector = () => {
     setFilterQuery(e.target.value);
 
   return (
-    <div className="creature-selector">
+    <div className="mobs-selector">
       <input
         type="text"
         placeholder="enter creature name"
         value={filterQuery}
         onChange={filterCreatureNames}
       />
-      <div className="creature-list">
+      <div className="mobs-list">
         <table>
           <thead>
             <tr>

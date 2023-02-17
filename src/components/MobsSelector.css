@@ -1,8 +1,8 @@
-.creature-selector{
+.mobs-selector{
     width: 340px;
 }
 
-.creature-list {
+.mobs-list {
     width: fit-content;
     overflow: auto;
     height: 50vh
