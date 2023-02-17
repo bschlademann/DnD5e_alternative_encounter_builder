@@ -23,35 +23,54 @@ export const CreatureSelector = () => {
         ...prevMobs,
         [creature.id]: {
           creatureName: creature.name,
-          mobSize: existsAsMob(creature)
-            ? clampInt(mobs[creature.id].mobSize + 1)
+          mobSize: !!prevMobs[creature.id]
+            ? clampInt(prevMobs[creature.id].mobSize + 1)
             : 1,
         },
       };
     });
   };
 
-  const decrementMob = (creature: Creature) => {
-    if (existsAsMob(creature)) {
-      const decrementedMobSize = mobs[creature.id].mobSize - 1;
-      if (decrementedMobSize <= 0) {
-        setMobs((prevMobs) => {
-          const { [creature.id]: creatureIdToRemove, ...restMobs } = prevMobs;
-          return restMobs;
-        });
-      } else {
-        setMobs((prevMobs) => {
+  const decrementMob = (creature: Creature): void => {
+    setMobs((prevMobs) => {
+      const { [creature.id]: mob, ...rest } = prevMobs;
+      if (mob) {
+        if (mob.mobSize === 1) {
+          return rest;
+        } else {
           return {
-            ...prevMobs,
+            ...rest,
             [creature.id]: {
               creatureName: creature.name,
-              mobSize: decrementedMobSize,
+              mobSize: mob.mobSize - 1,
             },
           };
-        });
-      }
-    }
+        }
+      } return prevMobs;
+    });
   };
+
+  // const decrementMob = (creature: Creature) => {
+  //   if (existsAsMob(creature)) {
+  //     const decrementedMobSize = mobs[creature.id].mobSize - 1;
+  //     if (decrementedMobSize <= 0) {
+  //       setMobs((prevMobs) => {
+  //         const { [creature.id]: creatureIdToRemove, ...restMobs } = prevMobs;
+  //         return restMobs;
+  //       });
+  //     } else {
+  //       setMobs((prevMobs) => {
+  //         return {
+  //           ...prevMobs,
+  //           [creature.id]: {
+  //             creatureName: creature.name,
+  //             mobSize: decrementedMobSize,
+  //           },
+  //         };
+  //       });
+  //     }
+  //   }
+  // };
 
   const filterCreatureNames = (e: React.ChangeEvent<HTMLInputElement>) =>
     setFilterQuery(e.target.value);
