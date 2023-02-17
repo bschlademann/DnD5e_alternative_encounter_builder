@@ -1,0 +1,9 @@
+.creature-selector{
+    width: 340px;
+}
+
+.creature-list {
+    width: fit-content;
+    overflow: auto;
+    height: 50vh
+}

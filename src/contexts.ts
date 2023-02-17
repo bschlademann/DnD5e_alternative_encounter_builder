@@ -1,10 +1,12 @@
 import { createContext } from "react";
 import { Creature } from "./5etools";
+import { MobsState } from "./App";
 import { Party } from "./components/Party";
-import { Mob } from "./domain";
+
+
 
 export const MobsContext = createContext<
-  [Mob[], React.Dispatch<React.SetStateAction<Mob[]>>]
+  [MobsState, React.Dispatch<React.SetStateAction<MobsState>>]
 >([[], () => undefined]);
 
 export const CreatureContext = createContext<Creature[]>([]);

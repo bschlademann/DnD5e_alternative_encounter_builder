@@ -13,7 +13,8 @@ export const getPartyPowerlevel = (party: Party): number => {
   return partyPowerlevel;
 };
 
-export type Mob = { creatureName: string; mobSize: number };
+
+
 export const allMobs: Mob[] = [
   {
     creatureName: "harengon brigand",

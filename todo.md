@@ -1,12 +1,18 @@
-- components:
-  - Party
-    - add-button if not all PCs are of same level
-  - CreatureSelector:
-    - table: {addButton}, {substractButton}, create.name, creature.cr
-      - scrollable, max size: {window.height - input.height}
-      - {addbutton} / {substractButton} ade/remove mobs and in-/decrease mobsize in {mobs}-state
-      - use table-heads for sorting entries, indicate via symbols in heads
-    - add keys to <tr> filteredCreatures.map((creature) => {...}
-      - {creature.name}-{creature.cr} is not enough, produces duplicates, add ids to all entries in {creatures-state}
+# difficulty calculation logic
+- make logic use data from states
+- output formatted result in browser
+- handle empty party array
 
-- 
+# components
+- {CreatureSelector}:
+  - handle click on decrement-button for elements that are not present in state
+  - use table-heads for sorting entries, indicate via symbols in heads
+
+- {Party}
+  - add-button if not all PCs are of same level
+
+# maybe
+? increase accuracy further with more concrete data 
+    - import character sheet data from foundry vtt
+    - use hp/ac/dmg of character sheets and creature data for calculation instead of just CR
+

@@ -6,6 +6,14 @@ export const getJsonFromUrl = (repoUrl: string) => {
 
 export const unique = <T>(arr: T[]): T[] => Array.from(new Set(arr));
 
+export const addIds = <T>(arr: T[]): T[]=> {
+  const newArr = arr.slice();
+  for (let i = 0; i < arr.length; i++) {
+    newArr[i] = {...newArr[i], id: i};
+  }
+  return newArr;
+}
+
 export const stringToNumber = z.string().pipe(z.coerce.number());
 
 export const fractionalString = z

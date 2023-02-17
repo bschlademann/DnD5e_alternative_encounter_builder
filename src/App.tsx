@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import { getOrUpdateLocalStorage } from "./local-storage";
-import "./App.css";
+// import "./App.css";
 import type { Creature } from "./5etools";
 
 import { Party } from "./components/Party";
-import {
-  CreatureSelector,
-} from "./components/CreatureSelector";
-import { Mob } from "./domain";
+import { CreatureSelector, Mob } from "./components/CreatureSelector";
 import { CreatureContext, MobsContext, PartyContext } from "./contexts";
+
+export type MobsState = { [creatureId: number]: Mob };
 
 function App() {
   const [party, setParty] = useState({ count: 1, level: 1 });
   const [creatures, setCreatures] = useState<Creature[]>([]);
-  const [mobs, setMobs] = useState<Mob[]>([]);
+  const [mobs, setMobs] = useState<MobsState>({});
 
   useEffect(() => {
     // localStorage.clear();
@@ -25,6 +24,7 @@ function App() {
       <CreatureContext.Provider value={creatures}>
         <PartyContext.Provider value={[party, setParty]}>
           <div className="App">
+            <div>mobs: {JSON.stringify(mobs)}</div>
             <Party />
             <CreatureSelector />
           </div>
