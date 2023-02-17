@@ -7,7 +7,7 @@ import { Party } from "./components/Party";
 import { CreatureSelector, Mob } from "./components/CreatureSelector";
 import { CreatureContext, MobsContext, PartyContext } from "./contexts";
 
-export type MobsState = {[creatureId: number]: Mob}
+export type MobsState = { [creatureId: number]: Mob };
 
 function App() {
   const [party, setParty] = useState({ count: 1, level: 1 });

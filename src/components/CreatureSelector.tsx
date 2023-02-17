@@ -1,4 +1,3 @@
-import { findIndex } from "fp-ts/lib/Array";
 import { useContext, useState } from "react";
 import { Creature } from "../5etools";
 import { CreatureContext, MobsContext } from "../contexts";
@@ -28,9 +27,6 @@ export const CreatureSelector = () => {
       };
     });
   };
-
-  const mustBeRemovedFromMobs = (creature: Creature) =>
-    mobs[creature.id].mobSize <= 0;
 
   // FIXME: handle click on decrement-button for elements that are not present in state
   const decrementMob = (creature: Creature) => {
