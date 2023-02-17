@@ -15,8 +15,6 @@ export const CreatureSelector = () => {
     creature.name.toLowerCase().includes(filterQuery)
   );
 
-  const existsAsMob = (creature: Creature): boolean => !!mobs[creature.id];
-
   const incrementMob = (creature: Creature) => {
     setMobs((prevMobs) => {
       return {
