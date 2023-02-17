@@ -46,31 +46,10 @@ export const CreatureSelector = () => {
             },
           };
         }
-      } return prevMobs;
+      }
+      return prevMobs;
     });
   };
-
-  // const decrementMob = (creature: Creature) => {
-  //   if (existsAsMob(creature)) {
-  //     const decrementedMobSize = mobs[creature.id].mobSize - 1;
-  //     if (decrementedMobSize <= 0) {
-  //       setMobs((prevMobs) => {
-  //         const { [creature.id]: creatureIdToRemove, ...restMobs } = prevMobs;
-  //         return restMobs;
-  //       });
-  //     } else {
-  //       setMobs((prevMobs) => {
-  //         return {
-  //           ...prevMobs,
-  //           [creature.id]: {
-  //             creatureName: creature.name,
-  //             mobSize: decrementedMobSize,
-  //           },
-  //         };
-  //       });
-  //     }
-  //   }
-  // };
 
   const filterCreatureNames = (e: React.ChangeEvent<HTMLInputElement>) =>
     setFilterQuery(e.target.value);
