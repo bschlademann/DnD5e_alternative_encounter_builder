@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Creature } from "../5etools";
 import { CreatureContext, MobsContext } from "../contexts";
+import { clampInt } from "../lib";
 
 // import "./CreatureSelector.css"
 
@@ -22,7 +23,9 @@ export const CreatureSelector = () => {
         ...prevMobs,
         [creature.id]: {
           creatureName: creature.name,
-          mobSize: existsAsMob(creature) ? mobs[creature.id].mobSize + 1 : 1,
+          mobSize: existsAsMob(creature)
+            ? clampInt(mobs[creature.id].mobSize + 1)
+            : 1,
         },
       };
     });

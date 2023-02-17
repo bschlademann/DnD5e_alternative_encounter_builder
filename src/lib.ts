@@ -6,13 +6,13 @@ export const getJsonFromUrl = (repoUrl: string) => {
 
 export const unique = <T>(arr: T[]): T[] => Array.from(new Set(arr));
 
-export const addIds = <T>(arr: T[]): T[]=> {
+export const addIds = <T>(arr: T[]): T[] => {
   const newArr = arr.slice();
   for (let i = 0; i < arr.length; i++) {
-    newArr[i] = {...newArr[i], id: i};
+    newArr[i] = { ...newArr[i], id: i };
   }
   return newArr;
-}
+};
 
 export const stringToNumber = z.string().pipe(z.coerce.number());
 
@@ -26,10 +26,13 @@ export const fractionalString = z
     ])
   );
 
-  export const getRange = (range: [number, number]) => {
-    let arr = [];
-    for (let i = Math.min(...range); i <= Math.max(...range); i++) {
-      arr.push(i);
-    }
-    return arr;
-  };
+export const getRange = (range: [number, number]) => {
+  let arr = [];
+  for (let i = Math.min(...range); i <= Math.max(...range); i++) {
+    arr.push(i);
+  }
+  return arr;
+};
+
+export const clampInt = (n: number) =>
+  n <= Number.MAX_SAFE_INTEGER ? n : Number.MAX_SAFE_INTEGER;
