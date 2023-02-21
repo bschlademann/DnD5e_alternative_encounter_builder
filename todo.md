@@ -12,12 +12,16 @@
   - use table-heads for sorting entries, indicate via symbols in heads
 
 - {LeveledNpcs}
-  - 
+
+- {MobList}
 
 - {Party}
   - add-button to add multiple levels of PCs
     - remove number of already selected level from validLevels
-  
+
+## readme
+- update when new functionalities are available
+
 # maybe
 ? add alternate mode in copmpoent[Party]: instead of 2 selects add each character seperately with name and level
 ? increase accuracy further with more concrete data 
