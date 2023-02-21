@@ -3,6 +3,7 @@ import { Creature } from "./5etools";
 import { MobsState } from "./App";
 import { LeveledNpcs } from "./components/LeveledNpcs";
 import { Party } from "./components/Party";
+import { CreaturesById } from "./domain";
 
 export const MobsContext = createContext<
   [MobsState, React.Dispatch<React.SetStateAction<MobsState>>]
@@ -17,3 +18,5 @@ export const PartyContext = createContext<
 // export const LeveledNpcsContext = createContext<
 //   [LeveledNpcs, React.Dispatch<React.SetStateAction<LeveledNpcs>>]
 // >([[], () => undefined]);
+
+export const CreaturesByIdContext = createContext<CreaturesById>({})
