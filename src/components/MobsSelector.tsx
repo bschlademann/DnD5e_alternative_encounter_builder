@@ -54,6 +54,7 @@ export const MobsSelector = () => {
 
   return (
     <div className="mobs-selector">
+      <div>mobs: {JSON.stringify(mobs)}</div>
       <input
         type="text"
         placeholder="enter creature name"
@@ -73,10 +74,10 @@ export const MobsSelector = () => {
             {filteredCreatures.map((creature) => {
               return (
                 <tr key={`${creature.name}-${creature.cr}-${creature.id}`}>
-                  <button onClick={() => incrementMob(creature)}>+</button>
-                  <button onClick={async () => decrementMob(creature)}>
-                    -
-                  </button>
+                  <td>
+                    <button onClick={() => incrementMob(creature)}>+</button>
+                    <button onClick={() => decrementMob(creature)}>-</button>
+                  </td>
                   <td>{creature.name}</td>
                   <td>{creature.cr}</td>
                 </tr>
