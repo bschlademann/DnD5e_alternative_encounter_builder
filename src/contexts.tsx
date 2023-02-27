@@ -3,7 +3,7 @@ import { Creature } from "./5etools";
 import { MobsState } from "./App";
 import { LeveledNpcs } from "./components/LeveledNpcs";
 import { Party } from "./components/Party";
-import { createCreaturesById, CreaturesById } from "./domain";
+import { getCreaturesById, CreaturesById } from "./domain";
 import { getOrUpdateLocalStorage } from "./local-storage";
 
 export const MobsContext = createContext<
@@ -33,7 +33,7 @@ export const Contexts:React.FC<{children: React.ReactNode}> = ({ children }) => 
     // localStorage.clear();
     getOrUpdateLocalStorage().then((creatures) => {
       setCreatures(creatures);
-      const creaturesById = createCreaturesById(creatures);
+      const creaturesById = getCreaturesById(creatures);
       setCreaturesById(creaturesById);
     });
   }, []);

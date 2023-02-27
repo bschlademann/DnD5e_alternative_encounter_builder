@@ -20,7 +20,7 @@ export type CreaturesById = {
   [creatureId: number]: { name: string; cr: number };
 };
 
-export const createCreaturesById = (creatures: Creature[]): CreaturesById => {
+export const getCreaturesById = (creatures: Creature[]): CreaturesById => {
   let creaturesById: { [creatureId: number]: { name: string; cr: number } } =
     {};
   creatures.forEach((creature) => {
