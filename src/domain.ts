@@ -10,6 +10,7 @@ import {
 import { MobsState } from "./App.js";
 import { parseToTwoDecimals } from "./lib.js";
 import { Creature } from "./5etools.js";
+import {difficultyDescriptions} from "./difficultyDescriptions";
 
 export const getPartyPowerlevel = (party: Party): number => {
   return party.count * powerlevelByPlayerLevel[party.level];
@@ -61,6 +62,22 @@ export type Difficulty = {
   description: string;
 };
 
+const getDifficultyDescription = (difficultyValue: number) => {
+  const { none, easy, medium, hard, deadly, absurd } = difficultyDescriptions;
+  if(difficultyValue === 0 ) {return none}
+  if (difficultyValue <= 0.4) {
+    return easy;
+  } if (difficultyValue <= 0.6) {
+    return medium;
+  } if (difficultyValue <= 0.8) {
+    return hard;
+  } if (difficultyValue <= 1) {
+    return deadly;
+  } if (difficultyValue > 1) {
+    return absurd;
+  }
+};
+
 export const getDifficulty = () => {
   const [party] = useContext(PartyContext);
   const [mobs] = useContext(MobsContext);
@@ -68,20 +85,11 @@ export const getDifficulty = () => {
   // const allLeveledNPCsPowerlevel = getAllLeveledNPCsPowerlevel(allLeveledNPCs);
   const partyPowerlevel = getPartyPowerlevel(party);
   const difficultyValue = powerlevelTotalOfAllMobs / partyPowerlevel;
+  console.log({difficultyValue});
+  
   // (powerlevelTotalOfAllMobs + allLeveledNPCsPowerlevel) / partyPowerlevel;
 
-  let description = "";
-  if (difficultyValue <= 0.4) {
-    description = "easy";
-  } else if (difficultyValue <= 0.6) {
-    description = "medium";
-  } else if (difficultyValue <= 0.8) {
-    description = "hard";
-  } else if (difficultyValue <= 1) {
-    description = "deadly";
-  } else if (difficultyValue > 1) {
-    description = "absurd";
-  }
+  const description = getDifficultyDescription(difficultyValue);
 
   return {
     partyPowerlevel,
