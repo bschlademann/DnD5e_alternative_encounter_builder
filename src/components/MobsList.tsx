@@ -9,7 +9,7 @@ import { clampInt } from "../lib";
 
 export type Mob = { creatureName: string; mobSize: number };
 
-export const MobsList = () => {
+export const MobsList = (): JSX.Element => {
   const creatures = useContext(CreatureContext);
   const creaturesById = useContext(CreaturesByIdContext);
   const [mobs, setMobs] = useContext(MobsContext);
@@ -52,8 +52,7 @@ export const MobsList = () => {
 
   return (
     <div>
-      <div className="mobs-list">
-        <table>
+        <table className="mobs-list">
           <thead>
             <tr>
               <th>#</th>
@@ -84,7 +83,6 @@ export const MobsList = () => {
             })}
           </tbody>
         </table>
-      </div>
-    </div>
+        </div>
   );
 };
