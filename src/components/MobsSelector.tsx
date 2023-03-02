@@ -29,32 +29,11 @@ export const MobsSelector = () => {
     });
   };
 
-  const decrementMob = (creature: Creature): void => {
-    setMobs((prevMobs) => {
-      const { [creature.id]: mob, ...rest } = prevMobs;
-      if (mob) {
-        if (mob.mobSize === 1) {
-          return rest;
-        } else {
-          return {
-            ...rest,
-            [creature.id]: {
-              creatureName: creature.name,
-              mobSize: mob.mobSize - 1,
-            },
-          };
-        }
-      }
-      return prevMobs;
-    });
-  };
-
   const filterCreatureNames = (e: React.ChangeEvent<HTMLInputElement>) =>
     setFilterQuery(e.target.value);
 
   return (
     <div className="mobs-selector">
-      <div>mobs: {JSON.stringify(mobs)}</div>
       <input
         type="text"
         placeholder="enter creature name"
@@ -65,7 +44,7 @@ export const MobsSelector = () => {
         <table>
           <thead>
             <tr>
-              <th>in-/decrease mob size</th>
+              <th></th>
               <th>name</th>
               <th>cr</th>
             </tr>
@@ -76,7 +55,6 @@ export const MobsSelector = () => {
                 <tr key={`${creature.name}-${creature.cr}-${creature.id}`}>
                   <td>
                     <button onClick={() => incrementMob(creature)}>+</button>
-                    <button onClick={() => decrementMob(creature)}>-</button>
                   </td>
                   <td>{creature.name}</td>
                   <td>{creature.cr}</td>

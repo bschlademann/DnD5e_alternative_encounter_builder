@@ -85,7 +85,6 @@ export const getDifficulty = () => {
   // const allLeveledNPCsPowerlevel = getAllLeveledNPCsPowerlevel(allLeveledNPCs);
   const partyPowerlevel = getPartyPowerlevel(party);
   const difficultyValue = powerlevelTotalOfAllMobs / partyPowerlevel;
-  console.log({difficultyValue});
   
   // (powerlevelTotalOfAllMobs + allLeveledNPCsPowerlevel) / partyPowerlevel;
 
