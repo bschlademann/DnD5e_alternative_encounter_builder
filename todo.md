@@ -5,15 +5,23 @@
 # difficulty calculation logic
 - implement leveledNpcs: state, context, include in difficulty calculation
 - handle empty party array more gracefully
+- calculate actual CR (e.g. Quickling 1 -> 5)
 
 # components
 - {MobsSelector}:
   - handle click on decrement-button for elements that are not present in state
   - use table-heads for sorting entries, indicate via symbols in heads
+  - FIXME: double entries (e.g. "Quickling")
+
+- {MobList}
+  - render only when not empty
+  - add button "clear"
 
 - {LeveledNpcs}
 
-- {MobList}
+- {LeveledNpcsList}
+  - render only when not empty
+  - add button "clear"
 
 - {Party}
   - add-button to add multiple levels of PCs
