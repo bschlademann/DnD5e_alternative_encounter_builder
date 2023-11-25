@@ -5,5 +5,5 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   base: "/DnD5e_alternative_encounter_builder/",
-  build: { outDir: "docs" },
+  build: { outDir: "dist" },
 });
