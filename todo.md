@@ -1,3 +1,11 @@
+# design
+- link rising diffivulty to changing color, like things become more red/bloodstained
+
+# feat
+- calculate actual CR (e.g. Quickling 1 -> 5)
+- MobList: add delete mob button on right of mob name so avoit accidental click
+- prevent duplicate entries
+
 # refactor
 - refactor state[creatures] from Array to Object
   - [creatureId: number]: {name: string, cr: number}
@@ -5,7 +13,6 @@
 # difficulty calculation logic
 - implement leveledNpcs: state, context, include in difficulty calculation
 - handle empty party array more gracefully
-- calculate actual CR (e.g. Quickling 1 -> 5)
 
 # components
 - {MobsSelector}:
