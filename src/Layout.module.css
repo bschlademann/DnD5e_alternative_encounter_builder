@@ -1,0 +1,19 @@
+/* * {
+  border: 1px solid red;
+  margin: 1px;
+} */
+.container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: start;
+}
+.left {
+  /* min-width: 23rem;
+  max-height: 98dvh;
+  overflow: auto; */
+}
+.right {
+  /* display: grid;
+  gap: 10rem;
+  width: 100%; */
+}
