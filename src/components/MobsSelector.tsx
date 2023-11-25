@@ -3,11 +3,15 @@ import { Creature } from "../5etools";
 import { CreatureContext, MobsContext } from "../contexts";
 import { clampInt } from "../lib";
 
-// import "./MobsSelector.css"
+import "./MobsSelector.css";
 
 export type Mob = { creatureName: string; mobSize: number };
 
 export const MobsSelector = () => {
+  // complete component rerenders when state changes
+  // split into praten and multiple children, each managin one type of state
+  // only child getse rerenderes on chang, but not the while parent
+  // also virtualized tables
   const [filterQuery, setFilterQuery] = useState("");
   const creatures = useContext(CreatureContext);
   const [mobs, setMobs] = useContext(MobsContext);
@@ -40,29 +44,26 @@ export const MobsSelector = () => {
         value={filterQuery}
         onChange={filterCreatureNames}
       />
+      <div className="table-head">
+        <span>(empty space)</span>
+        <button>name</button>
+        <button>cr</button>
+      </div>
+
       <div className="mobs-list">
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>name</th>
-              <th>cr</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredCreatures.map((creature) => {
-              return (
-                <tr key={`${creature.name}-${creature.cr}-${creature.id}`}>
-                  <td>
-                    <button onClick={() => incrementMob(creature)}>+</button>
-                  </td>
-                  <td>{creature.name}</td>
-                  <td>{creature.cr}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <div>
+          {filteredCreatures.map((creature) => {
+            return (
+              <tr key={`${creature.name}-${creature.cr}-${creature.id}`}>
+                <td>
+                  <button onClick={() => incrementMob(creature)}>+</button>
+                </td>
+                <td>{creature.name}</td>
+                <td>{creature.cr}</td>
+              </tr>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
