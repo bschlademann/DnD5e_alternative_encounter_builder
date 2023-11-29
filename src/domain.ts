@@ -76,6 +76,7 @@ const getDifficultyDescription = (difficultyValue: number) => {
   } if (difficultyValue > 1) {
     return absurd;
   }
+  return "Unknown";
 };
 
 export const getDifficulty = () => {
