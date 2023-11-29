@@ -1,9 +1,8 @@
 # design
-- link rising diffivulty to changing color, like things become more red/bloodstained
+- link rising difficulty to changing color, like things become more red/bloodstained
 
 # feat
 - calculate actual CR (e.g. Quickling 1 -> 5)
-- MobList: add delete mob button on right of mob name so avoit accidental click
 - prevent duplicate entries
 
 # refactor

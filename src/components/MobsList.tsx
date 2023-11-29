@@ -48,41 +48,53 @@ export const MobsList = (): JSX.Element => {
     });
   };
 
+  const deleteMob = (creature: Creature): void => {
+    setMobs((prevMobs) => {
+      const { [creature.id]: mob, ...rest } = prevMobs;
+      return rest;
+    });
+  };
+
   const mobIds = Object.keys(mobs).map((id) => parseInt(id));
 
   return (
     <div>
-        <table className="mobs-list">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th></th>
-              <th>name</th>
-              <th>cr</th>
-            </tr>
-          </thead>
-          <tbody>
-            {mobIds.map((id) => {
-              const creature = creaturesById[id];
-              const mobSize = mobs[id].mobSize;
-              return (
-                <tr key={`${creature.name}-${creature.cr}-${id}`}>
-                  <td>{mobSize}</td>
-                  <td>
-                    <button onClick={() => incrementMob({ ...creature, id })}>
-                      +
-                    </button>
-                    <button onClick={() => decrementMob({ ...creature, id })}>
-                      -
-                    </button>
-                  </td>
-                  <td>{creature.name}</td>
-                  <td>{creature.cr}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        </div>
+      <table className="mobs-list">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th></th>
+            <th>name</th>
+            <th>cr</th>
+          </tr>
+        </thead>
+        <tbody>
+          {mobIds.map((id) => {
+            const creature = creaturesById[id];
+            const mobSize = mobs[id].mobSize;
+            return (
+              <tr key={`${creature.name}-${creature.cr}-${id}`}>
+                <td>{mobSize}</td>
+                <td>
+                  <button onClick={() => incrementMob({ ...creature, id })}>
+                    +
+                  </button>
+                  <button onClick={() => decrementMob({ ...creature, id })}>
+                    -
+                  </button>
+                </td>
+                <td>{creature.name}</td>
+                <td>{creature.cr}</td>
+                <td>
+                  <button onClick={() => deleteMob({ ...creature, id })}>
+                    X
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 };
