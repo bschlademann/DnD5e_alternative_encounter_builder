@@ -110,12 +110,21 @@ const parseRawData = (rawData: unknown[]): RawData[] =>
 const filterCreatures = (parsedDataArray: RawData[]): Creature[] =>
   parsedDataArray.flatMap((parsedData) => parsedData.monster.filter(isCreature));
 
+  const uniqueCreatures = (creatures: Creature[]): Creature[] => {
+    return creatures.filter((creature, index, self) =>
+        index === self.findIndex((t) => 
+            t.name === creature.name
+        )
+    );
+};
+
+
 export const getCreatureData = (): Promise<Creature[]> => {
   return getBestiaryFileNamesFromRepoUrl()
     .then(fetchRawData)
     .then(parseRawData)
     .then(filterCreatures)
-    .then(unique)
+    .then(uniqueCreatures)
     .then(addIds);
 };
 
