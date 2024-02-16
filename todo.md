@@ -1,9 +1,8 @@
 # design
-- link rising difficulty to changing color, like things become more red/bloodstained
+- add shadcnUI
 
 # feat
-- calculate actual CR (e.g. Quickling 1 -> 5)
-- prevent duplicate entries
+- row virtualization for MobsSelector
 
 # refactor
 - refactor state[creatures] from Array to Object
@@ -37,8 +36,9 @@
 - update when new functionalities are available
 
 # maybe
-? add alternate mode in copmpoent[Party]: instead of 2 selects add each character seperately with name and level
-? increase accuracy further with more concrete data 
+- calculate actual CR (e.g. Quickling 1 -> 5)
+- add alternate mode in component[Party]: instead of 2 selects add each character seperately with name and level
+- increase accuracy further with more concrete data 
     - import character sheet data from foundry vtt
     - use hp/ac/dmg of character sheets and creature data for calculation instead of just CR
 
