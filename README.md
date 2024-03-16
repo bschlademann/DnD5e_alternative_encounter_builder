@@ -1,5 +1,5 @@
 ## D&D 5e combat difficulty calculator
-This is an attempt to estimate the difficulty of combat encounters more accurately. It still uses the number of opponents and their levels/challange ratings as a base. Those are parsed into a new set of values before copmaring them to determine the difficulty.
+This is an attempt to estimate the difficulty of combat encounters more accurately. It still uses the number of opponents and their levels/challange ratings as a base. Those are parsed into Power Equivalent Values (PELs) before copmaring them to determine the difficulty.
 The output is the same as in the classical encounter builder: "trivial", "easy", "medium", "hard", "deadly" or "absurd".
 
 ## use
