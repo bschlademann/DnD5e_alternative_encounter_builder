@@ -1,8 +1,11 @@
 # design
 - add shadcnUI
+- add spinner on first fetch
 
 # feat
 - row virtualization for MobsSelector
+- add leveled NPCs to moblist and Party
+- add creatures to party
 
 # refactor
 - refactor state[creatures] from Array to Object
