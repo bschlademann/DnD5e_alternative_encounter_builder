@@ -1,23 +1,22 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext } from "react";
 import { Creature } from "./5etools";
 import { MobsState } from "./App";
-import { LeveledNpcs } from "./components/LeveledNpcs";
-import { Party } from "./components/Party";
-import { getCreaturesById, CreaturesById } from "./domain";
-import { getOrUpdateLocalStorage } from "./local-storage";
+import { TParty } from "./components/Party";
+import { CreaturesById } from "./domain";
+import { TLeveledNpc } from "./components/LeveledNpc";
 
 export const MobsContext = createContext<
   [MobsState, React.Dispatch<React.SetStateAction<MobsState>>]
->([[], () => undefined]);
+>([{}, () => undefined]);
 
 export const CreatureContext = createContext<Creature[]>([]);
 
 export const PartyContext = createContext<
-  [Party, React.Dispatch<React.SetStateAction<Party>>]
+  [TParty, React.Dispatch<React.SetStateAction<TParty>>]
 >([{ count: 1, level: 1 }, () => undefined]);
 
-// export const LeveledNpcsContext = createContext<
-//   [LeveledNpcs, React.Dispatch<React.SetStateAction<LeveledNpcs>>]
-// >([[], () => undefined]);
-
 export const CreaturesByIdContext = createContext<CreaturesById>({});
+
+export const LeveledNpcListContext = createContext<
+  [TLeveledNpc[], React.Dispatch<React.SetStateAction<TLeveledNpc[]>>]
+>([[], () => undefined]);
