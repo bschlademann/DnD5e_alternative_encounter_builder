@@ -6,7 +6,7 @@ const Option = (props: { value: number }) => {
   const { value } = props;
   return <option value={value}>{value}</option>;
 };
-export type Party = { count: number; level: number };
+export type TParty = { count: number; level: number };
 
 export const Party = () => {
   const [party, setParty] = useContext(PartyContext);
