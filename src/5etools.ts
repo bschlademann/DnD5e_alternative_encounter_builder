@@ -22,12 +22,12 @@ export type Json = {
 };
 export type BestiaryFileNames = string[];
 
-export type Creature = { name: string; cr: number, id: number };
+export type Creature = { name: string; cr: number, id: string };
 
 export const creatureDataSchema: Parser<Creature> = z.object({
   cr: stringToFractionalNumber,
   name: z.string(),
-  id: z.number()
+  id: z.string()
 });
 
 type RawCreature = {
@@ -117,7 +117,6 @@ const filterCreatures = (parsedDataArray: RawData[]): Creature[] =>
         )
     );
 };
-
 
 export const getCreatureData = (): Promise<Creature[]> => {
   return getBestiaryFileNamesFromRepoUrl()

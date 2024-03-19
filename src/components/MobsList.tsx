@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { Creature } from "../5etools";
 import {
   CreatureContext,
@@ -55,7 +55,7 @@ export const MobsList = (): JSX.Element => {
     });
   };
 
-  const mobIds = Object.keys(mobs).map((id) => parseInt(id));
+  const mobIds = Object.keys(mobs);
 
   return (
     <div>

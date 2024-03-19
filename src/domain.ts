@@ -1,5 +1,5 @@
 import { powerlevelByCr, powerlevelByPlayerLevel } from "./powerlevel-data.js";
-import { Party } from "./components/Party.js";
+import { TParty } from "./components/Party.js";
 import { useContext } from "react";
 import {
   CreatureContext,
@@ -12,17 +12,16 @@ import { parseToTwoDecimals } from "./lib.js";
 import { Creature } from "./5etools.js";
 import {difficultyDescriptions} from "./difficultyDescriptions";
 
-export const getPartyPowerlevel = (party: Party): number => {
+export const getPartyPowerlevel = (party: TParty): number => {
   return party.count * powerlevelByPlayerLevel[party.level];
 };
 
 export type CreaturesById = {
-  [creatureId: number]: { name: string; cr: number };
+  [creatureId: string]: { name: string; cr: number };
 };
 
-export const getCreaturesById = (creatures: Creature[]): CreaturesById => {
-  let creaturesById: { [creatureId: number]: { name: string; cr: number } } =
-    {};
+export const getCreaturesById = (creatures: Creature[]) => {
+  let creaturesById: {[creatureId: string]: { name: string; cr: number }} = {};
   creatures.forEach((creature) => {
     const { name, cr } = creature;
     creaturesById[creature.id] = { name, cr };

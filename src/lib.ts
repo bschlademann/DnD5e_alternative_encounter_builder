@@ -9,7 +9,7 @@ export const unique = <T>(arr: T[]): T[] => Array.from(new Set(arr));
 export const addIds = <T>(arr: T[]): T[] => {
   const newArr = arr.slice();
   for (let i = 0; i < arr.length; i++) {
-    newArr[i] = { ...newArr[i], id: i };
+    newArr[i] = { ...newArr[i], id: i.toString() };
   }
   return newArr;
 };
@@ -37,4 +37,4 @@ export const getRange = (range: [number, number]) => {
 export const clampInt = (n: number) =>
   n <= Number.MAX_SAFE_INTEGER ? n : Number.MAX_SAFE_INTEGER;
 
-  export const parseToTwoDecimals = (n: number) => parseFloat(n.toFixed(2));
+export const parseToTwoDecimals = (n: number) => parseFloat(n.toFixed(2));
