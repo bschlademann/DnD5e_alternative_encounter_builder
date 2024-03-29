@@ -1,18 +1,17 @@
-import { powerlevelByCr, powerlevelByPlayerLevel } from "./power-level-data.js";
+import {
+  powerlevelByCr,
+  powerlevelByCharacterLevel,
+} from "./power-level-data.js";
 import { TParty } from "./components/Party.js";
 import { useContext } from "react";
-import {
-  CreaturesByIdContext,
-  MobsContext,
-  PartyContext,
-} from "./contexts.js";
+import { CreaturesByIdContext, MobsContext, PartyContext } from "./contexts.js";
 import { MobsState } from "./App.js";
 import { parseToTwoDecimals } from "./lib.js";
 import { Creature } from "./5etools.js";
-import {difficultyDescriptions} from "./difficulty-descriptions.js";
+import { difficultyDescriptions } from "./difficulty-descriptions.js";
 
 export const getPartyPowerlevel = (party: TParty): number => {
-  return party.count * powerlevelByPlayerLevel[party.level];
+  return party.count * powerlevelByCharacterLevel[party.level];
 };
 
 export type CreaturesById = {
@@ -20,7 +19,9 @@ export type CreaturesById = {
 };
 
 export const getCreaturesById = (creatures: Creature[]) => {
-  let creaturesById: {[creatureId: string]: { name: string; cr: number, powerlevel: number }} = {};
+  let creaturesById: {
+    [creatureId: string]: { name: string; cr: number; powerlevel: number };
+  } = {};
   creatures.forEach((creature) => {
     const { name, cr, powerlevel } = creature;
     creaturesById[creature.id] = { name, cr, powerlevel };
@@ -34,11 +35,19 @@ export const getCreaturePowerlevel = (creatureId: number): number => {
   return powerlevelByCr[creature.cr];
 };
 
-export const createGetPowerlevelByCr = (powerlevelByCr: Record<number, number>) => (cr:number) => {
-  return powerlevelByCr[cr];
-}
-export const getPowerlevelByCr = (cr: number) => createGetPowerlevelByCr(powerlevelByCr)(cr);
+export const createGetPowerlevelByCr =
+  (powerlevelByCr: Record<number, number>) => (cr: number) => {
+    return powerlevelByCr[cr];
+  };
+export const getPowerlevelByCr = (cr: number) =>
+  createGetPowerlevelByCr(powerlevelByCr)(cr);
 
+const createGetPowerLevelByCharacterLevel =
+  (powerlevelByCharacterLevel: Record<number, number>) => (level: number) => {
+    return powerlevelByCharacterLevel[level];
+  };
+export const getPowerLevelByCharacterLevel = (level: number) =>
+  createGetPowerLevelByCharacterLevel(powerlevelByCr)(level);
 
 export const getAllMobsPowerlevel = (mobs: MobsState): number => {
   const creaturesById = useContext(CreaturesByIdContext);
@@ -58,16 +67,22 @@ export type Difficulty = {
 
 const getDifficultyDescription = (difficultyValue: number) => {
   const { none, easy, medium, hard, deadly, absurd } = difficultyDescriptions;
-  if(difficultyValue === 0 ) {return none}
+  if (difficultyValue === 0) {
+    return none;
+  }
   if (difficultyValue <= 0.4) {
     return easy;
-  } if (difficultyValue <= 0.6) {
+  }
+  if (difficultyValue <= 0.6) {
     return medium;
-  } if (difficultyValue <= 0.8) {
+  }
+  if (difficultyValue <= 0.8) {
     return hard;
-  } if (difficultyValue <= 1) {
+  }
+  if (difficultyValue <= 1) {
     return deadly;
-  } if (difficultyValue > 1) {
+  }
+  if (difficultyValue > 1) {
     return absurd;
   }
   return "Unknown";

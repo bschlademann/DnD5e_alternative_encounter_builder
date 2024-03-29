@@ -19,7 +19,9 @@ import { LeveledNpcList } from "./components/LeveledNpcList";
 import { LeveledNpc, NpcById } from "./components/LeveledNpc";
 import { Party } from "./components/Party";
 
-export type MobsState = { [creatureId: string]: { creatureName: string; mobSize: number } };
+export type MobsState = {
+  [creatureId: string]: { creatureName: string; mobSize: number };
+};
 
 function App() {
   const [party, setParty] = useState({ count: 1, level: 1 });
@@ -30,7 +32,7 @@ function App() {
   const [npcById, setNpcById] = useState<NpcById>({});
 
   useEffect(() => {
-    localStorage.clear();
+    // localStorage.clear();
     getOrUpdateLocalStorage().then((creatures) => {
       setCreatures(creatures);
       const creaturesById = getCreaturesById(creatures);
@@ -40,25 +42,25 @@ function App() {
 
   return (
     // <NpcsByIdContext.Provider value={[npcById, setNpcById]}>
-      <CreaturesByIdContext.Provider value={creaturesById}>
-        <MobsContext.Provider value={[mobs, setMobs]}>
-          <CreatureContext.Provider value={creatures}>
-            <PartyContext.Provider value={[party, setParty]}>
-              <div className={styles.container}>
-                <div className={styles.left}>
-                  <MobsSelector />
-                </div>
-                <div className={styles.right}>
-                  <LeveledNpc />
-                  <MobsList />
-                  <Party />
-                  <Difficulty />
-                </div>
+    <CreaturesByIdContext.Provider value={creaturesById}>
+      <MobsContext.Provider value={[mobs, setMobs]}>
+        <CreatureContext.Provider value={creatures}>
+          <PartyContext.Provider value={[party, setParty]}>
+            <div className={styles.container}>
+              <div className={styles.left}>
+                <MobsSelector />
               </div>
-            </PartyContext.Provider>
-          </CreatureContext.Provider>
-        </MobsContext.Provider>
-      </CreaturesByIdContext.Provider>
+              <div className={styles.right}>
+                <LeveledNpc />
+                <MobsList />
+                <Party />
+                <Difficulty />
+              </div>
+            </div>
+          </PartyContext.Provider>
+        </CreatureContext.Provider>
+      </MobsContext.Provider>
+    </CreaturesByIdContext.Provider>
     // </NpcsByIdContext.Provider>
   );
 }

@@ -7,7 +7,7 @@ import {
 } from "../contexts";
 import { clampInt } from "../lib";
 
-export type Mob = { creatureName: string; mobSize: number };
+// export type Mob = { creatureName: string; mobSize: number };
 
 export const MobsList = (): JSX.Element => {
   const creatures = useContext(CreatureContext);

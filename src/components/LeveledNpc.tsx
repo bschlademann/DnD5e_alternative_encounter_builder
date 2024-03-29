@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { getRange } from "../lib";
 import { CreaturesByIdContext, MobsContext, NpcsByIdContext } from "../contexts";
-import { getPowerlevelByCr } from "../domain";
+import { getPowerLevelByCharacterLevel, getPowerlevelByCr } from "../domain";
 
 export type TLeveledNpc = { name: string; level: number };
 export type NpcById = { [id: string]: TLeveledNpc };
@@ -104,6 +104,7 @@ export const LeveledNpc = () => {
   //     [creatureId: string]: {
   //         creatureName: string;
   //         mobSize: number;
+  //   new:    powerLevel: number;
   //     };
   // }
 
@@ -117,7 +118,7 @@ export const LeveledNpc = () => {
   //  alternativ könnte man auch die NPCs in creaturesById adden und dann die berechnung weiter so lassen
   // bessere lösung: add NPC to creaturesById, dann zu mobs adden mit mobsize: 1
   // das spart eine menge refactoring 
-  const powerlevel = getPowerlevelByCharacter
+  const powerlevel = getPowerLevelByCharacterLevel(level);
    setMobs(prevMobs => ({...prevMobs, [id]: {creatureName: name, mobSize: 1, powerlevel}}))
    
   };

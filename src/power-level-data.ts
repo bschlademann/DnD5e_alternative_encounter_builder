@@ -35,7 +35,7 @@ export const powerlevelByCr: Record<number, number> = {
   30: 216,
 };
 
-export const powerlevelByPlayerLevel: Record<number, number> = {
+export const powerlevelByCharacterLevel: Record<number, number> = {
   1: 1,
   2: 1.5,
   3: 2.5,
