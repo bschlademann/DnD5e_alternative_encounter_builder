@@ -59,7 +59,7 @@ export const LeveledNpcList = () => {
 
         <button>add to mobsList</button>
         {/* needs PartyContext to add NPC to Party */}
-        {/* restructure party state structure and party powerlevel calculation logic to be able 
+        {/* restructure party state structure and party powerLevel calculation logic to be able 
         to handle stuctures like creature/npc objects instead of only a number of players and their collective level
         */}
         <button>add to party</button>

@@ -1,4 +1,4 @@
-export const powerlevelByCr: Record<number, number> = {
+export const powerLevelByCr: Record<number, number> = {
   0: 1 / 3,
   0.125: 2 / 3,
   0.25: 1,
@@ -35,7 +35,7 @@ export const powerlevelByCr: Record<number, number> = {
   30: 216,
 };
 
-export const powerlevelByCharacterLevel: Record<number, number> = {
+export const powerLevelByCharacterLevel: Record<number, number> = {
   1: 1,
   2: 1.5,
   3: 2.5,

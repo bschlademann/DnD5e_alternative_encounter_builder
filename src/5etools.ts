@@ -3,7 +3,7 @@ import {
   getJsonFromUrl,
   fractionalString as stringToFractionalNumber,
 } from "./lib";
-import { getPowerlevelByCr } from "./domain";
+import { getPowerLevelByCr } from "./domain";
 
 type Parser<Output, Input = unknown> = z.ZodSchema<Output, z.ZodTypeDef, Input>;
 
@@ -118,17 +118,17 @@ const uniqueCreatures = (creatures: CreatureBase[]): CreatureBase[] => {
   );
 };
 
-const addIdsAndPowerlevels = (creatures: CreatureBase[]) =>
+const addIdsAndPowerLevels = (creatures: CreatureBase[]) =>
   creatures.map((creature, index) => {
-    const powerlevel = getPowerlevelByCr(creature.cr);
-    return { ...creature, powerlevel, id: index.toString() };
+    const powerLevel = getPowerLevelByCr(creature.cr);
+    return { ...creature, powerLevel, id: index.toString() };
   });
 
 export type Creature = {
   name: string;
   cr: number;
   id: string;
-  powerlevel: number;
+  powerLevel: number;
 };
 
 export const getCreatureData = (): Promise<Creature[]> => {
@@ -137,5 +137,5 @@ export const getCreatureData = (): Promise<Creature[]> => {
     .then(parseRawData)
     .then(filterCreatures)
     .then(uniqueCreatures)
-    .then(addIdsAndPowerlevels);
+    .then(addIdsAndPowerLevels);
 };

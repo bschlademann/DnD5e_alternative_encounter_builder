@@ -90,7 +90,7 @@ export const MobsSelector = () => {
               </td>
               <td>{creature.name}</td>
               <td>{creature.cr}</td>
-              <td>{creature.powerlevel}</td>
+              <td>{creature.powerLevel}</td>
             </tr>
           ))}
         </tbody>

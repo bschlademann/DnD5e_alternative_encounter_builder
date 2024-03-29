@@ -1,6 +1,6 @@
 import {
-  powerlevelByCr,
-  powerlevelByCharacterLevel,
+  powerLevelByCr,
+  powerLevelByCharacterLevel,
 } from "./power-level-data.js";
 import { TParty } from "./components/Party.js";
 import { useContext } from "react";
@@ -10,8 +10,8 @@ import { parseToTwoDecimals } from "./lib.js";
 import { Creature } from "./5etools.js";
 import { difficultyDescriptions } from "./difficulty-descriptions.js";
 
-export const getPartyPowerlevel = (party: TParty): number => {
-  return party.count * powerlevelByCharacterLevel[party.level];
+export const getPartyPowerLevel = (party: TParty): number => {
+  return party.count * powerLevelByCharacterLevel[party.level];
 };
 
 export type CreaturesById = {
@@ -20,47 +20,47 @@ export type CreaturesById = {
 
 export const getCreaturesById = (creatures: Creature[]) => {
   let creaturesById: {
-    [creatureId: string]: { name: string; cr: number; powerlevel: number };
+    [creatureId: string]: { name: string; cr: number; powerLevel: number };
   } = {};
   creatures.forEach((creature) => {
-    const { name, cr, powerlevel } = creature;
-    creaturesById[creature.id] = { name, cr, powerlevel };
+    const { name, cr, powerLevel } = creature;
+    creaturesById[creature.id] = { name, cr, powerLevel };
   });
   return creaturesById;
 };
 
-export const getCreaturePowerlevel = (creatureId: number): number => {
+export const getCreaturePowerLevel = (creatureId: number): number => {
   const creaturesById = useContext(CreaturesByIdContext);
   const creature = creaturesById[creatureId];
-  return powerlevelByCr[creature.cr];
+  return powerLevelByCr[creature.cr];
 };
 
-export const createGetPowerlevelByCr =
-  (powerlevelByCr: Record<number, number>) => (cr: number) => {
-    return powerlevelByCr[cr];
+export const createGetPowerLevelByCr =
+  (powerLevelByCr: Record<number, number>) => (cr: number) => {
+    return powerLevelByCr[cr];
   };
-export const getPowerlevelByCr = (cr: number) =>
-  createGetPowerlevelByCr(powerlevelByCr)(cr);
+export const getPowerLevelByCr = (cr: number) =>
+  createGetPowerLevelByCr(powerLevelByCr)(cr);
 
 const createGetPowerLevelByCharacterLevel =
-  (powerlevelByCharacterLevel: Record<number, number>) => (level: number) => {
-    return powerlevelByCharacterLevel[level];
+  (powerLevelByCharacterLevel: Record<number, number>) => (level: number) => {
+    return powerLevelByCharacterLevel[level];
   };
 export const getPowerLevelByCharacterLevel = (level: number) =>
-  createGetPowerLevelByCharacterLevel(powerlevelByCr)(level);
+  createGetPowerLevelByCharacterLevel(powerLevelByCr)(level);
 
-export const getAllMobsPowerlevel = (mobs: MobsState): number => {
+export const getAllMobsPowerLevel = (mobs: MobsState): number => {
   const creaturesById = useContext(CreaturesByIdContext);
   const creatureIds = Object.keys(mobs).map((str) => parseInt(str));
   return creatureIds.reduce((totalPowerLevel, id) => {
     const cr = creaturesById[id].cr;
-    return totalPowerLevel + powerlevelByCr[cr] * mobs[id].mobSize;
+    return totalPowerLevel + powerLevelByCr[cr] * mobs[id].mobSize;
   }, 0);
 };
 
 export type Difficulty = {
-  partyPowerlevel: number;
-  powerlevelTotalOfAllMobs: number;
+  partyPowerLevel: number;
+  powerLevelTotalOfAllMobs: number;
   difficultyValue: number;
   description: string;
 };
@@ -91,14 +91,14 @@ const getDifficultyDescription = (difficultyValue: number) => {
 export const getDifficulty = () => {
   const [party] = useContext(PartyContext);
   const [mobs] = useContext(MobsContext);
-  const powerlevelTotalOfAllMobs = getAllMobsPowerlevel(mobs);
-  const partyPowerlevel = getPartyPowerlevel(party);
-  const difficultyValue = powerlevelTotalOfAllMobs / partyPowerlevel;
+  const powerLevelTotalOfAllMobs = getAllMobsPowerLevel(mobs);
+  const partyPowerLevel = getPartyPowerLevel(party);
+  const difficultyValue = powerLevelTotalOfAllMobs / partyPowerLevel;
   const description = getDifficultyDescription(difficultyValue);
 
   return {
-    partyPowerlevel,
-    powerlevelTotalOfAllMobs,
+    partyPowerLevel,
+    powerLevelTotalOfAllMobs,
     difficultyValue,
     description,
   };
@@ -106,14 +106,14 @@ export const getDifficulty = () => {
 
 export const formatDifficultyOutput = (difficulty: Difficulty) => {
   const {
-    partyPowerlevel,
-    powerlevelTotalOfAllMobs,
+    partyPowerLevel,
+    powerLevelTotalOfAllMobs,
     difficultyValue,
     description,
   } = difficulty;
   return {
-    partyPowerlevel: parseToTwoDecimals(partyPowerlevel),
-    powerlevelTotalOfAllMobs: parseToTwoDecimals(powerlevelTotalOfAllMobs),
+    partyPowerLevel: parseToTwoDecimals(partyPowerLevel),
+    powerLevelTotalOfAllMobs: parseToTwoDecimals(powerLevelTotalOfAllMobs),
     difficulty: `${description} (${parseToTwoDecimals(
       difficultyValue * 100
     )}%)`,
