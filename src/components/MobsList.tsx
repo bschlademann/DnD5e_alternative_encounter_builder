@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Creature } from "../5etools";
+import { CreatureBase } from "../5etools";
 import {
   CreatureContext,
   CreaturesByIdContext,
@@ -14,7 +14,7 @@ export const MobsList = (): JSX.Element => {
   const creaturesById = useContext(CreaturesByIdContext);
   const [mobs, setMobs] = useContext(MobsContext);
 
-  const incrementMob = (creature: Creature) => {
+  const incrementMob = (creature: CreatureBase) => {
     setMobs((prevMobs) => {
       return {
         ...prevMobs,
@@ -28,7 +28,7 @@ export const MobsList = (): JSX.Element => {
     });
   };
 
-  const decrementMob = (creature: Creature): void => {
+  const decrementMob = (creature: CreatureBase): void => {
     setMobs((prevMobs) => {
       const { [creature.id]: mob, ...rest } = prevMobs;
       if (mob) {
@@ -48,7 +48,7 @@ export const MobsList = (): JSX.Element => {
     });
   };
 
-  const deleteMob = (creature: Creature): void => {
+  const deleteMob = (creature: CreatureBase): void => {
     setMobs((prevMobs) => {
       const { [creature.id]: mob, ...rest } = prevMobs;
       return rest;

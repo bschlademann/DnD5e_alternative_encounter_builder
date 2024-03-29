@@ -1,10 +1,9 @@
 import * as z from "zod";
 import {
   getJsonFromUrl,
-  unique,
   fractionalString as stringToFractionalNumber,
-  addIds,
 } from "./lib";
+import { getPowerlevelByCr } from "./domain";
 
 type Parser<Output, Input = unknown> = z.ZodSchema<Output, z.ZodTypeDef, Input>;
 
@@ -22,12 +21,12 @@ export type Json = {
 };
 export type BestiaryFileNames = string[];
 
-export type Creature = { name: string; cr: number, id: string };
+export type CreatureBase = { name: string; cr: number; id: string };
 
-export const creatureDataSchema: Parser<Creature> = z.object({
+export const creatureDataSchema: Parser<CreatureBase> = z.object({
   cr: stringToFractionalNumber,
   name: z.string(),
-  id: z.string()
+  id: z.string(),
 });
 
 type RawCreature = {
@@ -51,7 +50,7 @@ const rawDataSchema: Parser<RawData> = z.object({
   ),
 });
 
-const isCreature = (input: RawCreature): input is Creature =>
+const isCreature = (input: RawCreature): input is CreatureBase =>
   typeof input.cr === "number";
 
 const findSubfolderUrl = (json: Json, subfolder: string) => {
@@ -107,15 +106,29 @@ const fetchRawData = (bestiaryFileNames: BestiaryFileNames) => {
 const parseRawData = (rawData: unknown[]): RawData[] =>
   rawDataSchema.array().parse(rawData);
 
-const filterCreatures = (parsedDataArray: RawData[]): Creature[] =>
-  parsedDataArray.flatMap((parsedData) => parsedData.monster.filter(isCreature));
+const filterCreatures = (parsedDataArray: RawData[]): CreatureBase[] =>
+  parsedDataArray.flatMap((parsedData) =>
+    parsedData.monster.filter(isCreature)
+  );
 
-  const uniqueCreatures = (creatures: Creature[]): Creature[] => {
-    return creatures.filter((creature, index, self) =>
-        index === self.findIndex((t) => 
-            t.name === creature.name
-        )
-    );
+const uniqueCreatures = (creatures: CreatureBase[]): CreatureBase[] => {
+  return creatures.filter(
+    (creature, index, self) =>
+      index === self.findIndex((t) => t.name === creature.name)
+  );
+};
+
+const addIdsAndPowerlevels = (creatures: CreatureBase[]) =>
+  creatures.map((creature, index) => {
+    const powerlevel = getPowerlevelByCr(creature.cr);
+    return { ...creature, powerlevel, id: index.toString() };
+  });
+
+export type Creature = {
+  name: string;
+  cr: number;
+  id: string;
+  powerlevel: number;
 };
 
 export const getCreatureData = (): Promise<Creature[]> => {
@@ -124,24 +137,5 @@ export const getCreatureData = (): Promise<Creature[]> => {
     .then(parseRawData)
     .then(filterCreatures)
     .then(uniqueCreatures)
-    .then(addIds);
-};
-
-type Commit = {
-  commit: {
-    committer: {
-      date: string;
-    };
-  };
-};
-
-const getLastCommitDate = (commits: Commit[]) =>
-  Date.parse(commits[0].commit.committer.date);
-
-export const getRepoLastUpdatedAt = () => {
-  return fetch(
-    "https://api.github.com/repos/5etools-mirror-1/5etools-mirror-1.github.io/commits"
-  )
-    .then((res) => res.json())
-    .then(getLastCommitDate);
+    .then(addIdsAndPowerlevels);
 };

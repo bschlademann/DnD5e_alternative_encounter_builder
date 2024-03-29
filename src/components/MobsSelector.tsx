@@ -3,10 +3,6 @@ import { Creature } from "../5etools";
 import { CreatureContext, MobsContext } from "../contexts";
 import { clampInt } from "../lib";
 
-// import "./MobsSelector.css"; 
-
-export type Mob = { creatureName: string; mobSize: number };
-
 export const MobsSelector = () => {
   const [filterQuery, setFilterQuery] = useState("");
   const [sortField, setSortField] = useState<string>("name");
@@ -31,7 +27,7 @@ export const MobsSelector = () => {
     .filter((creature) => creature.name.toLowerCase().includes(filterQuery.toLowerCase()))
     .sort(sortCreatures);
 
-  const incrementMob = (creature: Creature) => {
+  const addToMobsList = (creature: Creature) => {
     setMobs((prevMobs) => ({
       ...prevMobs,
       [creature.id]: {
@@ -81,16 +77,20 @@ export const MobsSelector = () => {
                 CR{renderSortIndicator('cr')}
               </button>
             </th>
+            <th>
+              PEL
+            </th>
           </tr>
         </thead>
         <tbody>
           {filteredCreatures.map((creature) => (
             <tr key={`${creature.name}-${creature.cr}-${creature.id}`}>
               <td>
-                <button onClick={() => incrementMob(creature)} className="increment-button">+</button>
+                <button onClick={() => addToMobsList(creature)} className="increment-button">+</button>
               </td>
               <td>{creature.name}</td>
               <td>{creature.cr}</td>
+              <td>{creature.powerlevel}</td>
             </tr>
           ))}
         </tbody>

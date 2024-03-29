@@ -1,11 +1,11 @@
 // import "./App.css";
 import styles from "./Layout.module.css";
 
-import { MobsSelector, Mob } from "./components/MobsSelector";
+import { MobsSelector } from "./components/MobsSelector";
 import {
   CreatureContext,
   CreaturesByIdContext,
-  LeveledNpcListContext,
+  NpcsByIdContext,
   MobsContext,
   PartyContext,
 } from "./contexts";
@@ -16,20 +16,21 @@ import { Creature } from "./5etools";
 import { CreaturesById, getCreaturesById } from "./domain";
 import { getOrUpdateLocalStorage } from "./local-storage";
 import { LeveledNpcList } from "./components/LeveledNpcList";
-import { TLeveledNpc } from "./components/LeveledNpc";
+import { NpcById } from "./components/LeveledNpc";
 import { Party } from "./components/Party";
 
-export type MobsState = { [creatureId: string]: Mob };
+export type MobsState = { [creatureId: string]: { creatureName: string; mobSize: number } };
 
 function App() {
   const [party, setParty] = useState({ count: 1, level: 1 });
   const [creatures, setCreatures] = useState<Creature[]>([]);
   const [mobs, setMobs] = useState<MobsState>({});
   const [creaturesById, setCreaturesById] = useState<CreaturesById>({});
-  const [leveledNpcList, setLeveledNpcList] = useState<TLeveledNpc[]>([]);
+  // change state to {[id:string]: {name:string, level:number}}
+  const [npcById, setNpcById] = useState<NpcById>({});
 
   useEffect(() => {
-    // localStorage.clear();
+    localStorage.clear();
     getOrUpdateLocalStorage().then((creatures) => {
       setCreatures(creatures);
       const creaturesById = getCreaturesById(creatures);
@@ -38,7 +39,7 @@ function App() {
   }, []);
 
   return (
-    <LeveledNpcListContext.Provider value={[leveledNpcList, setLeveledNpcList]}>
+    <NpcsByIdContext.Provider value={[npcById, setNpcById]}>
       <CreaturesByIdContext.Provider value={creaturesById}>
         <MobsContext.Provider value={[mobs, setMobs]}>
           <CreatureContext.Provider value={creatures}>
@@ -58,7 +59,7 @@ function App() {
           </CreatureContext.Provider>
         </MobsContext.Provider>
       </CreaturesByIdContext.Provider>
-    </LeveledNpcListContext.Provider>
+    </NpcsByIdContext.Provider>
   );
 }
 

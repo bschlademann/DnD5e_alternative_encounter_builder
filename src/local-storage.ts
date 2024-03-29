@@ -1,4 +1,4 @@
-import { getCreatureData, Creature, getRepoLastUpdatedAt } from "./5etools";
+import { getCreatureData, Creature } from "./5etools";
 
 export type ParsedLocalStorageData = {
   lastUpdatedAt: number;
@@ -24,6 +24,25 @@ export const updateLocalStorage = (creatureData: Creature[]) => {
     "5e_combat_difficulty_calculator",
     JSON.stringify({ lastUpdatedAt: date, creatureData: creatureData })
   );
+};
+
+type Commit = {
+  commit: {
+    committer: {
+      date: string;
+    };
+  };
+};
+
+const getLastCommitDate = (commits: Commit[]) =>
+  Date.parse(commits[0].commit.committer.date);
+
+const getRepoLastUpdatedAt = () => {
+  return fetch(
+    "https://api.github.com/repos/5etools-mirror-1/5etools-mirror-1.github.io/commits"
+  )
+    .then((res) => res.json())
+    .then(getLastCommitDate);
 };
 
 export const getOrUpdateLocalStorage = async (): Promise<Creature[]> => {
