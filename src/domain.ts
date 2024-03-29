@@ -1,4 +1,4 @@
-import { powerlevelByCr, powerlevelByPlayerLevel } from "./powerlevel-data.js";
+import { powerlevelByCr, powerlevelByPlayerLevel } from "./power-level-data.js";
 import { TParty } from "./components/Party.js";
 import { useContext } from "react";
 import {
@@ -9,7 +9,7 @@ import {
 import { MobsState } from "./App.js";
 import { parseToTwoDecimals } from "./lib.js";
 import { Creature } from "./5etools.js";
-import {difficultyDescriptions} from "./difficultyDescriptions";
+import {difficultyDescriptions} from "./difficulty-descriptions.js";
 
 export const getPartyPowerlevel = (party: TParty): number => {
   return party.count * powerlevelByPlayerLevel[party.level];

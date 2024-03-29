@@ -16,7 +16,7 @@ import { Creature } from "./5etools";
 import { CreaturesById, getCreaturesById } from "./domain";
 import { getOrUpdateLocalStorage } from "./local-storage";
 import { LeveledNpcList } from "./components/LeveledNpcList";
-import { NpcById } from "./components/LeveledNpc";
+import { LeveledNpc, NpcById } from "./components/LeveledNpc";
 import { Party } from "./components/Party";
 
 export type MobsState = { [creatureId: string]: { creatureName: string; mobSize: number } };
@@ -39,7 +39,7 @@ function App() {
   }, []);
 
   return (
-    <NpcsByIdContext.Provider value={[npcById, setNpcById]}>
+    // <NpcsByIdContext.Provider value={[npcById, setNpcById]}>
       <CreaturesByIdContext.Provider value={creaturesById}>
         <MobsContext.Provider value={[mobs, setMobs]}>
           <CreatureContext.Provider value={creatures}>
@@ -49,7 +49,7 @@ function App() {
                   <MobsSelector />
                 </div>
                 <div className={styles.right}>
-                  <LeveledNpcList />
+                  <LeveledNpc />
                   <MobsList />
                   <Party />
                   <Difficulty />
@@ -59,7 +59,7 @@ function App() {
           </CreatureContext.Provider>
         </MobsContext.Provider>
       </CreaturesByIdContext.Provider>
-    </NpcsByIdContext.Provider>
+    // </NpcsByIdContext.Provider>
   );
 }
 
