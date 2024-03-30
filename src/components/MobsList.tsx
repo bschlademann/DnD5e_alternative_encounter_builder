@@ -1,61 +1,51 @@
 import { useContext } from "react";
-import { CreatureBase } from "../5etools";
-import {
-  CreatureContext,
-  CreaturesByIdContext,
-  MobsContext,
-} from "../contexts";
+import { MobsContext } from "../contexts";
 import { clampInt } from "../lib";
-
-// export type Mob = { creatureName: string; mobSize: number };
+import { MobsState } from "../App";
 
 export const MobsList = (): JSX.Element => {
-  const creatures = useContext(CreatureContext);
-  const creaturesById = useContext(CreaturesByIdContext);
   const [mobs, setMobs] = useContext(MobsContext);
 
-  const incrementMob = (creature: CreatureBase) => {
+  type Mob = MobsState[0];
+
+  const incrementMob = (mob: Mob, id: string) => {
     setMobs((prevMobs) => {
+      const { creatureName, powerLevel } = mob;
       return {
         ...prevMobs,
-        [creature.id]: {
-          creatureName: creature.name,
-          mobSize: !!prevMobs[creature.id]
-            ? clampInt(prevMobs[creature.id].mobSize + 1)
-            : 1,
+        [id]: {
+          creatureName,
+          powerLevel,
+          mobSize: !!prevMobs[id] ? clampInt(prevMobs[id].mobSize + 1) : 1,
         },
       };
     });
   };
 
-  const decrementMob = (creature: CreatureBase): void => {
+  const decrementMob = (id: string) => {
     setMobs((prevMobs) => {
-      const { [creature.id]: mob, ...rest } = prevMobs;
-      if (mob) {
-        if (mob.mobSize === 1) {
-          return rest;
-        } else {
-          return {
-            ...rest,
-            [creature.id]: {
-              creatureName: creature.name,
-              mobSize: mob.mobSize - 1,
-            },
-          };
-        }
+      const { [id]: mob } = prevMobs;
+      if (mob.mobSize === 1) {
+        const { [id]: _, ...remainingMobs } = prevMobs;
+        return remainingMobs;
+      } else {
+        return {
+          ...prevMobs,
+          [id]: {
+            ...mob,
+            mobSize: mob.mobSize - 1,
+          },
+        };
       }
-      return prevMobs;
     });
   };
 
-  const deleteMob = (creature: CreatureBase): void => {
+  const deleteMob = (id: string): void => {
     setMobs((prevMobs) => {
-      const { [creature.id]: mob, ...rest } = prevMobs;
-      return rest;
+      const { [id]: _, ...remainingMobs } = prevMobs;
+      return remainingMobs;
     });
   };
-
-  const mobIds = Object.keys(mobs);
 
   return (
     <div>
@@ -65,30 +55,26 @@ export const MobsList = (): JSX.Element => {
             <th>#</th>
             <th></th>
             <th>name</th>
-            <th>cr</th>
+            <th>PEL</th>
           </tr>
         </thead>
         <tbody>
-          {mobIds.map((id) => {
-            const creature = creaturesById[id];
-            const mobSize = mobs[id].mobSize;
+          {Object.entries(mobs).map((mobEntry) => {
+            const id = mobEntry[0];
+            const mob = mobEntry[1];
+
+            const { creatureName, mobSize, powerLevel } = mob;
             return (
-              <tr key={`${creature.name}-${creature.cr}-${id}`}>
+              <tr key={`${mob.creatureName}-${id}`}>
                 <td>{mobSize}</td>
                 <td>
-                  <button onClick={() => incrementMob({ ...creature, id })}>
-                    +
-                  </button>
-                  <button onClick={() => decrementMob({ ...creature, id })}>
-                    -
-                  </button>
+                  <button onClick={() => incrementMob(mob, id)}>+</button>
+                  <button onClick={() => decrementMob(id)}>-</button>
                 </td>
-                <td>{creature.name}</td>
-                <td>{creature.cr}</td>
+                <td>{creatureName}</td>
+                <td>{powerLevel}</td>
                 <td>
-                  <button onClick={() => deleteMob({ ...creature, id })}>
-                    X
-                  </button>
+                  <button onClick={() => deleteMob(id)}>X</button>
                 </td>
               </tr>
             );

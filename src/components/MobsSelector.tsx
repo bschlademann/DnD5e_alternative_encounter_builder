@@ -32,6 +32,7 @@ export const MobsSelector = () => {
       ...prevMobs,
       [creature.id]: {
         creatureName: creature.name,
+        powerLevel: creature.powerLevel,
         mobSize: !!prevMobs[creature.id]
           ? clampInt(prevMobs[creature.id].mobSize + 1)
           : 1,

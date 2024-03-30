@@ -15,12 +15,11 @@ import { useState, useEffect } from "react";
 import { Creature } from "./5etools";
 import { CreaturesById, getCreaturesById } from "./domain";
 import { getOrUpdateLocalStorage } from "./local-storage";
-import { LeveledNpcList } from "./components/LeveledNpcList";
 import { LeveledNpc, NpcById } from "./components/LeveledNpc";
 import { Party } from "./components/Party";
 
 export type MobsState = {
-  [creatureId: string]: { creatureName: string; mobSize: number };
+  [creatureId: string]: { creatureName: string; mobSize: number; powerLevel: number };
 };
 
 function App() {

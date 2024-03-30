@@ -50,11 +50,16 @@ export const getPowerLevelByCharacterLevel = (level: number) =>
   createGetPowerLevelByCharacterLevel(powerLevelByCr)(level);
 
 export const getAllMobsPowerLevel = (mobs: MobsState): number => {
-  const creaturesById = useContext(CreaturesByIdContext);
-  const creatureIds = Object.keys(mobs).map((str) => parseInt(str));
-  return creatureIds.reduce((totalPowerLevel, id) => {
-    const cr = creaturesById[id].cr;
-    return totalPowerLevel + powerLevelByCr[cr] * mobs[id].mobSize;
+  // const creaturesById = useContext(CreaturesByIdContext);
+  // const creatureIds = Object.keys(mobs).map((str) => parseInt(str));
+  // return creatureIds.reduce((totalPowerLevel, id) => {
+  //   const cr = creaturesById[id].cr;
+  //   return totalPowerLevel + powerLevelByCr[cr] * mobs[id].mobSize;
+  // }, 0);
+
+  return Object.values(mobs).reduce((totalPowerLevel, creature) => {
+    const { mobSize, powerLevel } = creature;
+    return totalPowerLevel + mobSize * powerLevel;
   }, 0);
 };
 
