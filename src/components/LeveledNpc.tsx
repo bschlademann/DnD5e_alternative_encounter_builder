@@ -1,8 +1,6 @@
 import { useContext, useState } from "react";
 import { getRange } from "../lib";
-import {
-  MobsContext,
-} from "../contexts";
+import { MobsContext } from "../contexts";
 import { getPowerLevelByCharacterLevel, getPowerLevelByCr } from "../domain";
 
 export type TLeveledNpc = { name: string; level: number };
@@ -37,7 +35,7 @@ export const LeveledNpc = () => {
     return `leveled-npc-${id}`;
   };
 
-  const addToMobslist = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const addToMobslist = () => {
     const id = getNextLeveledNpcId();
     const powerLevel = getPowerLevelByCharacterLevel(level);
     setMobs((prevMobs) => ({
@@ -46,7 +44,7 @@ export const LeveledNpc = () => {
     }));
   };
 
-  const addToParty = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const addToParty = () => {
     // add NPC to Party
   };
 
@@ -70,9 +68,7 @@ export const LeveledNpc = () => {
         ))}
       </select>
 
-      <button onClick={addToMobslist}>
-        <s>add to Mobslist</s>
-      </button>
+      <button onClick={addToMobslist}>add to Mobslist</button>
 
       <button onClick={addToParty}>
         <s>add to Party</s>
