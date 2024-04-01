@@ -47,7 +47,7 @@ const createGetPowerLevelByCharacterLevel =
     return powerLevelByCharacterLevel[level];
   };
 export const getPowerLevelByCharacterLevel = (level: number) =>
-  createGetPowerLevelByCharacterLevel(powerLevelByCr)(level);
+  createGetPowerLevelByCharacterLevel(powerLevelByCharacterLevel)(level);
 
 export const getAllMobsPowerLevel = (mobs: MobsState): number => {
   // const creaturesById = useContext(CreaturesByIdContext);
