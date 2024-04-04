@@ -1,32 +1,26 @@
-# fix
-- {LeveledNpc}
-  - error in handleBaseCrChange() at parseInt because state [baseCr] can be (and is initially) null
-- {Moblist} & {MobsSelector} error because type added to state [mobs] is inconsistent: sometimes Mob, sometimes Creature
-
 # feat
-- row virtualization for MobsSelector
 - add leveled NPCs to Party
-- add creatures to party
+- add custom creatures to party
+- row virtualization for MobsSelector
 - add modal explaining functionality
+
+# fix
 
 # refactor
 
-# difficulty calculation logic
-- handle empty party array more gracefully
-
 # components
 - {MobList}
-  - render only when not empty
+  - render only when not empty?
 
 - {LeveledNpcsList}
-  - render only when not empty
+  - render only when not empty?
 
 - {Party}
   - add-button to add multiple levels of PCs
     - remove number of already selected level from validLevels?
 
 # design
-- add shadcnUI
+- add shadcnUI / ChakraUi
 - add spinner on first fetch
 
 ## readme
