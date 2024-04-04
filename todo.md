@@ -1,10 +1,12 @@
+# fix
+- {LeveledNpc}
+  - baseCr Selector needs "null" setting, otherwise each LeveledNpc not only has their power level derived from their characterlevel but additionaly has a baseCr of at least 0 which is factored into their power level
+
 # feat
 - add leveled NPCs to Party
 - add custom creatures to party
 - row virtualization for MobsSelector
 - add modal explaining functionality
-
-# fix
 
 # refactor
 
