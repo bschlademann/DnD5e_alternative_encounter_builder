@@ -1,6 +1,9 @@
+# fix
+- {LeveledNpc}
+  - error in handleBaseCrChange() at parseInt because state [baseCr] can be (and is initially) null
+- {Moblist} & {MobsSelector} error because type added to state [mobs] is inconsistent: sometimes Mob, sometimes Creature
 
 # feat
-- add baseCr for leveled npc creatures into difficulty calculation
 - row virtualization for MobsSelector
 - add leveled NPCs to Party
 - add creatures to party
