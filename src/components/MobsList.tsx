@@ -4,17 +4,18 @@ import { clampInt } from "../lib";
 import { MobsState } from "../App";
 import { getBaseCrPowerLevel } from "../domain";
 
+export type Mob = MobsState[0];
+
 export const MobsList = (): JSX.Element => {
   const [mobs, setMobs] = useContext(MobsContext);
 
-  type Mob = MobsState[0];
-
   const incrementMob = (mob: Mob, id: string) => {
     setMobs((prevMobs) => {
-      const { creatureName, powerLevel } = mob;
+      const { creatureName, powerLevel, baseCr } = mob;
       return {
         ...prevMobs,
         [id]: {
+          baseCr,
           creatureName,
           powerLevel,
           mobSize: !!prevMobs[id] ? clampInt(prevMobs[id].mobSize + 1) : 1,
