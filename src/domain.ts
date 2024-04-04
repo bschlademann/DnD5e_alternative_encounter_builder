@@ -56,8 +56,8 @@ export const getBaseCrPowerLevel = (baseCr: BaseCr) => {
 };
 
 export const getAllMobsPowerLevel = (mobs: MobsState): number =>
-  Object.values(mobs).reduce((totalPowerLevel, creature) => {
-    const { mobSize, powerLevel, baseCr } = creature;
+  Object.values(mobs).reduce((totalPowerLevel, mob) => {
+    const { mobSize, powerLevel, baseCr } = mob;
     const baseCrPowerLevel = getBaseCrPowerLevel(baseCr);
     return totalPowerLevel + mobSize * (powerLevel + baseCrPowerLevel);
   }, 0);
