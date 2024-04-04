@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { MobsContext } from "../contexts";
-import { getPowerLevelByCharacterLevel } from "../domain";
+import { BaseCr, getPowerLevelByCharacterLevel } from "../domain";
 import {
   powerLevelByCharacterLevel,
   powerLevelByCr,
@@ -19,7 +19,7 @@ export const LeveledNpc = () => {
   const [level, setLevel] = useState(1);
   const [lastId, setId] = useState(0);
   const [mobs, setMobs] = useContext(MobsContext);
-  const [baseCr, setBaseCr] = useState(null);
+  const [baseCr, setBaseCr] = useState<BaseCr>(null);
 
   const validLevels = Object.keys(powerLevelByCharacterLevel).map((cr) =>
     parseFloat(cr)
