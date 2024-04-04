@@ -18,3 +18,5 @@ export const PartyContext = createContext<
 export const CreaturesByIdContext = createContext<CreaturesById>({});
 
 export const NpcsByIdContext = createContext<[NpcById, React.Dispatch<React.SetStateAction<NpcById>>]>([{}, () => undefined]);
+
+export const BaseCrContext = createContext<[number | null , React.Dispatch<React.SetStateAction<number | null>>]>([null, () => undefined]);
