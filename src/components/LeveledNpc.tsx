@@ -37,7 +37,6 @@ export const LeveledNpc = () => {
   };
 
   const handleBaseCrChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    // if (baseCr !== null) add getPowerLevelByCr(baseCr) (maybe devided by 2 or something?) to total powerlevel of creature
     const newBaseCr = parseInt(e.target.value);
     setBaseCr(newBaseCr);
   };
@@ -58,7 +57,7 @@ export const LeveledNpc = () => {
   };
 
   const addToParty = () => {
-    // add NPC to Party
+    // FIXME: add NPC to Party
   };
 
   return (
@@ -93,7 +92,6 @@ export const LeveledNpc = () => {
           </option>
         ))}
       </select>
-      {/* <input type="number" id="leveled-npc-base-creature-cr" placeholder=""/> */}
       <button onClick={addToMobslist}>add to Mobslist</button>
 
       <button onClick={addToParty}>
