@@ -3,7 +3,6 @@ import styles from "./Layout.module.css";
 
 import { MobsSelector } from "./components/MobsSelector";
 import {
-  BaseCrContext,
   CreatureContext,
   CreaturesByIdContext,
   MobsContext,
@@ -23,6 +22,7 @@ export type MobsState = {
     creatureName: string;
     mobSize: number;
     powerLevel: number;
+    baseCr: number | null;
   };
 };
 
@@ -43,7 +43,6 @@ function App() {
   }, []);
 
   return (
-    <BaseCrContext.Provider value={[baseCr, setBaseCr]}>
       <CreaturesByIdContext.Provider value={creaturesById}>
         <MobsContext.Provider value={[mobs, setMobs]}>
           <CreatureContext.Provider value={creatures}>
@@ -63,7 +62,6 @@ function App() {
           </CreatureContext.Provider>
         </MobsContext.Provider>
       </CreaturesByIdContext.Provider>
-    </BaseCrContext.Provider>
   );
 }
 

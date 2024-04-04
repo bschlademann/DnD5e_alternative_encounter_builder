@@ -3,7 +3,6 @@ import { Creature } from "./5etools";
 import { MobsState } from "./App";
 import { TParty } from "./components/Party";
 import { CreaturesById } from "./domain";
-import { NpcById } from "./components/LeveledNpc";
 
 export const MobsContext = createContext<
   [MobsState, React.Dispatch<React.SetStateAction<MobsState>>]
@@ -16,7 +15,3 @@ export const PartyContext = createContext<
 >([{ count: 1, level: 1 }, () => undefined]);
 
 export const CreaturesByIdContext = createContext<CreaturesById>({});
-
-export const NpcsByIdContext = createContext<[NpcById, React.Dispatch<React.SetStateAction<NpcById>>]>([{}, () => undefined]);
-
-export const BaseCrContext = createContext<[number | null , React.Dispatch<React.SetStateAction<number | null>>]>([null, () => undefined]);

@@ -49,19 +49,18 @@ const createGetPowerLevelByCharacterLevel =
 export const getPowerLevelByCharacterLevel = (level: number) =>
   createGetPowerLevelByCharacterLevel(powerLevelByCharacterLevel)(level);
 
-export const getAllMobsPowerLevel = (mobs: MobsState): number => {
-  // const creaturesById = useContext(CreaturesByIdContext);
-  // const creatureIds = Object.keys(mobs).map((str) => parseInt(str));
-  // return creatureIds.reduce((totalPowerLevel, id) => {
-  //   const cr = creaturesById[id].cr;
-  //   return totalPowerLevel + powerLevelByCr[cr] * mobs[id].mobSize;
-  // }, 0);
+export type BaseCr = number | null;
 
-  return Object.values(mobs).reduce((totalPowerLevel, creature) => {
-    const { mobSize, powerLevel } = creature;
-    return totalPowerLevel + mobSize * powerLevel;
-  }, 0);
+export const getBaseCrPowerLevel = (baseCr: BaseCr) => {
+  return baseCr === null ? 0 : getPowerLevelByCr(baseCr);
 };
+
+export const getAllMobsPowerLevel = (mobs: MobsState): number =>
+  Object.values(mobs).reduce((totalPowerLevel, creature) => {
+    const { mobSize, powerLevel, baseCr } = creature;
+    const baseCrPowerLevel = getBaseCrPowerLevel(baseCr);
+    return totalPowerLevel + mobSize * (powerLevel + baseCrPowerLevel);
+  }, 0);
 
 export type Difficulty = {
   partyPowerLevel: number;

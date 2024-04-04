@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { MobsContext } from "../contexts";
 import { clampInt } from "../lib";
 import { MobsState } from "../App";
+import { getBaseCrPowerLevel } from "../domain";
 
 export const MobsList = (): JSX.Element => {
   const [mobs, setMobs] = useContext(MobsContext);
@@ -63,7 +64,7 @@ export const MobsList = (): JSX.Element => {
             const id = mobEntry[0];
             const mob = mobEntry[1];
 
-            const { creatureName, mobSize, powerLevel } = mob;
+            const { creatureName, mobSize, powerLevel, baseCr } = mob;
             return (
               <tr key={`${mob.creatureName}-${id}`}>
                 <td>{mobSize}</td>
@@ -72,7 +73,7 @@ export const MobsList = (): JSX.Element => {
                   <button onClick={() => decrementMob(id)}>-</button>
                 </td>
                 <td>{creatureName}</td>
-                <td>{powerLevel}</td>
+                <td>{powerLevel + getBaseCrPowerLevel(baseCr)}</td>
                 <td>
                   <button onClick={() => deleteMob(id)}>X</button>
                 </td>

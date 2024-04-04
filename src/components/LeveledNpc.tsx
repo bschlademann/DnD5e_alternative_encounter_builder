@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { BaseCrContext, MobsContext } from "../contexts";
+import { MobsContext } from "../contexts";
 import { getPowerLevelByCharacterLevel } from "../domain";
 import {
   powerLevelByCharacterLevel,
@@ -19,7 +19,7 @@ export const LeveledNpc = () => {
   const [level, setLevel] = useState(1);
   const [lastId, setId] = useState(0);
   const [mobs, setMobs] = useContext(MobsContext);
-  const [baseCr, setBaseCr] = useContext(BaseCrContext);
+  const [baseCr, setBaseCr] = useState(null);
 
   const validLevels = Object.keys(powerLevelByCharacterLevel).map((cr) =>
     parseFloat(cr)
@@ -38,6 +38,7 @@ export const LeveledNpc = () => {
 
   const handleBaseCrChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newBaseCr = parseInt(e.target.value);
+    // FIXME: state can be null
     setBaseCr(newBaseCr);
   };
 
@@ -52,7 +53,7 @@ export const LeveledNpc = () => {
     const powerLevel = getPowerLevelByCharacterLevel(level);
     setMobs((prevMobs) => ({
       ...prevMobs,
-      [id]: { creatureName: name, mobSize: 1, powerLevel },
+      [id]: { creatureName: name, mobSize: 1, powerLevel, baseCr },
     }));
   };
 
@@ -86,6 +87,7 @@ export const LeveledNpc = () => {
         id="leveled-npc-base-creature-cr"
         onChange={handleBaseCrChange}
       >
+        {/* FIXME: needs value for state === null */}
         {validCrs.map((validCr) => (
           <option value={validCr} key={`valid-cr-${validCr}`}>
             {validCr}

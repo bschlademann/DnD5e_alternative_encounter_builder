@@ -1,39 +1,30 @@
-# design
-- add shadcnUI
-- add spinner on first fetch
 
 # feat
+- add baseCr for leveled npc creatures into difficulty calculation
 - row virtualization for MobsSelector
-- add leveled NPCs to moblist and Party
+- add leveled NPCs to Party
 - add creatures to party
+- add modal explaining functionality
 
 # refactor
-- refactor state[creatures] from Array to Object
-  - [creatureId: number]: {name: string, cr: number}
 
 # difficulty calculation logic
-- implement leveledNpcs: state, context, include in difficulty calculation
 - handle empty party array more gracefully
 
 # components
-- {MobsSelector}:
-  - handle click on decrement-button for elements that are not present in state
-  - use table-heads for sorting entries, indicate via symbols in heads
-  - FIXME: double entries (e.g. "Quickling")
-
 - {MobList}
   - render only when not empty
-  - add button "clear"
-
-- {LeveledNpcs}
 
 - {LeveledNpcsList}
   - render only when not empty
-  - add button "clear"
 
 - {Party}
   - add-button to add multiple levels of PCs
-    - remove number of already selected level from validLevels
+    - remove number of already selected level from validLevels?
+
+# design
+- add shadcnUI
+- add spinner on first fetch
 
 ## readme
 - update when new functionalities are available
