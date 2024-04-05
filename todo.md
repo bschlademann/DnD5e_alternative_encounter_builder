@@ -1,6 +1,5 @@
 # fix
-- {LeveledNpc}
-  - baseCr Selector needs "null" setting, otherwise each LeveledNpc not only has their power level derived from their characterlevel but additionaly has a baseCr of at least 0 which is factored into their power level
+
 
 # feat
 - add leveled NPCs to Party
@@ -12,9 +11,6 @@
 
 # components
 - {MobList}
-  - render only when not empty?
-
-- {LeveledNpcsList}
   - render only when not empty?
 
 - {Party}

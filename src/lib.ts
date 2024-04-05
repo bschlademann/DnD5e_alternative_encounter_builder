@@ -38,3 +38,13 @@ export const clampInt = (n: number) =>
   n <= Number.MAX_SAFE_INTEGER ? n : Number.MAX_SAFE_INTEGER;
 
 export const parseToTwoDecimals = (n: number) => parseFloat(n.toFixed(2));
+
+export const invertStringKeysAndValues = (obj: { [key: string]: string }) => {
+  return Object.entries(obj).reduce<{ [key: string]: string }>(
+    (invertedObj, [key, value]) => {
+      invertedObj[value] = key;
+      return invertedObj;
+    },
+    {}
+  );
+};

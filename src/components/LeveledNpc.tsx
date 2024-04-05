@@ -5,6 +5,7 @@ import {
   powerLevelByCharacterLevel,
   powerLevelByCr,
 } from "../power-level-data";
+import { invertStringKeysAndValues } from "../lib";
 
 export type TLeveledNpc = { name: string; level: number };
 export type NpcById = { [id: string]: TLeveledNpc };
@@ -24,7 +25,37 @@ export const LeveledNpc = () => {
   const validLevels = Object.keys(powerLevelByCharacterLevel).map((cr) =>
     parseFloat(cr)
   );
-  const validCrs = Object.keys(powerLevelByCr).map((cr) => parseFloat(cr));
+
+  type CrFractionsByFloats = { [crFloat: number]: string };
+  const crFractionsByFloats: CrFractionsByFloats = {
+    "0.125": "1/8",
+    "0.25": "1/4",
+    "0.5": "1/2",
+  };
+  const crFloatsByFractions = invertStringKeysAndValues(crFractionsByFloats);
+
+  const getCrOptionValues = () => {
+    const crOptionValues = Object.keys(powerLevelByCr).filter(
+      (cr) => parseFloat(cr) % 1 === 0
+    );
+    crOptionValues.unshift("-");
+    crOptionValues.splice(2, 0, ...Object.values(crFractionsByFloats));
+    return crOptionValues;
+  };
+
+  const getValidCrSelectValue = (validCr: string | number): string => {
+    // Directly return the string for "-", indicating no selection
+    if (validCr === "-") return "";
+
+    // Check if validCr is a known fractional CR and convert it, otherwise treat it as a string
+    const floatStr =
+      typeof validCr === "string"
+        ? crFloatsByFractions[validCr] || validCr
+        : validCr.toString();
+
+    // Ensure the result is always treated as a string, checking if it represents a valid number
+    return !isNaN(parseFloat(floatStr)) ? floatStr : "";
+  };
 
   const handleLevelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLevel = parseInt(e.target.value);
@@ -37,8 +68,8 @@ export const LeveledNpc = () => {
   };
 
   const handleBaseCrChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newBaseCr = parseInt(e.target.value);
-    // FIXME: state can be null
+    const parsedValue = parseFloat(e.target.value);
+    const newBaseCr = isNaN(parsedValue) ? null : parsedValue;
     setBaseCr(newBaseCr);
   };
 
@@ -58,7 +89,7 @@ export const LeveledNpc = () => {
   };
 
   const addToParty = () => {
-    // FIXME: add NPC to Party
+    // add NPC to Party
   };
 
   return (
@@ -87,9 +118,11 @@ export const LeveledNpc = () => {
         id="leveled-npc-base-creature-cr"
         onChange={handleBaseCrChange}
       >
-        {/* FIXME: needs value for state === null */}
-        {validCrs.map((validCr) => (
-          <option value={validCr} key={`valid-cr-${validCr}`}>
+        {getCrOptionValues().map((validCr) => (
+          <option
+            value={getValidCrSelectValue(validCr)}
+            key={`valid-cr-${validCr}`}
+          >
             {validCr}
           </option>
         ))}
