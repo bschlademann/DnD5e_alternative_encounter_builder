@@ -6,7 +6,7 @@ import { TParty } from "./components/Party.js";
 import { useContext } from "react";
 import { CreaturesByIdContext, MobsContext, PartyContext } from "./contexts.js";
 import { MobsState } from "./App.js";
-import { parseToTwoDecimals } from "./lib.js";
+import { truncateToTwoDecimals } from "./lib.js";
 import { Creature } from "./5etools.js";
 import { difficultyDescriptions } from "./difficulty-descriptions.js";
 
@@ -116,9 +116,9 @@ export const formatDifficultyOutput = (difficulty: Difficulty) => {
     description,
   } = difficulty;
   return {
-    partyPowerLevel: parseToTwoDecimals(partyPowerLevel),
-    powerLevelTotalOfAllMobs: parseToTwoDecimals(powerLevelTotalOfAllMobs),
-    difficulty: `${description} (${parseToTwoDecimals(
+    partyPowerLevel: truncateToTwoDecimals(partyPowerLevel),
+    powerLevelTotalOfAllMobs: truncateToTwoDecimals(powerLevelTotalOfAllMobs),
+    difficulty: `${description} (${truncateToTwoDecimals(
       difficultyValue * 100
     )}%)`,
   };
