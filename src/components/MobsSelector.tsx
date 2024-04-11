@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Creature } from "../5etools";
 import { CreatureContext, MobsContext } from "../contexts";
-import { clampInt, truncateToTwoDecimals } from "../lib";
+import { clampInt, truncateDecimals } from "../lib";
 import { powerLevelByCr } from "../power-level-data";
 import { formatCrAsFraction, formatPowerLevelAsFraction } from "../domain";
 

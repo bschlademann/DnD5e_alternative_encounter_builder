@@ -6,7 +6,7 @@ import { TParty } from "./components/Party.js";
 import { useContext } from "react";
 import { CreaturesByIdContext, MobsContext, PartyContext } from "./contexts.js";
 import { MobsState } from "./App.js";
-import { truncateToTwoDecimals } from "./lib.js";
+import { truncateDecimals } from "./lib.js";
 import { Creature } from "./5etools.js";
 import { difficultyDescriptions } from "./difficulty-descriptions.js";
 
@@ -76,13 +76,11 @@ export const formatPowerLevelAsFraction = (cr: number) => {
     : powerLevelByCr[cr].toString();
 };
 
-
-
 export type CrFractionsByFloats = { [crFloat: number]: string };
 export const crFractionsByFloats: CrFractionsByFloats = {
-  "0.125": "1/8",
-  "0.25": "1/4",
-  "0.5": "1/2",
+  0.125: "1/8",
+  0.25: "1/4",
+  0.5: "1/2",
 };
 
 export const formatCrAsFraction = (cr: number) => {
@@ -90,8 +88,9 @@ export const formatCrAsFraction = (cr: number) => {
     ? crFractionsByFloats[cr]
     : cr;
 };
- 
 
+export const getTruncatedPowerLevel = (powerLevel: number, baseCr: BaseCr) => truncateDecimals((powerLevel + getBaseCrPowerLevel(baseCr)))
+ 
 export type Difficulty = {
   partyPowerLevel: number;
   powerLevelTotalOfAllMobs: number;
@@ -146,9 +145,9 @@ export const formatDifficultyOutput = (difficulty: Difficulty) => {
     description,
   } = difficulty;
   return {
-    partyPowerLevel: truncateToTwoDecimals(partyPowerLevel),
-    powerLevelTotalOfAllMobs: truncateToTwoDecimals(powerLevelTotalOfAllMobs),
-    difficulty: `${description} (${truncateToTwoDecimals(
+    partyPowerLevel,
+    powerLevelTotalOfAllMobs,
+    difficulty: `${description} (${truncateDecimals(
       difficultyValue * 100
     )}%)`,
   };

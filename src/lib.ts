@@ -37,7 +37,13 @@ export const getRange = (range: [number, number]) => {
 export const clampInt = (n: number) =>
   n <= Number.MAX_SAFE_INTEGER ? n : Number.MAX_SAFE_INTEGER;
 
-export const truncateToTwoDecimals = (n: number) => parseFloat(n.toFixed(2));
+export const truncateDecimals = (n: number) => {
+  const decimalPart = n.toString().split(".")[1];
+  if (decimalPart && decimalPart.length > 2) {
+    return parseFloat(n.toFixed(2));
+  }
+  return n;
+};
 
 export const invertStringKeysAndValues = (obj: { [key: string]: string }) => {
   return Object.entries(obj).reduce<{ [key: string]: string }>(
