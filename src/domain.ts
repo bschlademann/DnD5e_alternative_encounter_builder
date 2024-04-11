@@ -4,7 +4,7 @@ import {
 } from "./power-level-data.js";
 import { TParty } from "./components/Party.js";
 import { useContext } from "react";
-import { CreaturesByIdContext, MobsContext, PartyContext } from "./contexts.js";
+import { MobsContext, PartyContext } from "./contexts.js";
 import { MobsState } from "./App.js";
 import { truncateDecimals } from "./lib.js";
 import { Creature } from "./5etools.js";
@@ -27,12 +27,6 @@ export const getCreaturesById = (creatures: Creature[]) => {
     creaturesById[creature.id] = { name, cr, powerLevel };
   });
   return creaturesById;
-};
-
-export const getCreaturePowerLevel = (creatureId: number): number => {
-  const creaturesById = useContext(CreaturesByIdContext);
-  const creature = creaturesById[creatureId];
-  return powerLevelByCr[creature.cr];
 };
 
 export const createGetPowerLevelByCr =
