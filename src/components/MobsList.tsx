@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { MobsContext } from "../contexts";
 import { clampInt } from "../lib";
 import { MobsState } from "../App";
-import { getBaseCrPowerLevel } from "../domain";
+import { formatPowerLevelAsFraction, getBaseCrPowerLevel } from "../domain";
 
 export type Mob = MobsState[0];
 
@@ -74,7 +74,11 @@ export const MobsList = (): JSX.Element => {
                   <button onClick={() => decrementMob(id)}>-</button>
                 </td>
                 <td>{creatureName}</td>
-                <td>{powerLevel + getBaseCrPowerLevel(baseCr)}</td>
+                
+                {/* the values for powerLevels get displayed as decimals here instead of fractions
+                fractions like 13/6  (1 1/2(lv2) + 2/3(cr 1/8) = 13/6) are not really readable 
+                so I only use the fractions that are presend for standart CR values*/}
+                <td>{(powerLevel + getBaseCrPowerLevel(baseCr)).toFixed(2)}</td>
                 <td>
                   <button onClick={() => deleteMob(id)}>X</button>
                 </td>

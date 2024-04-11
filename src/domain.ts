@@ -62,6 +62,36 @@ export const getAllMobsPowerLevel = (mobs: MobsState): number =>
     return totalPowerLevel + mobSize * (powerLevel + baseCrPowerLevel);
   }, 0);
 
+export type PowerLevelFractionsByCrFloats = {
+  [powerLevelFraction: number]: string;
+};
+const powerLevelFloatsByCr: PowerLevelFractionsByCrFloats = {
+  0: "1/3",
+  0.125: "2/3",
+  0.5: "1 1/2",
+};
+export const formatPowerLevelAsFraction = (cr: number) => {
+  return powerLevelFloatsByCr[cr]
+    ? powerLevelFloatsByCr[cr]
+    : powerLevelByCr[cr].toString();
+};
+
+
+
+export type CrFractionsByFloats = { [crFloat: number]: string };
+export const crFractionsByFloats: CrFractionsByFloats = {
+  "0.125": "1/8",
+  "0.25": "1/4",
+  "0.5": "1/2",
+};
+
+export const formatCrAsFraction = (cr: number) => {
+  return crFractionsByFloats[cr]
+    ? crFractionsByFloats[cr]
+    : cr;
+};
+ 
+
 export type Difficulty = {
   partyPowerLevel: number;
   powerLevelTotalOfAllMobs: number;

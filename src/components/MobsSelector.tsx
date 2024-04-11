@@ -3,6 +3,7 @@ import { Creature } from "../5etools";
 import { CreatureContext, MobsContext } from "../contexts";
 import { clampInt, truncateToTwoDecimals } from "../lib";
 import { powerLevelByCr } from "../power-level-data";
+import { formatCrAsFraction, formatPowerLevelAsFraction } from "../domain";
 
 export const MobsSelector = () => {
   const [filterQuery, setFilterQuery] = useState("");
@@ -43,7 +44,7 @@ export const MobsSelector = () => {
       return {
         ...prevMobs,
         [id]: {
-          // add "baseCr: null" herebecause getAllMobsPowerLevel() needs it
+          // add "baseCr: null" here because getAllMobsPowerLevel() needs it
           // for calculating the total power level of a mix
           // of Creature objects and LeveledNpc objects
           // -> LeveledNpc objects may have a baseCr in addition to a power level
@@ -71,14 +72,6 @@ export const MobsSelector = () => {
   const renderSortIndicator = (field: string) => {
     return sortField === field ? (sortDirection === "asc" ? " ▲" : " ▼") : "";
   };
-
-  type PowerLevelFractionsByCrFloats = { [powerLevelFraction: number]: string };
-  const powerLevelFloatsByCr: PowerLevelFractionsByCrFloats = { 0: "1/3", 0.125: "2/3", 0.5: "1 1/2" };
-
-  // FIXME: has to check CR, not Powerlevel
-  const formatPowerLevel = (cr: number) => {
-     return powerLevelFloatsByCr[cr] ? powerLevelFloatsByCr[cr] : powerLevelByCr[cr]
-  }
 
   return (
     <div className="mobs-selector">
@@ -121,8 +114,8 @@ export const MobsSelector = () => {
                 </button>
               </td>
               <td>{creature.name}</td>
-              <td>{creature.cr}</td>
-              <td>{formatPowerLevel(creature.cr)}</td>
+              <td>{formatCrAsFraction(creature.cr)}</td>
+              <td>{formatPowerLevelAsFraction(creature.cr)}</td>
             </tr>
           ))}
         </tbody>

@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { MobsContext } from "../contexts";
-import { BaseCr, getPowerLevelByCharacterLevel } from "../domain";
+import { BaseCr, crFractionsByFloats, getPowerLevelByCharacterLevel } from "../domain";
 import {
   powerLevelByCharacterLevel,
   powerLevelByCr,
@@ -15,6 +15,7 @@ export type LeveledNpcProps = {
   level: number;
 };
 
+
 export const LeveledNpc = () => {
   const [name, setName] = useState("");
   const [level, setLevel] = useState(1);
@@ -26,12 +27,6 @@ export const LeveledNpc = () => {
     parseFloat(cr)
   );
 
-  type CrFractionsByFloats = { [crFloat: number]: string };
-  const crFractionsByFloats: CrFractionsByFloats = {
-    "0.125": "1/8",
-    "0.25": "1/4",
-    "0.5": "1/2",
-  };
   const crFloatsByFractions = invertStringKeysAndValues(crFractionsByFloats);
 
   const getCrOptionValues = () => {
@@ -44,16 +39,13 @@ export const LeveledNpc = () => {
   };
 
   const getValidCrSelectValue = (validCr: string | number): string => {
-    // Directly return the string for "-", indicating no selection
     if (validCr === "-") return "";
 
-    // Check if validCr is a known fractional CR and convert it, otherwise treat it as a string
     const floatStr =
       typeof validCr === "string"
         ? crFloatsByFractions[validCr] || validCr
         : validCr.toString();
 
-    // Ensure the result is always treated as a string, checking if it represents a valid number
     return !isNaN(parseFloat(floatStr)) ? floatStr : "";
   };
 
