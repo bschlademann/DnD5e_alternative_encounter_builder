@@ -6,7 +6,19 @@ const Option = (props: { value: number }) => {
   const { value } = props;
   return <option value={value}>{value}</option>;
 };
-export type TParty = { count: number; level: number };
+
+
+// export type TLeveledNpc = { name: string; level: number };
+// export type NpcById = { [id: string]: TLeveledNpc };
+// export type LeveledNpcProps = {
+//   id: string;
+//   name: string;
+//   level: number;
+// };
+
+export type CustomCreature = {level: number | "", cr: number | "", mobSize: number}
+
+export type TParty = { count: number; level: number; customCreature: CustomCreature[]};
 
 export const Party = () => {
   const [party, setParty] = useContext(PartyContext);

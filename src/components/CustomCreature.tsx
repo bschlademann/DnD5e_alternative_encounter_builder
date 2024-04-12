@@ -7,16 +7,7 @@ import {
 } from "../power-level-data";
 import { invertStringKeysAndValues } from "../lib";
 
-export type TLeveledNpc = { name: string; level: number };
-export type NpcById = { [id: string]: TLeveledNpc };
-export type LeveledNpcProps = {
-  id: string;
-  name: string;
-  level: number;
-};
-
-
-export const LeveledNpc = () => {
+export const CustomCreature = () => {
   const [name, setName] = useState("");
   const [level, setLevel] = useState(1);
   const [lastId, setId] = useState(0);

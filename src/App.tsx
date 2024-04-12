@@ -14,8 +14,8 @@ import { useState, useEffect } from "react";
 import { Creature } from "./5etools";
 import { CreaturesById, getCreaturesById } from "./domain";
 import { getOrUpdateLocalStorage } from "./local-storage";
-import { LeveledNpc } from "./components/LeveledNpc";
-import { Party } from "./components/Party";
+import { CustomCreature } from "./components/CustomCreature";
+import { Party, TParty } from "./components/Party";
 
 export type MobsState = {
   [creatureId: string]: {
@@ -27,11 +27,10 @@ export type MobsState = {
 };
 
 function App() {
-  const [party, setParty] = useState({ count: 1, level: 1 });
+  const [party, setParty] = useState<TParty>({ count: 1, level: 1, customCreature: []});
   const [creatures, setCreatures] = useState<Creature[]>([]);
   const [mobs, setMobs] = useState<MobsState>({});
   const [creaturesById, setCreaturesById] = useState<CreaturesById>({});
-  const [baseCr, setBaseCr] = useState<number | null>(null);
 
   useEffect(() => {
     // localStorage.clear();
@@ -52,7 +51,7 @@ function App() {
                   <MobsSelector />
                 </div>
                 <div className={styles.right}>
-                  <LeveledNpc />
+                  <CustomCreature />
                   <MobsList />
                   <Party />
                   <Difficulty />
