@@ -1,12 +1,8 @@
 import React, { useContext } from "react";
 import { PartyContext } from "../contexts";
 import { getRange } from "../lib";
-
-const Option = (props: { value: number }) => {
-  const { value } = props;
-  return <option value={value}>{value}</option>;
-};
-
+import { MobsState } from "../App";
+import { getPartyPowerLevel } from "../domain";
 
 // export type TLeveledNpc = { name: string; level: number };
 // export type NpcById = { [id: string]: TLeveledNpc };
@@ -16,9 +12,15 @@ const Option = (props: { value: number }) => {
 //   level: number;
 // };
 
-export type CustomCreature = {level: number | "", cr: number | "", mobSize: number}
+// export type CustomCreature = {
+//   [id: string]: { level: number; cr: number; mobSize: number };
+// };
 
-export type TParty = { count: number; level: number; customCreature: CustomCreature[]};
+export type TParty = {
+  count: number;
+  level: number;
+  customCreatures: MobsState;
+};
 
 export const Party = () => {
   const [party, setParty] = useContext(PartyContext);
@@ -44,19 +46,22 @@ export const Party = () => {
   const validLevels = getRange([1, 20]);
   return (
     <div className="party">
+      <h2>Party</h2>
       <label htmlFor="character-count">number of characters</label>
       <select id="character-count" value={party.count} onChange={onChangeCount}>
         {validCounts.map((value) => (
-          <Option value={value} key={`character-count-${value}`} />
+          // <Option value={value} key={`character-count-${value}`} />
+           <option value={value} key={`character-count-${value}`}>{value}</option>
         ))}
       </select>
 
       <label htmlFor="character-level">level</label>
       <select id="character-level" value={party.level} onChange={onChangeLevel}>
         {validLevels.map((value) => (
-          <Option value={value} key={`character-level-${value}`} />
+          <option value={value} key={`character-level-${value}`}>{value}</option>
         ))}
       </select>
+      <div>Party total PEL: {getPartyPowerLevel(party)}</div>
     </div>
   );
 };
