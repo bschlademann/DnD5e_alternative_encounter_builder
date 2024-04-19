@@ -9,6 +9,7 @@ import { MobsState } from "./App.js";
 import { truncateDecimals } from "./lib.js";
 import { Creature } from "./5etools.js";
 import { difficultyDescriptions } from "./difficulty-descriptions.js";
+import { Mob } from "./components/MobsList.js";
 
 export const getPartyPowerLevel = (party: TParty): number => {
   return party.count * powerLevelByCharacterLevel[party.level];
@@ -36,24 +37,31 @@ export const createGetPowerLevelByCr =
 export const getPowerLevelByCr = (cr: number) =>
   createGetPowerLevelByCr(powerLevelByCr)(cr);
 
-const createGetPowerLevelByCharacterLevel =
-  (powerLevelByCharacterLevel: Record<number, number>) => (level: number) => {
-    return powerLevelByCharacterLevel[level];
-  };
-export const getPowerLevelByCharacterLevel = (level: number) =>
+export const createGetPowerLevelByCharacterLevel =
+  (powerLevelByCharacterLevel: Record<number, number>) => (level: Level) =>
+    level === null ? 0 : powerLevelByCharacterLevel[level];
+
+export const getPowerLevelByCharacterLevel = (level: Level) =>
   createGetPowerLevelByCharacterLevel(powerLevelByCharacterLevel)(level);
 
 export type BaseCr = number | null;
+
+export type Level = number | null;
 
 export const getBaseCrPowerLevel = (baseCr: BaseCr) => {
   return baseCr === null ? 0 : getPowerLevelByCr(baseCr);
 };
 
+export const getMobTotalPowerLevel = (mob: Mob) => {
+  const { level, baseCr } = mob;
+  return getPowerLevelByCharacterLevel(level) + getBaseCrPowerLevel(baseCr);
+};
+
 export const getAllMobsPowerLevel = (mobs: MobsState): number =>
   Object.values(mobs).reduce((totalPowerLevel, mob) => {
-    const { mobSize, powerLevel, baseCr } = mob;
-    const baseCrPowerLevel = getBaseCrPowerLevel(baseCr);
-    return totalPowerLevel + mobSize * (powerLevel + baseCrPowerLevel);
+    const { mobSize } = mob;
+    const powerLevel = getMobTotalPowerLevel(mob);
+    return totalPowerLevel + mobSize * powerLevel;
   }, 0);
 
 export type PowerLevelFractionsByCrFloats = {
@@ -78,13 +86,9 @@ export const crFractionsByFloats: CrFractionsByFloats = {
 };
 
 export const formatCrAsFraction = (cr: number) => {
-  return crFractionsByFloats[cr]
-    ? crFractionsByFloats[cr]
-    : cr;
+  return crFractionsByFloats[cr] ? crFractionsByFloats[cr] : cr;
 };
 
-export const getTruncatedPowerLevel = (powerLevel: number, baseCr: BaseCr) => truncateDecimals((powerLevel + getBaseCrPowerLevel(baseCr)))
- 
 export type Difficulty = {
   partyPowerLevel: number;
   powerLevelTotalOfAllMobs: number;
@@ -141,8 +145,6 @@ export const formatDifficultyOutput = (difficulty: Difficulty) => {
   return {
     partyPowerLevel,
     powerLevelTotalOfAllMobs,
-    difficulty: `${description} (${truncateDecimals(
-      difficultyValue * 100
-    )}%)`,
+    difficulty: `${description} (${truncateDecimals(difficultyValue * 100)}%)`,
   };
 };

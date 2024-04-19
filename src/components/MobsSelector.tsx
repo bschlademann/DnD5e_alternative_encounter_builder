@@ -2,7 +2,6 @@ import { useContext, useState } from "react";
 import { Creature } from "../5etools";
 import { CreatureContext, MobsContext } from "../contexts";
 import { clampInt, truncateDecimals } from "../lib";
-import { powerLevelByCr } from "../power-level-data";
 import { formatCrAsFraction, formatPowerLevelAsFraction } from "../domain";
 
 export const MobsSelector = () => {
@@ -50,7 +49,7 @@ export const MobsSelector = () => {
           // -> LeveledNpc objects may have a baseCr in addition to a power level
           baseCr: null,
           creatureName: name,
-          powerLevel: powerLevel,
+          level: powerLevel,
           mobSize: !!prevMobs[id] ? clampInt(prevMobs[id].mobSize + 1) : 1,
         },
       };
@@ -75,6 +74,7 @@ export const MobsSelector = () => {
 
   return (
     <div className="mobs-selector">
+      <h2>Mobs Selector</h2>
       <input
         type="text"
         placeholder="Enter creature name"

@@ -21,13 +21,13 @@ export type MobsState = {
   [creatureId: string]: {
     creatureName: string;
     mobSize: number;
-    powerLevel: number;
+    level: number| null;
     baseCr: number | null;
   };
 };
 
 function App() {
-  const [party, setParty] = useState<TParty>({ count: 1, level: 1, customCreature: []});
+  const [party, setParty] = useState<TParty>({ count: 1, level: 1, customCreatures: {}});
   const [creatures, setCreatures] = useState<Creature[]>([]);
   const [mobs, setMobs] = useState<MobsState>({});
   const [creaturesById, setCreaturesById] = useState<CreaturesById>({});

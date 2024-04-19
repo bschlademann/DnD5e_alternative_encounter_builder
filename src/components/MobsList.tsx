@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { MobsContext } from "../contexts";
 import { clampInt, truncateDecimals } from "../lib";
 import { MobsState } from "../App";
-import { getBaseCrPowerLevel, getTruncatedPowerLevel } from "../domain";
+import { getAllMobsPowerLevel, getMobTotalPowerLevel } from "../domain";
 
 export type Mob = MobsState[0];
 
@@ -11,13 +11,13 @@ export const MobsList = (): JSX.Element => {
 
   const incrementMob = (mob: Mob, id: string) => {
     setMobs((prevMobs) => {
-      const { creatureName, powerLevel, baseCr } = mob;
+      const { creatureName, level: powerLevel, baseCr } = mob;
       return {
         ...prevMobs,
         [id]: {
           baseCr,
           creatureName,
-          powerLevel,
+          level: powerLevel,
           mobSize: !!prevMobs[id] ? clampInt(prevMobs[id].mobSize + 1) : 1,
         },
       };
@@ -51,6 +51,7 @@ export const MobsList = (): JSX.Element => {
 
   return (
     <div>
+      <h2>Mobs List</h2>
       <table className="mobs-list">
         <thead>
           <tr>
@@ -64,8 +65,9 @@ export const MobsList = (): JSX.Element => {
           {Object.entries(mobs).map((mobEntry) => {
             const id = mobEntry[0];
             const mob = mobEntry[1];
-
-            const { creatureName, mobSize, powerLevel, baseCr } = mob;
+            const { creatureName, mobSize, level, baseCr } = mob;
+            const powerLevel = getMobTotalPowerLevel(mob);
+            const truncatedPowerLevel = truncateDecimals(powerLevel);
             return (
               <tr key={`${mob.creatureName}-${id}`}>
                 <td>{mobSize}</td>
@@ -78,7 +80,7 @@ export const MobsList = (): JSX.Element => {
                 {/* the values for powerLevels get displayed as decimals here instead of fractions
                 fractions like 13/6  (1 1/2(lv2) + 2/3(cr 1/8) = 13/6) are not really readable 
                 so I only use the fractions that are presend for standart CR values*/}
-                <td>{getTruncatedPowerLevel(powerLevel, baseCr)}</td>
+                <td>{truncatedPowerLevel}</td>
                 <td>
                   <button onClick={() => deleteMob(id)}>X</button>
                 </td>
@@ -87,6 +89,7 @@ export const MobsList = (): JSX.Element => {
           })}
         </tbody>
       </table>
+      <div>Mobs total PEL: {getAllMobsPowerLevel(mobs)}</div>
     </div>
   );
 };

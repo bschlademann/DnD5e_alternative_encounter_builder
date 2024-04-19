@@ -1,6 +1,10 @@
 import { useContext, useState } from "react";
-import { MobsContext } from "../contexts";
-import { BaseCr, crFractionsByFloats, getPowerLevelByCharacterLevel } from "../domain";
+import { MobsContext, PartyContext } from "../contexts";
+import {
+  BaseCr,
+  crFractionsByFloats,
+  getPowerLevelByCharacterLevel,
+} from "../domain";
 import {
   powerLevelByCharacterLevel,
   powerLevelByCr,
@@ -12,6 +16,7 @@ export const CustomCreature = () => {
   const [level, setLevel] = useState(1);
   const [lastId, setId] = useState(0);
   const [mobs, setMobs] = useContext(MobsContext);
+  const [party, setParty] = useContext(PartyContext);
   const [baseCr, setBaseCr] = useState<BaseCr>(null);
 
   const validLevels = Object.keys(powerLevelByCharacterLevel).map((cr) =>
@@ -56,27 +61,49 @@ export const CustomCreature = () => {
     setBaseCr(newBaseCr);
   };
 
-  const getNextLeveledNpcId = () => {
+  const getNextCustomCreatureId = () => {
     const id = lastId + 1;
     setId(id);
     return `leveled-npc-${id}`;
   };
 
   const addToMobslist = () => {
-    const id = getNextLeveledNpcId();
+    const id = getNextCustomCreatureId();
     const powerLevel = getPowerLevelByCharacterLevel(level);
     setMobs((prevMobs) => ({
       ...prevMobs,
-      [id]: { creatureName: name, mobSize: 1, powerLevel, baseCr },
+      [id]: { creatureName: name, mobSize: 1, level: powerLevel, baseCr },
     }));
   };
 
   const addToParty = () => {
+
     // add NPC to Party
+    type TParty = {
+      count: number;
+      level: number;
+      customCreatures: {
+        [creatureId: string]: {
+          creatureName: string;
+          mobSize: number;
+          level: number| null;
+          baseCr: number | null;
+        };
+      };
+    }
+
+    // FIXME: rename powerLevel in MobsState to PowerLevelFromCharacterLevel? or change the way it works?
+    // is it better to have a level and a cr in there instead of a powerlevel?
+    const id = getNextCustomCreatureId();
+    // FIXME: the whole idea is that a custom creature can have only a cr, only a level or both -> level must be number | null
+    // const powerLevel =
+    // setParty(prevParty => ({...prevParty, customCreatures[id]: { creatureName: name, mobSize: 1, powerLevel, baseCr }}))
+    
   };
 
   return (
     <>
+      <h2>Add a custom Creature</h2>
       <label htmlFor="leveled-npc-name">name</label>
       <input
         type="text"
@@ -106,11 +133,12 @@ export const CustomCreature = () => {
             value={getValidCrSelectValue(validCr)}
             key={`valid-cr-${validCr}`}
           >
+            
             {validCr}
           </option>
         ))}
       </select>
-      <button onClick={addToMobslist}>add to Mobslist</button>
+      <button onClick={addToMobslist}>add to Mobs List</button>
 
       <button onClick={addToParty}>
         <s>add to Party</s>
