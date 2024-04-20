@@ -66,6 +66,7 @@ export const MobsList = (): JSX.Element => {
             const id = mobEntry[0];
             const mob = mobEntry[1];
             const { creatureName, mobSize, level, baseCr } = mob;
+            console.log({mob, totalPel: getMobTotalPowerLevel(mob)})
             const powerLevel = getMobTotalPowerLevel(mob);
             const truncatedPowerLevel = truncateDecimals(powerLevel);
             return (

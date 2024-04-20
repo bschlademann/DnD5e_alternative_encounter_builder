@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { MobsContext, PartyContext } from "../contexts";
 import {
   BaseCr,
+  Level,
   crFractionsByFloats,
   getPowerLevelByCharacterLevel,
 } from "../domain";
@@ -13,7 +14,7 @@ import { invertStringKeysAndValues } from "../lib";
 
 export const CustomCreature = () => {
   const [name, setName] = useState("");
-  const [level, setLevel] = useState(1);
+  const [level, setLevel] = useState<Level>(null);
   const [lastId, setId] = useState(0);
   const [mobs, setMobs] = useContext(MobsContext);
   const [party, setParty] = useContext(PartyContext);
@@ -53,19 +54,21 @@ export const CustomCreature = () => {
   };
 
   const handleLevelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const newLevel = parseInt(e.target.value);
+    const parsedValue = parseInt(e.target.value);
+    const newLevel = isNaN(parsedValue) ? null : parsedValue;
     setLevel(newLevel);
   };
 
-  const handelNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newName = e.target.value;
-    setName(newName);
-  };
-
+  
   const handleBaseCrChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const parsedValue = parseFloat(e.target.value);
     const newBaseCr = isNaN(parsedValue) ? null : parsedValue;
     setBaseCr(newBaseCr);
+  };
+  
+  const handelNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newName = e.target.value;
+    setName(newName);
   };
 
   const getNextCustomCreatureId = () => {
