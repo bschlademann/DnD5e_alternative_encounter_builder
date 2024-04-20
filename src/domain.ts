@@ -21,11 +21,23 @@ export type CreaturesById = {
 
 export const getCreaturesById = (creatures: Creature[]) => {
   let creaturesById: {
-    [creatureId: string]: { name: string; cr: number; powerLevel: number };
+    [creatureId: string]: {
+      name: string;
+      cr: number;
+      // powerLevel: number
+    };
   } = {};
   creatures.forEach((creature) => {
-    const { name, cr, powerLevel } = creature;
-    creaturesById[creature.id] = { name, cr, powerLevel };
+    const {
+      name,
+      cr,
+      //  powerLevel
+    } = creature;
+    creaturesById[creature.id] = {
+      name,
+      cr,
+      // powerLevel
+    };
   });
   return creaturesById;
 };
@@ -37,6 +49,8 @@ export const createGetPowerLevelByCr =
 export const getPowerLevelByCr = (cr: number) =>
   createGetPowerLevelByCr(powerLevelByCr)(cr);
 
+export type Level = number | null;
+
 export const createGetPowerLevelByCharacterLevel =
   (powerLevelByCharacterLevel: Record<number, number>) => (level: Level) =>
     level === null ? 0 : powerLevelByCharacterLevel[level];
@@ -45,8 +59,6 @@ export const getPowerLevelByCharacterLevel = (level: Level) =>
   createGetPowerLevelByCharacterLevel(powerLevelByCharacterLevel)(level);
 
 export type BaseCr = number | null;
-
-export type Level = number | null;
 
 export const getBaseCrPowerLevel = (baseCr: BaseCr) => {
   return baseCr === null ? 0 : getPowerLevelByCr(baseCr);

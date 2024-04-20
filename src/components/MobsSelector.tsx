@@ -39,7 +39,12 @@ export const MobsSelector = () => {
 
   const addToMobsList = (creature: Creature) => {
     setMobs((prevMobs) => {
-      const { name, id, powerLevel } = creature;
+      const {
+        name,
+        id,
+        cr,
+        //  powerLevel
+      } = creature;
       return {
         ...prevMobs,
         [id]: {
@@ -47,9 +52,9 @@ export const MobsSelector = () => {
           // for calculating the total power level of a mix
           // of Creature objects and LeveledNpc objects
           // -> LeveledNpc objects may have a baseCr in addition to a power level
-          baseCr: null,
+          baseCr: cr,
+          level: null,
           creatureName: name,
-          level: powerLevel,
           mobSize: !!prevMobs[id] ? clampInt(prevMobs[id].mobSize + 1) : 1,
         },
       };

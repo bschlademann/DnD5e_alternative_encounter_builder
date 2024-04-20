@@ -19,19 +19,26 @@ export const CustomCreature = () => {
   const [party, setParty] = useContext(PartyContext);
   const [baseCr, setBaseCr] = useState<BaseCr>(null);
 
-  const validLevels = Object.keys(powerLevelByCharacterLevel).map((cr) =>
-    parseFloat(cr)
-  );
+  
+  const getLevelOptionValues = () => {
+    return ["-", ...Object.keys(powerLevelByCharacterLevel)];
+  };
 
   const crFloatsByFractions = invertStringKeysAndValues(crFractionsByFloats);
 
+  // const getCrOptionValues = () => {
+  //   const crOptionValues = Object.keys(powerLevelByCr).filter(
+  //     (cr) => parseFloat(cr) % 1 === 0
+  //   );
+  //   crOptionValues.unshift("-");
+  //   crOptionValues.splice(2, 0, ...Object.values(crFractionsByFloats));
+  //   return crOptionValues;
+  // };
+
   const getCrOptionValues = () => {
-    const crOptionValues = Object.keys(powerLevelByCr).filter(
-      (cr) => parseFloat(cr) % 1 === 0
-    );
-    crOptionValues.unshift("-");
-    crOptionValues.splice(2, 0, ...Object.values(crFractionsByFloats));
-    return crOptionValues;
+    const integerCrValues = Object.keys(powerLevelByCr)
+      .filter(cr => parseFloat(cr) % 1 === 0);
+    return ["-", ...integerCrValues, ...Object.values(crFractionsByFloats)];
   };
 
   const getValidCrSelectValue = (validCr: string | number): string => {
@@ -69,10 +76,10 @@ export const CustomCreature = () => {
 
   const addToMobslist = () => {
     const id = getNextCustomCreatureId();
-    const powerLevel = getPowerLevelByCharacterLevel(level);
+    // const powerLevel = getPowerLevelByCharacterLevel(level);
     setMobs((prevMobs) => ({
       ...prevMobs,
-      [id]: { creatureName: name, mobSize: 1, level: powerLevel, baseCr },
+      [id]: { creatureName: name, mobSize: 1, level, baseCr },
     }));
   };
 
@@ -115,9 +122,9 @@ export const CustomCreature = () => {
 
       <label htmlFor="leveled-npc-level">level</label>
       <select id="leveled-npc-level" onChange={handleLevelChange}>
-        {validLevels.map((validLevel) => (
-          <option value={validLevel} key={`level-${validLevel}`}>
-            {validLevel}
+        {getLevelOptionValues().map((level) => (
+          <option value={level} key={`level-${level}`}>
+            {level}
           </option>
         ))}
       </select>

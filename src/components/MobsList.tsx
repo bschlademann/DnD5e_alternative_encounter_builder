@@ -11,13 +11,13 @@ export const MobsList = (): JSX.Element => {
 
   const incrementMob = (mob: Mob, id: string) => {
     setMobs((prevMobs) => {
-      const { creatureName, level: powerLevel, baseCr } = mob;
+      const { creatureName, level, baseCr } = mob;
       return {
         ...prevMobs,
         [id]: {
           baseCr,
           creatureName,
-          level: powerLevel,
+          level,
           mobSize: !!prevMobs[id] ? clampInt(prevMobs[id].mobSize + 1) : 1,
         },
       };

@@ -120,15 +120,17 @@ const uniqueCreatures = (creatures: CreatureBase[]): CreatureBase[] => {
 
 const addIdsAndPowerLevels = (creatures: CreatureBase[]) =>
   creatures.map((creature, index) => {
-    const powerLevel = getPowerLevelByCr(creature.cr);
-    return { ...creature, powerLevel, id: index.toString() };
+    // const powerLevel = getPowerLevelByCr(creature.cr);
+    return { ...creature, 
+      // powerLevel, 
+      id: index.toString() };
   });
 
 export type Creature = {
   name: string;
   cr: number;
   id: string;
-  powerLevel: number;
+  // powerLevel: number;
 };
 
 export const getCreatureData = (): Promise<Creature[]> => {
