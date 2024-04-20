@@ -39,7 +39,7 @@ export const CustomCreature = () => {
   const getCrOptionValues = () => {
     const integerCrValues = Object.keys(powerLevelByCr)
       .filter(cr => parseFloat(cr) % 1 === 0);
-    return ["-", ...integerCrValues, ...Object.values(crFractionsByFloats)];
+    return ["-", ...Object.values(crFractionsByFloats), ...integerCrValues];
   };
 
   const getValidCrSelectValue = (validCr: string | number): string => {
