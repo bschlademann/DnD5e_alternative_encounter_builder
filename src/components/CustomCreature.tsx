@@ -4,7 +4,6 @@ import {
   BaseCr,
   Level,
   crFractionsByFloats,
-  getPowerLevelByCharacterLevel,
 } from "../domain";
 import {
   powerLevelByCharacterLevel,
@@ -26,15 +25,6 @@ export const CustomCreature = () => {
   };
 
   const crFloatsByFractions = invertStringKeysAndValues(crFractionsByFloats);
-
-  // const getCrOptionValues = () => {
-  //   const crOptionValues = Object.keys(powerLevelByCr).filter(
-  //     (cr) => parseFloat(cr) % 1 === 0
-  //   );
-  //   crOptionValues.unshift("-");
-  //   crOptionValues.splice(2, 0, ...Object.values(crFractionsByFloats));
-  //   return crOptionValues;
-  // };
 
   const getCrOptionValues = () => {
     const integerCrValues = Object.keys(powerLevelByCr)
@@ -79,7 +69,6 @@ export const CustomCreature = () => {
 
   const addToMobslist = () => {
     const id = getNextCustomCreatureId();
-    // const powerLevel = getPowerLevelByCharacterLevel(level);
     setMobs((prevMobs) => ({
       ...prevMobs,
       [id]: { creatureName: name, mobSize: 1, level, baseCr },

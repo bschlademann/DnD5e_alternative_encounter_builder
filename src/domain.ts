@@ -24,19 +24,16 @@ export const getCreaturesById = (creatures: Creature[]) => {
     [creatureId: string]: {
       name: string;
       cr: number;
-      // powerLevel: number
     };
   } = {};
   creatures.forEach((creature) => {
     const {
       name,
       cr,
-      //  powerLevel
     } = creature;
     creaturesById[creature.id] = {
       name,
       cr,
-      // powerLevel
     };
   });
   return creaturesById;

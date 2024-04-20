@@ -4,18 +4,6 @@ import { getRange } from "../lib";
 import { MobsState } from "../App";
 import { getPartyPowerLevel } from "../domain";
 
-// export type TLeveledNpc = { name: string; level: number };
-// export type NpcById = { [id: string]: TLeveledNpc };
-// export type LeveledNpcProps = {
-//   id: string;
-//   name: string;
-//   level: number;
-// };
-
-// export type CustomCreature = {
-//   [id: string]: { level: number; cr: number; mobSize: number };
-// };
-
 export type TParty = {
   count: number;
   level: number;
@@ -50,7 +38,6 @@ export const Party = () => {
       <label htmlFor="character-count">number of characters</label>
       <select id="character-count" value={party.count} onChange={onChangeCount}>
         {validCounts.map((value) => (
-          // <Option value={value} key={`character-count-${value}`} />
            <option value={value} key={`character-count-${value}`}>{value}</option>
         ))}
       </select>

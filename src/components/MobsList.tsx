@@ -49,6 +49,8 @@ export const MobsList = (): JSX.Element => {
     });
   };
 
+  const mobsTotalPowerLevel = truncateDecimals(getAllMobsPowerLevel(mobs));
+
   return (
     <div>
       <h2>Mobs List</h2>
@@ -65,8 +67,8 @@ export const MobsList = (): JSX.Element => {
           {Object.entries(mobs).map((mobEntry) => {
             const id = mobEntry[0];
             const mob = mobEntry[1];
-            const { creatureName, mobSize, level, baseCr } = mob;
-            console.log({mob, totalPel: getMobTotalPowerLevel(mob)})
+            const { creatureName, mobSize } = mob;
+            console.log({ mob, totalPel: getMobTotalPowerLevel(mob) });
             const powerLevel = getMobTotalPowerLevel(mob);
             const truncatedPowerLevel = truncateDecimals(powerLevel);
             return (
@@ -77,7 +79,7 @@ export const MobsList = (): JSX.Element => {
                   <button onClick={() => decrementMob(id)}>-</button>
                 </td>
                 <td>{creatureName}</td>
-                
+
                 {/* the values for powerLevels get displayed as decimals here instead of fractions
                 fractions like 13/6  (1 1/2(lv2) + 2/3(cr 1/8) = 13/6) are not really readable 
                 so I only use the fractions that are presend for standart CR values*/}
@@ -90,7 +92,7 @@ export const MobsList = (): JSX.Element => {
           })}
         </tbody>
       </table>
-      <div>Mobs total PEL: {getAllMobsPowerLevel(mobs)}</div>
+      <div>Mobs total PEL: {mobsTotalPowerLevel}</div>
     </div>
   );
 };

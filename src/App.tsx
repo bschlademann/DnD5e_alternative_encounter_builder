@@ -33,7 +33,6 @@ function App() {
   const [creaturesById, setCreaturesById] = useState<CreaturesById>({});
 
   useEffect(() => {
-    // localStorage.clear();
     getOrUpdateLocalStorage().then((creatures) => {
       setCreatures(creatures);
       const creaturesById = getCreaturesById(creatures);
