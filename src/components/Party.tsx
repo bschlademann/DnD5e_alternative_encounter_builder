@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { PartyContext } from "../contexts";
 import { getRange } from "../lib";
-import { MobsState } from "../App";
 import { getPartyPowerLevel } from "../domain";
 import { MobsList } from "./MobsList";
 
@@ -48,8 +47,8 @@ export const Party = () => {
           <option value={value} key={`character-level-${value}`}>{value}</option>
         ))}
       </select>
-      <div>Party total PEL: {getPartyPowerLevel(party)}</div>
-      <MobsList title={"custom creatures in party"} context={"PartyCustomCreatureContext"}/>
+      <div>Party total PEL: {getPartyPowerLevel()}</div>
+      <MobsList title={"Custom Creatures in Party"} context={"PartyCustomCreatureContext"}/>
     </div>
   );
 };

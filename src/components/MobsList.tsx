@@ -61,6 +61,7 @@ export const MobsList = ({
       return remainingMobs;
     });
   };
+const totalPowerLevelTitle = context === "MobsContext" ? "Mobs" : "Party Custom Creatures"
 
   const mobsTotalPowerLevel = truncateDecimals(getAllMobsPowerLevel(mobs));
 
@@ -105,7 +106,7 @@ export const MobsList = ({
           })}
         </tbody>
       </table>
-      <div>Mobs total PEL: {mobsTotalPowerLevel}</div>
+      <div>{totalPowerLevelTitle} total PEL: {mobsTotalPowerLevel}</div>
     </div>
   );
 };
