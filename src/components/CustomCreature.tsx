@@ -76,28 +76,12 @@ export const CustomCreature = () => {
   };
 
   const addToParty = () => {
-
-    // add NPC to Party
-    type TParty = {
-      count: number;
-      level: number;
-      customCreatures: {
-        [creatureId: string]: {
-          creatureName: string;
-          mobSize: number;
-          level: number| null;
-          baseCr: number | null;
-        };
-      };
-    }
-
-    // FIXME: rename powerLevel in MobsState to PowerLevelFromCharacterLevel? or change the way it works?
-    // is it better to have a level and a cr in there instead of a powerlevel?
     const id = getNextCustomCreatureId();
-    // FIXME: the whole idea is that a custom creature can have only a cr, only a level or both -> level must be number | null
-    // const powerLevel =
-    // setParty(prevParty => ({...prevParty, customCreatures[id]: { creatureName: name, mobSize: 1, powerLevel, baseCr }}))
-    
+    setPartyCustomCreatures((prevPartyCustomCreatures) => ({
+      ...prevPartyCustomCreatures,
+      [id]: { creatureName: name, mobSize: 1, level, baseCr },
+    }));
+  
   };
 
   return (
