@@ -1,13 +1,26 @@
 import { useContext } from "react";
-import { MobsContext } from "../contexts";
+import { MobsContext, PartyCustomCreatureContext } from "../contexts";
 import { clampInt, truncateDecimals } from "../lib";
 import { MobsState } from "../App";
 import { getAllMobsPowerLevel, getMobTotalPowerLevel } from "../domain";
 
 export type Mob = MobsState[0];
+export type MobsListProps = {
+  title: string;
+  context: "PartyCustomCreatureContext" | "MobsContext";
+};
 
-export const MobsList = (): JSX.Element => {
-  const [mobs, setMobs] = useContext(MobsContext);
+export const contextMap = {
+  PartyCustomCreatureContext: PartyCustomCreatureContext,
+  MobsContext: MobsContext
+};
+
+export const MobsList = ({
+  title,
+  context,
+}: MobsListProps): JSX.Element => {
+
+  const [mobs, setMobs] = useContext(contextMap[context]);
 
   const incrementMob = (mob: Mob, id: string) => {
     setMobs((prevMobs) => {
@@ -53,7 +66,7 @@ export const MobsList = (): JSX.Element => {
 
   return (
     <div>
-      <h2>Mobs List</h2>
+      <h2>{title}</h2>
       <table className="mobs-list">
         <thead>
           <tr>

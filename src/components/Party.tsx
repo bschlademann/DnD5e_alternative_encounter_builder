@@ -3,6 +3,7 @@ import { PartyContext } from "../contexts";
 import { getRange } from "../lib";
 import { MobsState } from "../App";
 import { getPartyPowerLevel } from "../domain";
+import { MobsList } from "./MobsList";
 
 export type TParty = {
   count: number;
@@ -49,6 +50,7 @@ export const Party = () => {
         ))}
       </select>
       <div>Party total PEL: {getPartyPowerLevel(party)}</div>
+      <MobsList title={"custom creatures in party"} context={"PartyCustomCreatureContext"}/>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { MobsContext, PartyContext } from "../contexts";
+import { MobsContext, PartyCustomCreatureContext } from "../contexts";
 import {
   BaseCr,
   Level,
@@ -16,7 +16,7 @@ export const CustomCreature = () => {
   const [level, setLevel] = useState<Level>(null);
   const [lastId, setId] = useState(0);
   const [mobs, setMobs] = useContext(MobsContext);
-  const [party, setParty] = useContext(PartyContext);
+  const [partyCustomCreature, setPartyCustomCreature] = useContext(PartyCustomCreatureContext);
   const [baseCr, setBaseCr] = useState<BaseCr>(null);
 
   

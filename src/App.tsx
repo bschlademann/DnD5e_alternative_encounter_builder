@@ -7,6 +7,7 @@ import {
   CreaturesByIdContext,
   MobsContext,
   PartyContext,
+  PartyCustomCreatureContext,
 } from "./contexts";
 import { Difficulty } from "./components/Difficulty";
 import { MobsList } from "./components/MobsList";
@@ -21,15 +22,23 @@ export type MobsState = {
   [creatureId: string]: {
     creatureName: string;
     mobSize: number;
-    level: number| null;
+    level: number | null;
     baseCr: number | null;
   };
 };
 
+export type PartyCustomCreatureState = MobsState;
+
 function App() {
-  const [party, setParty] = useState<TParty>({ count: 1, level: 1, customCreatures: {}});
+  const [party, setParty] = useState<TParty>({
+    count: 1,
+    level: 1,
+    customCreatures: {},
+  });
   const [creatures, setCreatures] = useState<Creature[]>([]);
   const [mobs, setMobs] = useState<MobsState>({});
+  const [partyCustomCreatures, setPartyCustomCreatures] =
+    useState<PartyCustomCreatureState>({});
   const [creaturesById, setCreaturesById] = useState<CreaturesById>({});
 
   useEffect(() => {
@@ -41,6 +50,9 @@ function App() {
   }, []);
 
   return (
+    <PartyCustomCreatureContext.Provider
+      value={[partyCustomCreatures, setPartyCustomCreatures]}
+    >
       <CreaturesByIdContext.Provider value={creaturesById}>
         <MobsContext.Provider value={[mobs, setMobs]}>
           <CreatureContext.Provider value={creatures}>
@@ -51,7 +63,7 @@ function App() {
                 </div>
                 <div className={styles.right}>
                   <CustomCreature />
-                  <MobsList />
+                  <MobsList title={"Mobs List"} context={"MobsContext"}/>
                   <Party />
                   <Difficulty />
                 </div>
@@ -60,6 +72,7 @@ function App() {
           </CreatureContext.Provider>
         </MobsContext.Provider>
       </CreaturesByIdContext.Provider>
+    </PartyCustomCreatureContext.Provider>
   );
 }
 
