@@ -8,7 +8,6 @@ import { MobsList } from "./MobsList";
 export type TParty = {
   count: number;
   level: number;
-  customCreatures: MobsState;
 };
 
 export const Party = () => {

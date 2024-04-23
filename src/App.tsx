@@ -33,7 +33,6 @@ function App() {
   const [party, setParty] = useState<TParty>({
     count: 1,
     level: 1,
-    customCreatures: {},
   });
   const [creatures, setCreatures] = useState<Creature[]>([]);
   const [mobs, setMobs] = useState<MobsState>({});
