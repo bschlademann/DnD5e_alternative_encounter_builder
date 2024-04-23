@@ -14,7 +14,7 @@ export const PartyContext = createContext<
   [TParty, React.Dispatch<React.SetStateAction<TParty>>]
 >([{ count: 1, level: 1}, () => undefined]);
 
-export const PartyCustomCreatureContext = createContext<
+export const PartyCustomCreaturesContext = createContext<
 [MobsState, React.Dispatch<React.SetStateAction<MobsState>>]
 >([{}, () => undefined]);;
 

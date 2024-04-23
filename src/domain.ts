@@ -4,15 +4,19 @@ import {
 } from "./power-level-data.js";
 import { TParty } from "./components/Party.js";
 import { useContext } from "react";
-import { MobsContext, PartyContext } from "./contexts.js";
+import { MobsContext, PartyContext, PartyCustomCreaturesContext } from "./contexts.js";
 import { MobsState } from "./App.js";
 import { truncateDecimals } from "./lib.js";
 import { Creature } from "./5etools.js";
 import { difficultyDescriptions } from "./difficulty-descriptions.js";
 import { Mob } from "./components/MobsList.js";
 
-export const getPartyPowerLevel = (party: TParty): number => {
-  return party.count * powerLevelByCharacterLevel[party.level];
+export const getPartyPowerLevel = (): number => {
+  const [party] = useContext(PartyContext);
+  const [partyCustomCreatures] = useContext(PartyCustomCreaturesContext)
+  const playerCharactersPowerLevel = party.count * powerLevelByCharacterLevel[party.level];
+  const customCreaturePowerLevel = getAllMobsPowerLevel(partyCustomCreatures);
+  return playerCharactersPowerLevel + customCreaturePowerLevel;
 };
 
 export type CreaturesById = {
@@ -132,7 +136,7 @@ export const getDifficulty = () => {
   const [party] = useContext(PartyContext);
   const [mobs] = useContext(MobsContext);
   const powerLevelTotalOfAllMobs = getAllMobsPowerLevel(mobs);
-  const partyPowerLevel = getPartyPowerLevel(party);
+  const partyPowerLevel = getPartyPowerLevel();
   const difficultyValue = powerLevelTotalOfAllMobs / partyPowerLevel;
   const description = getDifficultyDescription(difficultyValue);
 

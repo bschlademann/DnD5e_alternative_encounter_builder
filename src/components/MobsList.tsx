@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { MobsContext, PartyCustomCreatureContext } from "../contexts";
+import { MobsContext, PartyCustomCreaturesContext } from "../contexts";
 import { clampInt, truncateDecimals } from "../lib";
 import { MobsState } from "../App";
 import { getAllMobsPowerLevel, getMobTotalPowerLevel } from "../domain";
@@ -11,7 +11,7 @@ export type MobsListProps = {
 };
 
 export const contextMap = {
-  PartyCustomCreatureContext: PartyCustomCreatureContext,
+  PartyCustomCreatureContext: PartyCustomCreaturesContext,
   MobsContext: MobsContext
 };
 

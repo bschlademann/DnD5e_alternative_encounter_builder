@@ -7,7 +7,7 @@ import {
   CreaturesByIdContext,
   MobsContext,
   PartyContext,
-  PartyCustomCreatureContext,
+  PartyCustomCreaturesContext,
 } from "./contexts";
 import { Difficulty } from "./components/Difficulty";
 import { MobsList } from "./components/MobsList";
@@ -49,7 +49,7 @@ function App() {
   }, []);
 
   return (
-    <PartyCustomCreatureContext.Provider
+    <PartyCustomCreaturesContext.Provider
       value={[partyCustomCreatures, setPartyCustomCreatures]}
     >
       <CreaturesByIdContext.Provider value={creaturesById}>
@@ -71,7 +71,7 @@ function App() {
           </CreatureContext.Provider>
         </MobsContext.Provider>
       </CreaturesByIdContext.Provider>
-    </PartyCustomCreatureContext.Provider>
+    </PartyCustomCreaturesContext.Provider>
   );
 }
 

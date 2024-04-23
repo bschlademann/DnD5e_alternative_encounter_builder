@@ -2,10 +2,9 @@
 
 
 # feat
-- add leveled NPCs to Party
-- add custom creatures to party
 - row virtualization for MobsSelector
 - add modal explaining functionality
+- add clear/reload localStorage button to MobsSelector
 
 # refactor
 
