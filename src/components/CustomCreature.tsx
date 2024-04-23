@@ -1,10 +1,6 @@
 import { useContext, useState } from "react";
 import { MobsContext, PartyCustomCreaturesContext } from "../contexts";
-import {
-  BaseCr,
-  Level,
-  crFractionsByFloats,
-} from "../domain";
+import { BaseCr, Level, crFractionsByFloats } from "../domain";
 import {
   powerLevelByCharacterLevel,
   powerLevelByCr,
@@ -16,10 +12,11 @@ export const CustomCreature = () => {
   const [level, setLevel] = useState<Level>(null);
   const [lastId, setId] = useState(0);
   const [mobs, setMobs] = useContext(MobsContext);
-  const [partyCustomCreatures, setPartyCustomCreatures] = useContext(PartyCustomCreaturesContext);
+  const [partyCustomCreatures, setPartyCustomCreatures] = useContext(
+    PartyCustomCreaturesContext
+  );
   const [baseCr, setBaseCr] = useState<BaseCr>(null);
 
-  
   const getLevelOptionValues = () => {
     return ["-", ...Object.keys(powerLevelByCharacterLevel)];
   };
@@ -27,8 +24,9 @@ export const CustomCreature = () => {
   const crFloatsByFractions = invertStringKeysAndValues(crFractionsByFloats);
 
   const getCrOptionValues = () => {
-    const integerCrValues = Object.keys(powerLevelByCr)
-      .filter(cr => parseFloat(cr) % 1 === 0);
+    const integerCrValues = Object.keys(powerLevelByCr).filter(
+      (cr) => parseFloat(cr) % 1 === 0
+    );
     return ["-", ...Object.values(crFractionsByFloats), ...integerCrValues];
   };
 
@@ -49,13 +47,12 @@ export const CustomCreature = () => {
     setLevel(newLevel);
   };
 
-  
   const handleBaseCrChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const parsedValue = parseFloat(e.target.value);
     const newBaseCr = isNaN(parsedValue) ? null : parsedValue;
     setBaseCr(newBaseCr);
   };
-  
+
   const handelNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newName = e.target.value;
     setName(newName);
@@ -81,7 +78,6 @@ export const CustomCreature = () => {
       ...prevPartyCustomCreatures,
       [id]: { creatureName: name, mobSize: 1, level, baseCr },
     }));
-  
   };
 
   return (
@@ -116,16 +112,13 @@ export const CustomCreature = () => {
             value={getValidCrSelectValue(validCr)}
             key={`valid-cr-${validCr}`}
           >
-            
             {validCr}
           </option>
         ))}
       </select>
       <button onClick={addToMobslist}>add to Mobs List</button>
 
-      <button onClick={addToParty}>
-        <s>add to Party</s>
-      </button>
+      <button onClick={addToParty}>add to Party</button>
     </>
   );
 };
