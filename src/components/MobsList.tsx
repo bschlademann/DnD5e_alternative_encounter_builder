@@ -61,6 +61,10 @@ export const MobsList = ({
       return remainingMobs;
     });
   };
+const clearMobsList = () => {
+  setMobs({})
+}
+
 const totalPowerLevelTitle = context === "MobsContext" ? "Mobs" : "Party Custom Creatures"
 
   const mobsTotalPowerLevel = truncateDecimals(getAllMobsPowerLevel(mobs));
@@ -75,6 +79,7 @@ const totalPowerLevelTitle = context === "MobsContext" ? "Mobs" : "Party Custom 
             <th></th>
             <th>name</th>
             <th>PEL</th>
+            <button onClick={() => clearMobsList()}>X</button>
           </tr>
         </thead>
         <tbody>
