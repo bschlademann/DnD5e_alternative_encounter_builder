@@ -1,3 +1,5 @@
+import "./MobsList.css";
+
 import { useContext } from "react";
 import { MobsContext, PartyCustomCreaturesContext } from "../contexts";
 import { clampInt, truncateDecimals } from "../lib";
@@ -12,14 +14,10 @@ export type MobsListProps = {
 
 export const contextMap = {
   PartyCustomCreatureContext: PartyCustomCreaturesContext,
-  MobsContext: MobsContext
+  MobsContext: MobsContext,
 };
 
-export const MobsList = ({
-  title,
-  context,
-}: MobsListProps): JSX.Element => {
-
+export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
   const [mobs, setMobs] = useContext(contextMap[context]);
 
   const incrementMob = (mob: Mob, id: string) => {
@@ -61,17 +59,31 @@ export const MobsList = ({
       return remainingMobs;
     });
   };
-const clearMobsList = () => {
-  setMobs({})
-}
+  const clearMobsList = () => {
+    setMobs({});
+  };
 
-const totalPowerLevelTitle = context === "MobsContext" ? "Mobs" : "Party Custom Creatures"
+  const hasEntries = Object.keys(mobs).length !== 0;
+
+  const totalPowerLevelTitle =
+    context === "MobsContext" ? "Mobs" : "Party Custom Creatures";
 
   const mobsTotalPowerLevel = truncateDecimals(getAllMobsPowerLevel(mobs));
+
+  const ClearButton = () => {
+    return (
+      <div>
+        {hasEntries ? (<button onClick={() => clearMobsList()}>clear</button>) :
+        null}
+      </div>
+    );
+  };
 
   return (
     <div className="mobs-list">
       <h2>{title}</h2>
+      <ClearButton />
+
       <table>
         <thead>
           <tr>
@@ -79,7 +91,6 @@ const totalPowerLevelTitle = context === "MobsContext" ? "Mobs" : "Party Custom 
             <th></th>
             <th>name</th>
             <th>PEL</th>
-            <button onClick={() => clearMobsList()}>X</button>
           </tr>
         </thead>
         <tbody>
@@ -111,7 +122,9 @@ const totalPowerLevelTitle = context === "MobsContext" ? "Mobs" : "Party Custom 
           })}
         </tbody>
       </table>
-      <div>{totalPowerLevelTitle} total PEL: {mobsTotalPowerLevel}</div>
+      <div>
+        {totalPowerLevelTitle} total PEL: {mobsTotalPowerLevel}
+      </div>
     </div>
   );
 };
