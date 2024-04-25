@@ -1,8 +1,10 @@
 import { useContext, useState } from "react";
 import { Creature } from "../5etools";
 import { CreatureContext, MobsContext } from "../contexts";
-import { clampInt, truncateDecimals } from "../lib";
+import { clampInt } from "../lib";
 import { formatCrAsFraction, formatPowerLevelAsFraction } from "../domain";
+
+import "./MobsSelector.css"
 
 export const MobsSelector = () => {
   const [filterQuery, setFilterQuery] = useState("");

@@ -4,7 +4,7 @@ export const Difficulty = () => {
   const difficulty = getDifficulty();
   const formatedDifficulty = formatDifficultyOutput(difficulty);
   return (
-    <div>
+    <div className="difficulty">
       <h2>
       Difficulty: 
       </h2>

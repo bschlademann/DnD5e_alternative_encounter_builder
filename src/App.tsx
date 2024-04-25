@@ -1,4 +1,4 @@
-// import "./App.css";
+import "./App.css";
 import styles from "./Layout.module.css";
 
 import { MobsSelector } from "./components/MobsSelector";
@@ -56,17 +56,25 @@ function App() {
         <MobsContext.Provider value={[mobs, setMobs]}>
           <CreatureContext.Provider value={creatures}>
             <PartyContext.Provider value={[party, setParty]}>
+
               <div className={styles.container}>
                 <div className={styles.left}>
                   <MobsSelector />
                 </div>
-                <div className={styles.right}>
-                  <CustomCreature />
-                  <MobsList title={"Mobs List"} context={"MobsContext"}/>
-                  <Party />
+                <div className={styles.top}>
                   <Difficulty />
                 </div>
+                <div className={styles["lower-left"]}>
+                  <MobsList title={"Mobs List"} context={"MobsContext"} />
+                </div>
+                <div className={styles["lower-middle"]}>
+                  <CustomCreature />
+                </div>
+                <div className={styles["lower-right"]}>
+                  <Party />
+                </div>
               </div>
+
             </PartyContext.Provider>
           </CreatureContext.Provider>
         </MobsContext.Provider>

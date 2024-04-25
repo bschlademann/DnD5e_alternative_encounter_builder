@@ -81,7 +81,7 @@ export const CustomCreature = () => {
   };
 
   return (
-    <>
+    <div className="custom-creature">
       <h2>Add a custom Creature</h2>
       <label htmlFor="leveled-npc-name">name</label>
       <input
@@ -119,6 +119,6 @@ export const CustomCreature = () => {
       <button onClick={addToMobslist}>add to Mobs List</button>
 
       <button onClick={addToParty}>add to Party</button>
-    </>
+    </div>
   );
 };

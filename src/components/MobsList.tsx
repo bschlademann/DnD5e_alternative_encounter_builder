@@ -66,9 +66,9 @@ const totalPowerLevelTitle = context === "MobsContext" ? "Mobs" : "Party Custom 
   const mobsTotalPowerLevel = truncateDecimals(getAllMobsPowerLevel(mobs));
 
   return (
-    <div>
+    <div className="mobs-list">
       <h2>{title}</h2>
-      <table className="mobs-list">
+      <table>
         <thead>
           <tr>
             <th>#</th>
