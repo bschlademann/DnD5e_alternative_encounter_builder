@@ -3,7 +3,6 @@ import {
   getJsonFromUrl,
   fractionalString as stringToFractionalNumber,
 } from "./lib";
-import { getPowerLevelByCr } from "./domain";
 
 type Parser<Output, Input = unknown> = z.ZodSchema<Output, z.ZodTypeDef, Input>;
 
