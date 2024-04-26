@@ -79,19 +79,19 @@ select {
 
 @font-face {
   font-family: "ScalaSans";
-  src: url("./src/assets/fonts/Scala\ Sans.otf") format("opentype");
+  src: url("./assets/fonts/scala-sans.otf") format("opentype");
 }
 @font-face {
   font-family: "ScalaSansBold";
-  src: url("./src/assets/fonts/Scala\ Sans\ Bold.otf") format("opentype");
+  src: url("./assets/fonts/scala-sans-bold.otf") format("opentype");
 }
 @font-face {
   font-family: "Interstate";
-  src: url("./src/assets/fonts/Interstate.ttf") format("truetype");
+  src: url("./assets/fonts/interstate.ttf") format("truetype");
 }
 @font-face {
   font-family: "InterstateCondensed";
-  src: url("./src/assets/fonts/Interstate\ Condensed.ttf") format("truetype");
+  src: url("./assets/fonts/interstate-condensed.ttf") format("truetype");
 }
 @font-face {
   font-family: "ModestoExpanded";
