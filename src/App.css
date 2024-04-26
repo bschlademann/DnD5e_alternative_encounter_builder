@@ -81,6 +81,22 @@ select {
   font-family: "ScalaSans";
   src: url("/src/assets/fonts/Scala\ Sans.otf") format("opentype");
 }
+@font-face {
+  font-family: "ScalaSansBold";
+  src: url("/src/assets/fonts/Scala\ Sans\ Bold.otf") format("opentype");
+}
+@font-face {
+  font-family: "Interstate";
+  src: url("/src/assets/fonts/Interstate.ttf") format("truetype");
+}
+@font-face {
+  font-family: "InterstateCondensed";
+  src: url("/src/assets/fonts/Interstate\ Condensed.ttf") format("truetype");
+}
+@font-face {
+  font-family: "ModestoExpanded";
+  src: url("/src/assets/fonts/modesto-expanded.ttf") format("truetype");
+}
 
 table {
   width: 100%;
