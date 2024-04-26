@@ -1,13 +1,9 @@
-.mobs-selector .creatures-table {
-  /* outline: 1px solid red; */
+table {
   /* Slightly less than the full viewport height */
   /* max-height: 85vh;  */
   /* Enables vertical scrolling when necessary */
   /* overflow-y: auto;  */
   /* Changes the default table display */
   /* display: block;  */
-  width: 100%; /* Ensures the table fills the container */
-}
-.creatures-table * {
-  /* outline: 1px solid yellow; */
+  /* Ensures the table fills the container */
 }

@@ -1,10 +1,11 @@
+import "./MobsSelector.css"
+
 import { useContext, useState } from "react";
 import { Creature } from "../5etools";
 import { CreatureContext, MobsContext } from "../contexts";
 import { clampInt } from "../lib";
 import { formatCrAsFraction, formatPowerLevelAsFraction } from "../domain";
 
-import "./MobsSelector.css"
 
 export const MobsSelector = () => {
   const [filterQuery, setFilterQuery] = useState("");
@@ -85,17 +86,19 @@ export const MobsSelector = () => {
           <tr>
             <th></th>
             <th>
-              <button
+              {/* <button
                 onClick={() => handleSort("name")}
                 className="sort-button"
               >
                 Name{renderSortIndicator("name")}
-              </button>
+              </button> */}
+              Name
             </th>
             <th>
-              <button onClick={() => handleSort("cr")} className="sort-button">
+              {/* <button onClick={() => handleSort("cr")} className="sort-button">
                 CR{renderSortIndicator("cr")}
-              </button>
+              </button> */}
+              CR
             </th>
             <th>PEL</th>
           </tr>

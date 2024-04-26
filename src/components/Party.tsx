@@ -12,23 +12,17 @@ export type TParty = {
 export const Party = () => {
   const [party, setParty] = useContext(PartyContext);
   const [partyCustomCreatures] = useContext(PartyCustomCreaturesContext);
-  const onChangeCount = React.useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setParty((prevParty) => {
-        return { ...prevParty, count: parseInt(e.target.value) };
-      });
-    },
-    []
-  );
+  const handleCountChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setParty((prevParty) => {
+      return { ...prevParty, count: parseInt(e.target.value) };
+    });
+  };
 
-  const onChangeLevel = React.useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setParty((prevParty) => {
-        return { ...prevParty, level: parseInt(e.target.value) };
-      });
-    },
-    []
-  );
+  const handleLevelChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setParty((prevParty) => {
+      return { ...prevParty, level: parseInt(e.target.value) };
+    });
+  };
 
   const partyHasCustomCreatures =
     Object.keys(partyCustomCreatures).length !== 0;
@@ -39,7 +33,11 @@ export const Party = () => {
     <div className="party">
       <h2>Party</h2>
       <label htmlFor="character-count">number of characters</label>
-      <select id="character-count" value={party.count} onChange={onChangeCount}>
+      <select
+        id="character-count"
+        value={party.count}
+        onChange={handleCountChange}
+      >
         {validCounts.map((value) => (
           <option value={value} key={`character-count-${value}`}>
             {value}
@@ -48,7 +46,11 @@ export const Party = () => {
       </select>
 
       <label htmlFor="character-level">level</label>
-      <select id="character-level" value={party.level} onChange={onChangeLevel}>
+      <select
+        id="character-level"
+        value={party.level}
+        onChange={handleLevelChange}
+      >
         {validLevels.map((value) => (
           <option value={value} key={`character-level-${value}`}>
             {value}

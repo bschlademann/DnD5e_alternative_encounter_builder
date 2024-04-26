@@ -1,5 +1,3 @@
-import "./MobsList.css";
-
 import { useContext } from "react";
 import { MobsContext, PartyCustomCreaturesContext } from "../contexts";
 import { clampInt, truncateDecimals } from "../lib";
@@ -73,8 +71,9 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
   const ClearButton = () => {
     return (
       <div>
-        {hasEntries ? (<button onClick={() => clearMobsList()}>clear</button>) :
-        null}
+        {hasEntries ? (
+          <button onClick={() => clearMobsList()}>clear</button>
+        ) : null}
       </div>
     );
   };
@@ -82,7 +81,6 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
   return (
     <div className="mobs-list">
       <h2>{title}</h2>
-      <ClearButton />
 
       <table>
         <thead>
@@ -91,6 +89,7 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
             <th></th>
             <th>name</th>
             <th>PEL</th>
+            <ClearButton />
           </tr>
         </thead>
         <tbody>
@@ -98,7 +97,6 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
             const id = mobEntry[0];
             const mob = mobEntry[1];
             const { creatureName, mobSize } = mob;
-            console.log({ mob, totalPel: getMobTotalPowerLevel(mob) });
             const powerLevel = getMobTotalPowerLevel(mob);
             const truncatedPowerLevel = truncateDecimals(powerLevel);
             return (

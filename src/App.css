@@ -77,10 +77,15 @@ select {
   }
 }
 
+@font-face {
+  font-family: "ScalaSans";
+  src: url("/src/assets/fonts/Scala\ Sans.otf") format("opentype");
+}
+
 table {
   width: 100%;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+  font-family: ScalaSans, -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
 }
