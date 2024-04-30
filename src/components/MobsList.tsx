@@ -1,3 +1,4 @@
+import "./MobsList.css";
 import { useContext } from "react";
 import { MobsContext, PartyCustomCreaturesContext } from "../contexts";
 import { clampInt, truncateDecimals } from "../lib";
@@ -80,6 +81,14 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
 
   return (
     <div className="mobs-list">
+      <div className="upper left corner"></div>
+      <div className="upper right corner"></div>
+      <div className="lower left corner"></div>
+      <div className="lower right corner"></div>
+      <div className="upper border"></div>
+      <div className="lower border"></div>
+      <div className="left border"></div>
+      <div className="right border"></div>
       <h2>{title}</h2>
 
       <table>

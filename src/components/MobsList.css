@@ -1,0 +1,73 @@
+.mobs-list {
+  position: relative;
+  padding: 10%;
+  --border-size: 32px;
+}
+
+.corner {
+  position: absolute;
+  background-image: url("../assets/svg/corner_1.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  min-width: var(--border-size);
+  min-height: var(--border-size);
+}
+
+.upper {
+  top: 0;
+}
+
+.lower {
+  bottom: 0;
+}
+
+.right {
+  right: 0;
+}
+
+.left {
+  left: 0;
+}
+
+.upper.right {
+  transform: scaleX(-1);
+}
+
+.lower.left {
+  transform: scaleY(-1);
+}
+
+.lower.right {
+  transform: scale(-1, -1);
+}
+
+.border {
+    position: absolute;
+    min-height: var(--border-size);
+    min-width: var(--border-size); 
+    background-size: contain;
+  }
+
+.upper.border, .lower.border {
+    background-image: url("../assets/svg/border_1_top-bottom.png");
+    background-repeat: repeat-x; 
+    left: var(--border-size); 
+    right: var(--border-size); 
+    width: auto; 
+  }
+
+  .lower.border {
+    transform: scaleY(-1);
+  }
+
+  .left.border, .right.border {
+    background-image: url("../assets/svg/border_1_side.png");
+    background-repeat: repeat-y; 
+    top: var(--border-size); 
+    bottom: var(--border-size); 
+    height: auto; 
+  }
+
+  .right.border {
+    transform: scaleX(-1);
+  }
