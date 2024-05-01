@@ -17,6 +17,7 @@ import { CreaturesById, getCreaturesById } from "./domain";
 import { getOrUpdateLocalStorage } from "./local-storage";
 import { CustomCreature } from "./components/CustomCreature";
 import { Party, TParty } from "./components/Party";
+import { BorderDecoration } from "./components/BorderDecoration";
 
 export type MobsState = {
   [creatureId: string]: {
@@ -56,7 +57,6 @@ function App() {
         <MobsContext.Provider value={[mobs, setMobs]}>
           <CreatureContext.Provider value={creatures}>
             <PartyContext.Provider value={[party, setParty]}>
-
               <div className={layout.container}>
                 <div className={layout["mobs-selector"]}>
                   <MobsSelector />
@@ -65,7 +65,9 @@ function App() {
                   <Difficulty />
                 </div>
                 <div className={layout["mobs-list"]}>
-                  <MobsList title={"Mobs List"} context={"MobsContext"} />
+                  <BorderDecoration>
+                    <MobsList title={"Mobs List"} context={"MobsContext"} />
+                  </BorderDecoration>
                 </div>
                 <div className={layout["custom-creature"]}>
                   <CustomCreature />
@@ -74,7 +76,6 @@ function App() {
                   <Party />
                 </div>
               </div>
-
             </PartyContext.Provider>
           </CreatureContext.Provider>
         </MobsContext.Provider>
