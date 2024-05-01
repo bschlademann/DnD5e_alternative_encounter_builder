@@ -3,6 +3,7 @@ import { MobsContext, PartyCustomCreaturesContext } from "../contexts";
 import { clampInt, truncateDecimals } from "../lib";
 import { MobsState } from "../App";
 import { getAllMobsPowerLevel, getMobTotalPowerLevel } from "../domain";
+import { Input } from "../lib/components";
 
 export type Mob = MobsState[0];
 export type MobsListProps = {
@@ -14,6 +15,8 @@ export const contextMap = {
   PartyCustomCreatureContext: PartyCustomCreaturesContext,
   MobsContext: MobsContext,
 };
+
+
 
 export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
   const [mobs, setMobs] = useContext(contextMap[context]);
@@ -61,6 +64,24 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
     setMobs({});
   };
 
+  const isInputElement = (e: HTMLElement | null): e is HTMLInputElement =>
+    e !== null && e instanceof HTMLInputElement;
+
+  const handleNameChange = (id: string) => (name: string) => {
+    setMobs((prevMobs) => {
+      const { mobSize, level, baseCr } = prevMobs[id];
+      return {
+        ...prevMobs,
+        [id]: {
+          creatureName: name,
+          mobSize,
+          level,
+          baseCr,
+        },
+      };
+    });
+  };
+
   const hasEntries = Object.keys(mobs).length !== 0;
 
   const totalPowerLevelTitle =
@@ -81,7 +102,6 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
   return (
     <div className="mobs-list">
       <h2>{title}</h2>
-
       <table>
         <thead>
           <tr>
@@ -99,14 +119,17 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
             const { creatureName, mobSize } = mob;
             const powerLevel = getMobTotalPowerLevel(mob);
             const truncatedPowerLevel = truncateDecimals(powerLevel);
+
             return (
-              <tr key={`${mob.creatureName}-${id}`}>
+              <tr key={`name-${id}`}>
                 <td>{mobSize}</td>
                 <td>
                   <button onClick={() => incrementMob(mob, id)}>+</button>
                   <button onClick={() => decrementMob(id)}>-</button>
                 </td>
-                <td>{creatureName}</td>
+                <td>
+                  <Input value={creatureName} onChange={handleNameChange(id)} />
+                </td>
 
                 {/* the values for powerLevels get displayed as decimals here instead of fractions
                 fractions like 13/6  (1 1/2(lv2) + 2/3(cr 1/8) = 13/6) are not really readable 
