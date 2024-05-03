@@ -17,7 +17,10 @@ import { CreaturesById, getCreaturesById } from "./domain";
 import { getOrUpdateLocalStorage } from "./local-storage";
 import { CustomCreature } from "./components/CustomCreature";
 import { Party, TParty } from "./components/Party";
-import { BorderDecoration } from "./components/BorderDecoration";
+import {
+  BorderDecoration,
+  BorderElements,
+} from "./components/BorderDecoration";
 
 export type MobsState = {
   [creatureId: string]: {
@@ -49,6 +52,23 @@ function App() {
     });
   }, []);
 
+  type BorderStylingImages = {
+    [component: string]: BorderElements;
+  };
+
+  const borderStylingImages: BorderStylingImages = {
+    mobsList: {
+      upperLeftCorner: "corner_1",
+      upperRightCorner: "corner_1",
+      lowerLeftCorner: "corner_1",
+      lowerRightCorner: "corner_1",
+      upperEdge: "border_1_top-bottom",
+      lowerEdge: "border_1_top-bottom",
+      leftEdge: "border_1_side",
+      rightEdge: "border_1_side",
+    },
+  };
+
   return (
     <PartyCustomCreaturesContext.Provider
       value={[partyCustomCreatures, setPartyCustomCreatures]}
@@ -65,7 +85,7 @@ function App() {
                   <Difficulty />
                 </div>
                 <div className={layout["mobs-list"]}>
-                  <BorderDecoration>
+                  <BorderDecoration borderStyles={borderStylingImages.mobsList}>
                     <MobsList title={"Mobs List"} context={"MobsContext"} />
                   </BorderDecoration>
                 </div>

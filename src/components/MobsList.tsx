@@ -3,7 +3,7 @@ import { MobsContext, PartyCustomCreaturesContext } from "../contexts";
 import { clampInt, truncateDecimals } from "../lib";
 import { MobsState } from "../App";
 import { getAllMobsPowerLevel, getMobTotalPowerLevel } from "../domain";
-import { Input } from "../lib/components";
+import { DebounceInput } from "../lib/components";
 
 export type Mob = MobsState[0];
 export type MobsListProps = {
@@ -128,7 +128,7 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
                   <button onClick={() => decrementMob(id)}>-</button>
                 </td>
                 <td>
-                  <Input value={creatureName} onChange={handleNameChange(id)} />
+                  <DebounceInput value={creatureName} onChange={handleNameChange(id)} />
                 </td>
 
                 {/* the values for powerLevels get displayed as decimals here instead of fractions
