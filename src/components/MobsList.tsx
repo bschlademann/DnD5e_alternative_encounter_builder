@@ -16,8 +16,6 @@ export const contextMap = {
   MobsContext: MobsContext,
 };
 
-
-
 export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
   const [mobs, setMobs] = useContext(contextMap[context]);
 
@@ -109,7 +107,9 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
             <th></th>
             <th>name</th>
             <th>PEL</th>
-            <ClearButton />
+            <th>
+              <ClearButton />
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -128,7 +128,14 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
                   <button onClick={() => decrementMob(id)}>-</button>
                 </td>
                 <td>
-                  <DebounceInput value={creatureName} onChange={handleNameChange(id)} />
+                  {context === "MobsContext" ? (
+                    creatureName
+                  ) : (
+                    <DebounceInput
+                      value={creatureName}
+                      onChange={handleNameChange(id)}
+                    />
+                  )}
                 </td>
 
                 {/* the values for powerLevels get displayed as decimals here instead of fractions
