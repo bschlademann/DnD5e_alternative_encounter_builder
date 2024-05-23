@@ -6,7 +6,6 @@
 
 .corner {
   position: absolute;
-  background-image: url("../assets/png/corner_1.png");
   background-size: contain;
   background-repeat: no-repeat;
   min-width: var(--border-size);
@@ -42,32 +41,32 @@
 }
 
 .edge {
-    position: absolute;
-    min-height: var(--border-size);
-    min-width: var(--border-size); 
-    background-size: contain;
-  }
+  position: absolute;
+  min-height: var(--border-size);
+  min-width: var(--border-size);
+  background-size: contain;
+}
 
-.upper.edge, .lower.edge {
-    background-image: url("../assets/png/border_1_top-bottom.png");
-    background-repeat: repeat-x; 
-    left: var(--border-size); 
-    right: var(--border-size); 
-    width: auto; 
-  }
+.upper.edge,
+.lower.edge {
+  background-repeat: repeat-x;
+  left: var(--border-size);
+  right: var(--border-size);
+  width: auto;
+}
 
-  .lower.edge {
-    transform: scaleY(-1);
-  }
+.lower.edge {
+  transform: scaleY(-1);
+}
 
-  .left.edge, .right.edge {
-    background-image: url("../assets/svg/border_1_side.png");
-    background-repeat: repeat-y; 
-    top: var(--border-size); 
-    bottom: var(--border-size); 
-    height: auto; 
-  }
+.left.edge,
+.right.edge {
+  background-repeat: repeat-y;
+  top: var(--border-size);
+  bottom: var(--border-size);
+  height: auto;
+}
 
-  .right.edge {
-    transform: scaleX(-1);
-  }
+.right.edge {
+  transform: scaleX(-1);
+}

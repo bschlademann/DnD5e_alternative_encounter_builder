@@ -1,3 +1,4 @@
+import "./Difficulty.css";
 import { formatDifficultyOutput, getDifficulty } from "../domain";
 
 export const Difficulty = () => {
@@ -5,10 +6,9 @@ export const Difficulty = () => {
   const formatedDifficulty = formatDifficultyOutput(difficulty);
   return (
     <div className="difficulty">
-      <h2>
-      Difficulty: 
-      </h2>
-      {formatedDifficulty.difficulty}
+      <div className="left">
+      </div>
+      <div className="right">{formatedDifficulty.difficulty}</div>
     </div>
   );
 };

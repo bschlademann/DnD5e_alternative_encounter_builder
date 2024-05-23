@@ -1,20 +1,10 @@
 import { ReactNode } from "react";
 import "./BorderDecoration.css";
+import { BorderDecorationImages } from "../borderDecorationImages";
 
 export type BorderDecorationProps = {
   children: ReactNode;
-  borderStyles: BorderElements;
-};
-
-export type BorderElements = {
-  upperLeftCorner: string;
-  upperRightCorner: string;
-  lowerLeftCorner: string;
-  lowerRightCorner: string;
-  upperEdge: string;
-  lowerEdge: string;
-  leftEdge: string;
-  rightEdge: string;
+  borderStyles: BorderDecorationImages;
 };
 
 export const BorderDecoration = ({
