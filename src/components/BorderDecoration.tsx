@@ -24,8 +24,8 @@ export const BorderDecoration = ({
 
   return (
     <div className="container">
-      <div className="upper left corner" style={{backgroundImage: `url("./src/assets/png/${upperLeftCorner}.png")`}}></div>
-      <div className="upper right corner" style={{backgroundImage: `url("./src/assets/png/${upperRightCorner}.png")`}}></div>
+      <div className="upper left corner" style={{backgroundImage: `url("src/assets/png/${upperLeftCorner}.png")`}}></div>
+      <div className="upper right corner" style={{backgroundImage: `url("/src/assets/png/${upperRightCorner}.png")`}}></div>
       <div className="lower left corner" style={{backgroundImage: `url("./src/assets/png/${lowerLeftCorner}.png")`}}></div>
       <div className="lower right corner" style={{backgroundImage: `url("./src/assets/png/${lowerRightCorner}.png")`}}></div>
       <div className="upper edge" style={{backgroundImage: `url("./src/assets/png/${upperEdge}.png")`}}></div>
