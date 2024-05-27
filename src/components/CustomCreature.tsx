@@ -7,6 +7,8 @@ import {
 } from "../power-level-data";
 import { invertStringKeysAndValues } from "../lib";
 
+import "./CustomCreature.css";
+
 export const CustomCreature = () => {
   const [name, setName] = useState("");
   const [level, setLevel] = useState<Level>(null);
@@ -83,17 +85,20 @@ export const CustomCreature = () => {
   return (
     <div className="custom-creature">
       <h2>Add a custom Creature</h2>
-      <label htmlFor="leveled-npc-name">name</label>
-      <input
-        type="text"
-        name="leveled-npc-name"
-        id="leveled-npc-name"
-        value={name}
-        onChange={handelNameChange}
-      />
-
-      <label htmlFor="leveled-npc-level">level</label>
-      <select id="leveled-npc-level" onChange={handleLevelChange}>
+      <div className="wrapper">
+        <label htmlFor="leveled-npc-name">name</label>
+        <input
+          type="text"
+          name="leveled-npc-name"
+          id="leveled-npc-name"
+          placeholder="name your creature"
+          value={name}
+          onChange={handelNameChange}
+        />
+      </div>
+      <div className="wrapper">
+      <label htmlFor="custom-creature-level">level</label>
+      <select id="custom-creature-level" onChange={handleLevelChange}>
         {getLevelOptionValues().map((level) => (
           <option value={level} key={`level-${level}`}>
             {level}
@@ -101,7 +106,10 @@ export const CustomCreature = () => {
         ))}
       </select>
 
-      <label htmlFor="leveled-npc-base-creature-cr">base creature CR</label>
+      </div>
+
+<div className="wrapper">
+<label htmlFor="leveled-npc-base-creature-cr">base creature CR</label>
       <select
         name=""
         id="leveled-npc-base-creature-cr"
@@ -116,9 +124,26 @@ export const CustomCreature = () => {
           </option>
         ))}
       </select>
-      <button onClick={addToMobslist}>add to Mobs List</button>
 
-      <button onClick={addToParty}>add to Party</button>
+
+</div>
+   
+   
+      
+      <div className="add-to-list-buttons wrapper">
+        <img
+          src="../../public/png/shield_left.png"
+          onClick={addToMobslist}
+          alt=""
+        />
+        {/* <div className="button-left" onClick={addToMobslist}>add to Mobs List</div> */}
+        <img
+          src="../../public/png/shield_right.png"
+          onClick={addToMobslist}
+          alt=""
+        />
+        {/* <button onClick={addToParty}>add to Party</button> */}
+      </div>
     </div>
   );
 };
