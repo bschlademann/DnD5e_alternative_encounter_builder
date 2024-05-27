@@ -7,6 +7,7 @@ export const Difficulty = () => {
   return (
     <div className="difficulty">
       <div className="left">
+        <h2>Difficulty</h2>
       </div>
       <div className="right">{formatedDifficulty.difficulty}</div>
     </div>

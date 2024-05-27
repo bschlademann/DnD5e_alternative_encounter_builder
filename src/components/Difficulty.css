@@ -7,28 +7,37 @@
 }
 
 .difficulty h2 {
-  font-family: "ModestoExpanded";
+  /* font-family: "ModestoExpanded"; */
 }
 
 .difficulty .left {
-  background-image: url("../assets/png/difficulty_left.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: var(--width);
-  min-height: 100%;
-  justify-self: right;
-  align-content: center;
-  padding: 1rem;
+  /* background-image: url("../assets/png/difficulty_left.png"); */
+  /* background-size: contain; */
+  /* background-repeat: no-repeat; */
+  /* width: var(--width); */
+  /* min-height: 100%; */
+  /* justify-self: right; */
+  display: grid;
+  place-items: center;
 }
 
 .difficulty .right {
-  background-image: url("../assets/png/difficulty_right.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  min-height: 100%;
-  width: var(--width);
-  justify-self: left;
-  align-content: center;
+  /* position: relative; */
+  /* background-image: url("../assets/png/difficulty_right.png"); */
+  /* background-size: contain; */
+  /* background-repeat: no-repeat; */
+  /* min-height: 100%; */
+  /* width: var(--width); */
+  /* justify-self: left; */
+  /* align-content: center; */
   /* background-color: red; */
   padding: 1rem;
+  display: grid;
+  place-items: center;
+
+}
+.difficulty .right .content {
+  position: absolute;
+  top: 25%;
+  width: 90%;
 }
