@@ -26,35 +26,35 @@ export const BorderDecoration = ({
     <div className="container">
       <div
         className="upper left corner"
-        style={{ backgroundImage: `url(/png/${upperLeftCorner}.png)` }}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}png/${upperLeftCorner}.png)` }}
       ></div>
       <div
         className="upper right corner"
-        style={{ backgroundImage: `url(/png/${upperRightCorner}.png)` }}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}png/${upperRightCorner}.png)` }}
       ></div>
       <div
         className="lower left corner"
-        style={{ backgroundImage: `url(/png/${lowerLeftCorner}.png)` }}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}png/${lowerLeftCorner}.png)` }}
       ></div>
       <div
         className="lower right corner"
-        style={{ backgroundImage: `url(/png/${lowerRightCorner}.png)` }}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}png/${lowerRightCorner}.png)` }}
       ></div>
       <div
         className="upper edge"
-        style={{ backgroundImage: `url(/png/${upperEdge}.png)` }}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}png/${upperEdge}.png)` }}
       ></div>
       <div
         className="lower edge"
-        style={{ backgroundImage: `url(/png/${lowerEdge}.png)` }}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}png/${lowerEdge}.png)` }}
       ></div>
       <div
         className="left edge"
-        style={{ backgroundImage: `url(/png/${leftEdge}.png)` }}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}png/${leftEdge}.png)` }}
       ></div>
       <div
         className="right edge"
-        style={{ backgroundImage: `url(/png/${rightEdge}.png)` }}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}png/${rightEdge}.png)` }}
       ></div>
       {children}
     </div>
