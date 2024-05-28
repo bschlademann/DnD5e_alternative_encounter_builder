@@ -128,11 +128,11 @@ export const CustomCreature = () => {
       <div className="add-to-list-buttons wrapper">
         <div className="button left-shield" onClick={addToMobslist}>
           <p className="overlay-text">add to Mobs List</p>
-          <img src="/png/shield_left.png" alt="" />
+          <img src={`${import.meta.env.BASE_URL}png/shield_left.png`} alt="" />
         </div>
         <div className="button right-shield" onClick={addToParty}>
           <p className="overlay-text">add to Party</p>
-          <img src="/png/shield_right.png" alt="" />
+          <img src={`${import.meta.env.BASE_URL}png/shield_right.png`} alt="" />
         </div>
       </div>
     </div>
