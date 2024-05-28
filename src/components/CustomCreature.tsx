@@ -126,13 +126,13 @@ export const CustomCreature = () => {
       </div>
 
       <div className="add-to-list-buttons wrapper">
-        <div className="button">
+        <div className="button left-shield" onClick={addToMobslist}>
           <p className="overlay-text">add to Mobs List</p>
-          <img src="/png/shield_left.png" onClick={addToMobslist} alt="" />
+          <img src="/png/shield_left.png" alt="" />
         </div>
-        <div className="button">
-        <p className="overlay-text">add to Party</p>
-          <img src="/png/shield_right.png" onClick={addToParty} alt="" />
+        <div className="button right-shield" onClick={addToParty}>
+          <p className="overlay-text">add to Party</p>
+          <img src="/png/shield_right.png" alt="" />
         </div>
       </div>
     </div>

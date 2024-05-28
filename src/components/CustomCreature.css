@@ -21,19 +21,25 @@
 }
 
 .overlay-text {
-position: absolute;
-width: 70%;
-text-align: center;
-cursor:default;
+  position: absolute;
+  width: 70%;
+  text-align: center;
+  cursor: default;
 }
 
-
-
-
 .button {
-  transition: transform 0.1s ease-in;
+  transition: all 0.19s ease;
 }
 
 .button:hover {
-  transform: scale(1.05);
+  transform: scale(1.1);
+}
+
+.button.left-shield {
+  transform-origin: right;
+
+}
+
+.button.right-shield {
+  transform-origin: left;
 }
