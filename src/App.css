@@ -91,7 +91,7 @@ select {
 }
 @font-face {
   font-family: "ModestoExpanded";
-  src: url("./src/assets/fonts/modesto-expanded.ttf") format("truetype");
+  src: url("./assets/fonts/modesto-expanded.ttf") format("truetype");
 }
 
 table {
