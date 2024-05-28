@@ -97,52 +97,43 @@ export const CustomCreature = () => {
         />
       </div>
       <div className="wrapper">
-      <label htmlFor="custom-creature-level">level</label>
-      <select id="custom-creature-level" onChange={handleLevelChange}>
-        {getLevelOptionValues().map((level) => (
-          <option value={level} key={`level-${level}`}>
-            {level}
-          </option>
-        ))}
-      </select>
-
+        <label htmlFor="custom-creature-level">level</label>
+        <select id="custom-creature-level" onChange={handleLevelChange}>
+          {getLevelOptionValues().map((level) => (
+            <option value={level} key={`level-${level}`}>
+              {level}
+            </option>
+          ))}
+        </select>
       </div>
 
-<div className="wrapper">
-<label htmlFor="leveled-npc-base-creature-cr">base creature CR</label>
-      <select
-        name=""
-        id="leveled-npc-base-creature-cr"
-        onChange={handleBaseCrChange}
-      >
-        {getCrOptionValues().map((validCr) => (
-          <option
-            value={getValidCrSelectValue(validCr)}
-            key={`valid-cr-${validCr}`}
-          >
-            {validCr}
-          </option>
-        ))}
-      </select>
+      <div className="wrapper">
+        <label htmlFor="leveled-npc-base-creature-cr">base creature CR</label>
+        <select
+          name=""
+          id="leveled-npc-base-creature-cr"
+          onChange={handleBaseCrChange}
+        >
+          {getCrOptionValues().map((validCr) => (
+            <option
+              value={getValidCrSelectValue(validCr)}
+              key={`valid-cr-${validCr}`}
+            >
+              {validCr}
+            </option>
+          ))}
+        </select>
+      </div>
 
-
-</div>
-   
-   
-      
       <div className="add-to-list-buttons wrapper">
-        <img
-          src="../../public/png/shield_left.png"
-          onClick={addToMobslist}
-          alt=""
-        />
-        {/* <div className="button-left" onClick={addToMobslist}>add to Mobs List</div> */}
-        <img
-          src="../../public/png/shield_right.png"
-          onClick={addToMobslist}
-          alt=""
-        />
-        {/* <button onClick={addToParty}>add to Party</button> */}
+        <div className="button">
+          <p className="overlay-text">add to Mobs List</p>
+          <img src="/png/shield_left.png" onClick={addToMobslist} alt="" />
+        </div>
+        <div className="button">
+        <p className="overlay-text">add to Party</p>
+          <img src="/png/shield_right.png" onClick={addToParty} alt="" />
+        </div>
       </div>
     </div>
   );

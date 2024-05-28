@@ -5,11 +5,35 @@
 
 .wrapper {
   display: grid;
+  position: relative;
 }
 
-.custom-creature .add-to-list-buttons {
+.add-to-list-buttons {
   padding-top: 1rem;
-  display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
+}
+
+.button {
+  display: grid;
+  position: relative;
+  place-items: center;
+}
+
+.overlay-text {
+position: absolute;
+width: 70%;
+text-align: center;
+cursor:default;
+}
+
+
+
+
+.button {
+  transition: transform 0.1s ease-in;
+}
+
+.button:hover {
+  transform: scale(1.05);
 }
