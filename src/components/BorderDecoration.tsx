@@ -26,7 +26,8 @@ export const BorderDecoration = ({
     <div className="container">
       <div
         className="upper left corner"
-        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}png/${upperLeftCorner}.png)` }}
+        // style={{ backgroundImage: `url(${import.meta.env.BASE_URL}png/${upperLeftCorner}.png)` }}
+        style={{ backgroundImage: `url(../png/${upperLeftCorner}.png)` }}
       ></div>
       <div
         className="upper right corner"
