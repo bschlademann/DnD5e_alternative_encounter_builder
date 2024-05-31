@@ -1,6 +1,6 @@
 .container {
   position: relative;
-  padding: 10%;
+  padding: 2rem;
   --border-size: 32px;
 }
 

@@ -4,6 +4,8 @@ import { getRange } from "../lib";
 import { getPartyPowerLevel } from "../domain";
 import { MobsList } from "./MobsList";
 
+import "./Party.css"
+
 export type TParty = {
   count: number;
   level: number;

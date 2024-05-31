@@ -1,5 +1,8 @@
 # fix
-
+- set max height of all elements so they get scrollbars and have the gap set in /Layout.module.container below them
+- MobsSelector currently shrinks when entries get less wide after search entry; it alawys should have the same width 
+- CustomCreature: disable buttons addToMobsList and addToParty when no name is entered in the field and neither cr nor level is selected 
+- Layout: all rolumns should be exactly the same width, but Mobs Selector is wider, Party is to narrow
 
 # feat
 - row virtualization for MobsSelector
@@ -17,8 +20,7 @@
     - remove number of already selected level from validLevels?
 
 # design
-- add shadcnUI / ChakraUi
-- add spinner on first fetch
+- add spinner on (first fetch) loading the site, including all border elements
 
 ## readme
 - update when new functionalities are available

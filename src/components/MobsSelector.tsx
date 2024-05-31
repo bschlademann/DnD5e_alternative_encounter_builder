@@ -1,11 +1,12 @@
-import "./MobsSelector.css"
+import "./MobsSelector.css";
 
 import { useContext, useState } from "react";
 import { Creature } from "../5etools";
 import { CreatureContext, MobsContext } from "../contexts";
 import { clampInt } from "../lib";
 import { formatCrAsFraction, formatPowerLevelAsFraction } from "../domain";
-
+import { BorderDecoration } from "./BorderDecoration";
+import { borderDecorationsByComponent } from "../borderDecorationImages";
 
 export const MobsSelector = () => {
   const [filterQuery, setFilterQuery] = useState("");
@@ -73,14 +74,15 @@ export const MobsSelector = () => {
 
   return (
     <div className="mobs-selector">
-      <h2>Mobs Selector</h2>
-      <input
-        type="text"
-        placeholder="Enter creature name"
-        value={filterQuery}
-        onChange={filterCreatureNames}
-        className="filter-input"
-      />
+      <h2>Creature Selector</h2>
+
+        <input
+          type="text"
+          placeholder="search"
+          value={filterQuery}
+          onChange={filterCreatureNames}
+          className="filter-input"
+        />
       <table className="creatures-table">
         <thead>
           <tr>

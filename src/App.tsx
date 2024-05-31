@@ -50,8 +50,6 @@ function App() {
     });
   }, []);
 
-  // const { border_1 } = borderDecorationsByComponent;
-
   return (
     <PartyCustomCreaturesContext.Provider
       value={[partyCustomCreatures, setPartyCustomCreatures]}
@@ -60,6 +58,8 @@ function App() {
         <MobsContext.Provider value={[mobs, setMobs]}>
           <CreatureContext.Provider value={creatures}>
             <PartyContext.Provider value={[party, setParty]}>
+
+
               <div className={layout.container}>
                 <div className={layout["mobs-selector"]}>
                 <BorderDecoration
@@ -75,7 +75,7 @@ function App() {
                   <BorderDecoration
                     borderStyles={borderDecorationsByComponent.border_1}
                   >
-                    <MobsList title={"Mobs List"} context={"MobsContext"} />
+                    <MobsList title={"Creature List"} context={"MobsContext"} />
                   </BorderDecoration>
                 </div>
                 <div className={layout["custom-creature"]}>

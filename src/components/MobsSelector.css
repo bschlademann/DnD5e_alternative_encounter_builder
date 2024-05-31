@@ -1,9 +1,41 @@
+.mobs-selector {
+  max-height: 85vh; 
+  /* min-width: 25vw; */
+  overflow-y: auto; 
+}
+input {
+  width: 100%;
+}
+
+.creatures-table th {
+  text-align: left;
+}
+
+.creatures-table thead {
+  background-color: white;
+  position: sticky;
+  top: 0;
+}
+
+/* table inner borders */
 table {
-  /* Slightly less than the full viewport height */
-  /* max-height: 85vh;  */
-  /* Enables vertical scrolling when necessary */
-  /* overflow-y: auto;  */
-  /* Changes the default table display */
-  /* display: block;  */
-  /* Ensures the table fills the container */
+  border-collapse: collapse;
+  width: 100%;
+}
+
+
+td, th {
+  border: 1px solid rgb(211, 211, 211);
+}
+tr:first-child th {
+  border-top: none;
+}
+tr:last-child td {
+  border-bottom: none;
+}
+td:first-child, th:first-child {
+  border-left: none;
+}
+td:last-child, th:last-child {
+  border-right: none;
 }
