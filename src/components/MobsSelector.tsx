@@ -60,18 +60,6 @@ export const MobsSelector = () => {
     setFilterQuery(e.target.value);
   };
 
-  const handleSort = (field: string) => {
-    const isSameField = sortField === field;
-    const newDirection =
-      isSameField && sortDirection === "asc" ? "desc" : "asc";
-    setSortField(field);
-    setSortDirection(newDirection);
-  };
-
-  const renderSortIndicator = (field: string) => {
-    return sortField === field ? (sortDirection === "asc" ? " ▲" : " ▼") : "";
-  };
-
   return (
     <div className="mobs-selector">
       <h2>Creature Selector</h2>
@@ -88,18 +76,9 @@ export const MobsSelector = () => {
           <tr>
             <th></th>
             <th>
-              {/* <button
-                onClick={() => handleSort("name")}
-                className="sort-button"
-              >
-                Name{renderSortIndicator("name")}
-              </button> */}
               Name
             </th>
             <th>
-              {/* <button onClick={() => handleSort("cr")} className="sort-button">
-                CR{renderSortIndicator("cr")}
-              </button> */}
               CR
             </th>
             <th>PEL</th>
