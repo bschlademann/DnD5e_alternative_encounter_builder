@@ -2,12 +2,13 @@
   max-height: 85vh; 
   /* min-width: 25vw; */
   overflow-y: auto; 
+  --table-color: rgb(233, 233, 233);
 }
 input {
   width: 100%;
 }
 
-.creatures-table th {
+th {
   text-align: left;
 }
 
@@ -17,25 +18,16 @@ input {
   top: 0;
 }
 
-/* table inner borders */
 table {
   border-collapse: collapse;
   width: 100%;
 }
 
+tr:nth-child(even) {
+  background-color: var(--table-color)
+}
 
-td, th {
-  border: 1px solid rgb(211, 211, 211);
-}
-tr:first-child th {
-  border-top: none;
-}
-tr:last-child td {
-  border-bottom: none;
-}
-td:first-child, th:first-child {
-  border-left: none;
-}
-td:last-child, th:last-child {
-  border-right: none;
+td:last-child, td:nth-last-child(2) {
+border-left: 1.5px solid var(--table-color);
+text-align: center;
 }
