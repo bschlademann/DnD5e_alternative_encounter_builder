@@ -60,23 +60,25 @@ export const MobsSelector = () => {
   const filterCreatureNames = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilterQuery(e.target.value);
   };
-
-  const Row = ({ index, style }) => {
+type RowProps = {index: number, style: React.CSSProperties}
+  const Row = ({ index, style }: RowProps) => {
     const creature = filteredCreatures[index];
     return (
-      <tr key={`${creature.name}-${creature.cr}-${creature.id}`} style={style}>
-        <td>
-          <button
-            onClick={() => addToMobsList(creature)}
-            className="increment-button"
-          >
-            +
-          </button>
-        </td>
-        <td>{creature.name}</td>
-        <td>{formatCrAsFraction(creature.cr)}</td>
-        <td>{formatPowerLevelAsFraction(creature.cr)}</td>
-      </tr>
+      <div style={style}>
+        <tr key={`${creature.name}-${creature.cr}-${creature.id}`}>
+          <td>
+            <button
+              onClick={() => addToMobsList(creature)}
+              className="increment-button"
+            >
+              +
+            </button>
+          </td>
+          <td>{creature.name}</td>
+          <td>{formatCrAsFraction(creature.cr)}</td>
+          <td>{formatPowerLevelAsFraction(creature.cr)}</td>
+        </tr>
+      </div>
     );
   };
 
@@ -112,7 +114,7 @@ export const MobsSelector = () => {
                 width={width}
               >
                 {({ index, style }) => (
-                  <table className="creatures-table" style={style}>
+                  <table className="creatures-table" style={{ width: '100%' }}>
                     <tbody>
                       <Row index={index} style={style} />
                     </tbody>
