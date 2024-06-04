@@ -5,8 +5,9 @@ import { Creature } from "../5etools";
 import { CreatureContext, MobsContext } from "../contexts";
 import { clampInt } from "../lib";
 import { formatCrAsFraction, formatPowerLevelAsFraction } from "../domain";
-import { BorderDecoration } from "./BorderDecoration";
-import { borderDecorationsByComponent } from "../borderDecorationImages";
+
+import { FixedSizeList as List } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
 
 export const MobsSelector = () => {
   const [filterQuery, setFilterQuery] = useState("");
@@ -60,48 +61,68 @@ export const MobsSelector = () => {
     setFilterQuery(e.target.value);
   };
 
+  const Row = ({ index, style }) => {
+    const creature = filteredCreatures[index];
+    return (
+      <tr key={`${creature.name}-${creature.cr}-${creature.id}`} style={style}>
+        <td>
+          <button
+            onClick={() => addToMobsList(creature)}
+            className="increment-button"
+          >
+            +
+          </button>
+        </td>
+        <td>{creature.name}</td>
+        <td>{formatCrAsFraction(creature.cr)}</td>
+        <td>{formatPowerLevelAsFraction(creature.cr)}</td>
+      </tr>
+    );
+  };
+
   return (
     <div className="mobs-selector">
       <h2>Creature Selector</h2>
 
-        <input
-          type="text"
-          placeholder="search"
-          value={filterQuery}
-          onChange={filterCreatureNames}
-          className="filter-input"
-        />
-      <table className="creatures-table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>
-              Name
-            </th>
-            <th>
-              CR
-            </th>
-            <th>PEL</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredCreatures.map((creature) => (
-            <tr key={`${creature.name}-${creature.cr}-${creature.id}`}>
-              <td>
-                <button
-                  onClick={() => addToMobsList(creature)}
-                  className="increment-button"
-                >
-                  +
-                </button>
-              </td>
-              <td>{creature.name}</td>
-              <td>{formatCrAsFraction(creature.cr)}</td>
-              <td>{formatPowerLevelAsFraction(creature.cr)}</td>
+      <input
+        type="text"
+        placeholder="search"
+        value={filterQuery}
+        onChange={filterCreatureNames}
+        className="filter-input"
+      />
+      <div className="table-container">
+        <table className="creatures-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>CR</th>
+              <th>PEL</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+        </table>
+        <div style={{ height: '400px', width: '100%' }}>
+          <AutoSizer>
+            {({ height, width }) => (
+              <List
+                height={height}
+                itemCount={filteredCreatures.length}
+                itemSize={35}
+                width={width}
+              >
+                {({ index, style }) => (
+                  <table className="creatures-table" style={style}>
+                    <tbody>
+                      <Row index={index} style={style} />
+                    </tbody>
+                  </table>
+                )}
+              </List>
+            )}
+          </AutoSizer>
+        </div>
+      </div>
     </div>
   );
 };
