@@ -1,7 +1,5 @@
-.mobs-selector {
-  max-height: 85vh; 
-  /* min-width: 25vw; */
-  overflow-y: auto; 
+/* .mobs-selector {
+  max-height: 85vh;
   --table-color: rgb(233, 233, 233);
 }
 input {
@@ -24,10 +22,46 @@ table {
 }
 
 tr:nth-child(even) {
-  background-color: var(--table-color)
+  background-color: var(--table-color);
 }
 
-td:last-child, td:nth-last-child(2) {
-border-left: 1.5px solid var(--table-color);
-text-align: center;
+tr td:last-child,
+td:nth-last-child(2) {
+  text-align: center;
+}
+
+tr:nth-child(odd) td:last-child,
+tr:nth-child(odd) td:nth-last-child(2) {
+  border-left: 1.5px solid var(--table-color);
+}
+tr:nth-child(even) td:last-child,
+tr:nth-child(even) td:nth-last-child(2) {
+  border-left: 1.5px solid white;
+} */
+
+
+
+.filter-input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.creatures-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+/* 
+.creatures-table th, .creatures-table td {
+  padding: 8px;
+  text-align: left;
+} */
+
+.increment-button {
+  border: none;
+  cursor: pointer;
+}
+
+.increment-button:hover {
+  background-color: rgb(146, 146, 146)
 }

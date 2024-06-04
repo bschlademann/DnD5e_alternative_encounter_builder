@@ -1,0 +1,15 @@
+.title-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+table {width: 100%;}
+
+button {
+    border: none
+}
+
+button:hover {
+    background-color: rgb(146, 146, 146);
+    cursor: default;
+}

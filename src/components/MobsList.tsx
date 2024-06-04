@@ -5,6 +5,8 @@ import { MobsState } from "../App";
 import { getAllMobsPowerLevel, getMobTotalPowerLevel } from "../domain";
 import { DebounceInput } from "../lib/components";
 
+import "./MobsList.css"
+
 export type Mob = MobsState[0];
 export type MobsListProps = {
   title: string;
@@ -99,7 +101,10 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
 
   return (
     <div className="mobs-list">
-      <h2>{title}</h2>
+      <div className="title-container">
+        <h2>{title}</h2>
+        <ClearButton />
+      </div>
       <table>
         <thead>
           <tr>
@@ -107,9 +112,7 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
             <th></th>
             <th>name</th>
             <th>PEL</th>
-            <th>
-              <ClearButton />
-            </th>
+            <th></th>
           </tr>
         </thead>
         <tbody>

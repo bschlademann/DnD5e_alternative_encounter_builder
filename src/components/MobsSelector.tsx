@@ -1,12 +1,12 @@
 import "./MobsSelector.css";
 
-import { useContext, useState } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { Creature } from "../5etools";
 import { CreatureContext, MobsContext } from "../contexts";
 import { clampInt } from "../lib";
 import { formatCrAsFraction, formatPowerLevelAsFraction } from "../domain";
 
-import { FixedSizeList as List } from "react-window";
+import { VariableSizeList as List } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 
 export const MobsSelector = () => {
@@ -15,6 +15,9 @@ export const MobsSelector = () => {
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const creatures = useContext(CreatureContext);
   const [mobs, setMobs] = useContext(MobsContext);
+
+  const rowHeights = useRef(new Map<number, number>());
+  const listRef = useRef<List>(null);
 
   const sortCreatures = (
     a: { cr: number; name: string },
@@ -59,33 +62,56 @@ export const MobsSelector = () => {
 
   const filterCreatureNames = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilterQuery(e.target.value);
+    rowHeights.current.clear(); // Clear heights when filtering
+    if (listRef.current) {
+      listRef.current.resetAfterIndex(0, true); // Reset the list to recalculate row heights
+    }
   };
-type RowProps = {index: number, style: React.CSSProperties}
+
+  const getRowHeight = (index: number) => {
+    return rowHeights.current.get(index) || 50;
+  };
+
+  type RowProps = { index: number; style: React.CSSProperties };
   const Row = ({ index, style }: RowProps) => {
     const creature = filteredCreatures[index];
+    const rowRef = useRef<HTMLTableRowElement>(null);
+
+    useEffect(() => {
+      if (rowRef.current) {
+        const height = rowRef.current.getBoundingClientRect().height;
+        rowHeights.current.set(index, height);
+        if (listRef.current) {
+          listRef.current.resetAfterIndex(index);
+        }
+      }
+    }, [index]);
+
     return (
-      <div style={style}>
-        <tr key={`${creature.name}-${creature.cr}-${creature.id}`}>
-          <td>
-            <button
-              onClick={() => addToMobsList(creature)}
-              className="increment-button"
-            >
-              +
-            </button>
-          </td>
-          <td>{creature.name}</td>
-          <td>{formatCrAsFraction(creature.cr)}</td>
-          <td>{formatPowerLevelAsFraction(creature.cr)}</td>
-        </tr>
-      </div>
+      <tr
+        style={style}
+        className={index % 2 ? "ListItemOdd" : "ListItemEven"}
+        ref={rowRef}
+        key={`${creature.name}-${creature.cr}-${creature.id}`}
+      >
+        <td>
+          <button
+            onClick={() => addToMobsList(creature)}
+            className="increment-button"
+          >
+            +
+          </button>
+        </td>
+        <td>{creature.name}</td>
+        <td>{formatCrAsFraction(creature.cr)}</td>
+        <td>{formatPowerLevelAsFraction(creature.cr)}</td>
+      </tr>
     );
   };
 
   return (
     <div className="mobs-selector">
       <h2>Creature Selector</h2>
-
       <input
         type="text"
         placeholder="search"
@@ -93,7 +119,9 @@ type RowProps = {index: number, style: React.CSSProperties}
         onChange={filterCreatureNames}
         className="filter-input"
       />
+
       <div className="table-container">
+
         <table className="creatures-table">
           <thead>
             <tr>
@@ -104,26 +132,24 @@ type RowProps = {index: number, style: React.CSSProperties}
             </tr>
           </thead>
         </table>
-        <div style={{ height: '400px', width: '100%' }}>
+
+
+        <div style={{ height: "400px", width: "100%" }}>
           <AutoSizer>
             {({ height, width }) => (
               <List
+                ref={listRef}
                 height={height}
                 itemCount={filteredCreatures.length}
-                itemSize={35}
+                itemSize={getRowHeight}
                 width={width}
               >
-                {({ index, style }) => (
-                  <table className="creatures-table" style={{ width: '100%' }}>
-                    <tbody>
-                      <Row index={index} style={style} />
-                    </tbody>
-                  </table>
-                )}
+                {({ index, style }) => <Row index={index} style={style} />}
               </List>
             )}
           </AutoSizer>
         </div>
+
       </div>
     </div>
   );
