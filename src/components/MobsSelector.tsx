@@ -62,52 +62,8 @@ export const MobsSelector = () => {
 
   const filterCreatureNames = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilterQuery(e.target.value);
-    rowHeights.current.clear(); // Clear heights when filtering
-    if (listRef.current) {
-      listRef.current.resetAfterIndex(0, true); // Reset the list to recalculate row heights
-    }
   };
 
-  const getRowHeight = (index: number) => {
-    return rowHeights.current.get(index) || 50;
-  };
-
-  type RowProps = { index: number; style: React.CSSProperties };
-  const Row = ({ index, style }: RowProps) => {
-    const creature = filteredCreatures[index];
-    const rowRef = useRef<HTMLTableRowElement>(null);
-
-    useEffect(() => {
-      if (rowRef.current) {
-        const height = rowRef.current.getBoundingClientRect().height;
-        rowHeights.current.set(index, height);
-        if (listRef.current) {
-          listRef.current.resetAfterIndex(index);
-        }
-      }
-    }, [index]);
-
-    return (
-      <tr
-        style={style}
-        className={index % 2 ? "ListItemOdd" : "ListItemEven"}
-        ref={rowRef}
-        key={`${creature.name}-${creature.cr}-${creature.id}`}
-      >
-        <td>
-          <button
-            onClick={() => addToMobsList(creature)}
-            className="increment-button"
-          >
-            +
-          </button>
-        </td>
-        <td>{creature.name}</td>
-        <td>{formatCrAsFraction(creature.cr)}</td>
-        <td>{formatPowerLevelAsFraction(creature.cr)}</td>
-      </tr>
-    );
-  };
 
   return (
     <div className="mobs-selector">
@@ -120,36 +76,36 @@ export const MobsSelector = () => {
         className="filter-input"
       />
 
-      <div className="table-container">
-
-        <table className="creatures-table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Name</th>
-              <th>CR</th>
-              <th>PEL</th>
-            </tr>
-          </thead>
-        </table>
-
-
-        <div style={{ height: "400px", width: "100%" }}>
-          <AutoSizer>
-            {({ height, width }) => (
-              <List
-                ref={listRef}
-                height={height}
-                itemCount={filteredCreatures.length}
-                itemSize={getRowHeight}
-                width={width}
-              >
-                {({ index, style }) => <Row index={index} style={style} />}
-              </List>
-            )}
-          </AutoSizer>
+      <div className="creatures-table">
+        <div className="row">
+          <div className="head"></div>
+          <div className="head">Name</div>
+          <div className="head">CR</div>
+          <div className="head">PEL</div>
         </div>
-
+        {
+        filteredCreatures.map((creature) => (
+          <div
+            className="row"
+            key={`${creature.name}-${creature.cr}-${creature.id}`}
+          >
+            <div className="datacell">
+              <button
+                onClick={() => addToMobsList(creature)}
+                className="increment-button"
+              >
+                +
+              </button>
+            </div>
+            <div className="datacell name">{creature.name}</div>
+            <div className="datacell">{formatCrAsFraction(creature.cr)}</div>
+            <div className="datacell">
+              {formatPowerLevelAsFraction(creature.cr)}
+            </div>
+          </div>
+        ))
+        }
+       
       </div>
     </div>
   );

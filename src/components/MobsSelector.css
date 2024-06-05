@@ -39,29 +39,81 @@ tr:nth-child(even) td:nth-last-child(2) {
   border-left: 1.5px solid white;
 } */
 
-
-
 .filter-input {
   width: 100%;
   box-sizing: border-box;
 }
 
-.creatures-table {
+/* .creatures-table {
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
-}
+} */
 /* 
 .creatures-table th, .creatures-table td {
   padding: 8px;
   text-align: left;
 } */
 
-.increment-button {
+/* .increment-button {
   border: none;
   cursor: pointer;
+  background: url("/png/button_1.png") no-repeat center;
+  background-size: 100%;
+
+} */
+
+/* .increment-button:hover {
+  background-color: rgb(146, 146, 146)
+} */
+
+.mobs-selector {
+  --column-layout: 1fr 3fr 1fr 1fr;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  --table-color: rgb(233, 233, 233);
 }
 
-.increment-button:hover {
-  background-color: rgb(146, 146, 146)
+.creatures-table {
+  overflow-y: auto;
+  border-collapse: collapse;
+  .row:first-child {
+    background-color: white;
+    position: sticky;
+    top: 0;
+  }
+}
+
+.row {
+  display: grid;
+  grid-template-columns: var(--column-layout);
+  line-height: 1.2rem;
+}
+
+.row:nth-child(even) {
+  background-color: var(--table-color);
+}
+
+.row:nth-child(odd) .datacell:last-child,
+.row:nth-child(odd) .datacell:nth-last-child(2) {
+  border-left: 1.5px solid var(--table-color);
+}
+.row:nth-child(even) .datacell:last-child,
+.row:nth-child(even) .datacell:nth-last-child(2) {
+  border-left: 1.5px solid white;
+}
+
+.datacell {
+  display: grid;
+  align-content: center;
+}
+
+.datacell:first-child {
+  justify-content: center;
+}
+
+.datacell:last-child,
+.datacell:nth-last-child(2) {
+  justify-content: center;
 }
