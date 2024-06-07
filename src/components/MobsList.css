@@ -1,15 +1,41 @@
-.title-container {
-  display: flex;
-  justify-content: space-between;
+.mobs-list,
+.title-container,
+.table,
+.table-head,
+.row {
+  width: 100%;
 }
 
-table {width: 100%;}
+.mobs-list {
+  .title-container {
+    display: flex;
+    justify-content: space-between;
+  }
 
-button {
-    border: none
-}
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 2fr 3fr 1fr 1fr;
+  }
 
-button:hover {
+  button {
+    border: none;
+  }
+
+  button:hover {
     background-color: rgb(146, 146, 146);
     cursor: default;
+  }
+
+  .datafield:first-child {
+    text-align: center;
+  }
+
+  .buttons-container {
+    display: flex;
+    justify-content: center;
+
+    button {
+      width: 40%;
+    }
+  }
 }

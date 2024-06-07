@@ -5,7 +5,7 @@ import { MobsState } from "../App";
 import { getAllMobsPowerLevel, getMobTotalPowerLevel } from "../domain";
 import { DebounceInput } from "../lib/components";
 
-import "./MobsList.css"
+import "./MobsList.css";
 
 export type Mob = MobsState[0];
 export type MobsListProps = {
@@ -91,11 +91,11 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
 
   const ClearButton = () => {
     return (
-      <div>
+      <>
         {hasEntries ? (
           <button onClick={() => clearMobsList()}>clear</button>
         ) : null}
-      </div>
+      </>
     );
   };
 
@@ -105,17 +105,16 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
         <h2>{title}</h2>
         <ClearButton />
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th></th>
-            <th>name</th>
-            <th>PEL</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
+
+      <div className="table">
+        <div className="head row">
+          <div className="datacell">#</div>
+          <div className="datacell"></div>
+          <div className="datacell">name</div>
+          <div className="datacell">PEL</div>
+          <div className="datacell"></div>
+        </div>
+        <div className="table-body">
           {Object.entries(mobs).map((mobEntry) => {
             const id = mobEntry[0];
             const mob = mobEntry[1];
@@ -124,13 +123,13 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
             const truncatedPowerLevel = truncateDecimals(powerLevel);
 
             return (
-              <tr key={`name-${id}`}>
-                <td>{mobSize}</td>
-                <td>
+              <div className="row" key={`name-${id}`}>
+                <div className="datafield">{mobSize}</div>
+                <div className="buttons-container datafield">
                   <button onClick={() => incrementMob(mob, id)}>+</button>
                   <button onClick={() => decrementMob(id)}>-</button>
-                </td>
-                <td>
+                </div>
+                <div className="datafield">
                   {context === "MobsContext" ? (
                     creatureName
                   ) : (
@@ -139,20 +138,21 @@ export const MobsList = ({ title, context }: MobsListProps): JSX.Element => {
                       onChange={handleNameChange(id)}
                     />
                   )}
-                </td>
+                </div>
 
                 {/* the values for powerLevels get displayed as decimals here instead of fractions
                 fractions like 13/6  (1 1/2(lv2) + 2/3(cr 1/8) = 13/6) are not really readable 
                 so I only use the fractions that are presend for standart CR values*/}
-                <td>{truncatedPowerLevel}</td>
-                <td>
+                <div className="datafield">{truncatedPowerLevel}</div>
+                <div className="datafield">
                   <button onClick={() => deleteMob(id)}>X</button>
-                </td>
-              </tr>
+                </div>
+              </div>
             );
           })}
-        </tbody>
-      </table>
+        </div>
+      </div>
+
       <div>
         {totalPowerLevelTitle} total PEL: {mobsTotalPowerLevel}
       </div>

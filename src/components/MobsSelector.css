@@ -1,71 +1,8 @@
-/* .mobs-selector {
-  max-height: 85vh;
-  --table-color: rgb(233, 233, 233);
-}
-input {
-  width: 100%;
-}
-
-th {
-  text-align: left;
-}
-
-.creatures-table thead {
-  background-color: white;
-  position: sticky;
-  top: 0;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-tr:nth-child(even) {
-  background-color: var(--table-color);
-}
-
-tr td:last-child,
-td:nth-last-child(2) {
-  text-align: center;
-}
-
-tr:nth-child(odd) td:last-child,
-tr:nth-child(odd) td:nth-last-child(2) {
-  border-left: 1.5px solid var(--table-color);
-}
-tr:nth-child(even) td:last-child,
-tr:nth-child(even) td:nth-last-child(2) {
-  border-left: 1.5px solid white;
-} */
 
 .filter-input {
   width: 100%;
   box-sizing: border-box;
 }
-
-/* .creatures-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
-} */
-/* 
-.creatures-table th, .creatures-table td {
-  padding: 8px;
-  text-align: left;
-} */
-
-/* .increment-button {
-  border: none;
-  cursor: pointer;
-  background: url("/png/button_1.png") no-repeat center;
-  background-size: 100%;
-
-} */
-
-/* .increment-button:hover {
-  background-color: rgb(146, 146, 146)
-} */
 
 .mobs-selector {
   --column-layout: 1fr 3fr 1fr 1fr;
@@ -89,6 +26,9 @@ tr:nth-child(even) td:nth-last-child(2) {
   display: grid;
   grid-template-columns: var(--column-layout);
   line-height: 1.2rem;
+}
+.head {
+  font-weight: bold;
 }
 
 .row:nth-child(even) {
@@ -116,4 +56,8 @@ tr:nth-child(even) td:nth-last-child(2) {
 .datacell:last-child,
 .datacell:nth-last-child(2) {
   justify-content: center;
+}
+
+button {
+  border: none;
 }

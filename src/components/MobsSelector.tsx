@@ -77,11 +77,11 @@ export const MobsSelector = () => {
       />
 
       <div className="creatures-table">
-        <div className="row">
-          <div className="head"></div>
-          <div className="head">Name</div>
-          <div className="head">CR</div>
-          <div className="head">PEL</div>
+        <div className="head row">
+          <div className="datacell"></div>
+          <div className="datacell">Name</div>
+          <div className="datacell">CR</div>
+          <div className="datacell">PEL</div>
         </div>
         {
         filteredCreatures.map((creature) => (
