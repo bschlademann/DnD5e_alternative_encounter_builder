@@ -12,7 +12,7 @@ import {
 import { Difficulty } from "./components/Difficulty";
 import { MobsList } from "./components/MobsList";
 import { useState, useEffect } from "react";
-import { Creature } from "./5etools";
+import { Creature, getCreatureData } from "./5etools";
 import { CreaturesById, getCreaturesById } from "./domain";
 import { getOrUpdateLocalStorage } from "./local-storage";
 import { CustomCreature } from "./components/CustomCreature";
@@ -43,7 +43,7 @@ function App() {
   const [creaturesById, setCreaturesById] = useState<CreaturesById>({});
 
   useEffect(() => {
-    getOrUpdateLocalStorage().then((creatures) => {
+    getCreatureData().then((creatures) => {
       setCreatures(creatures);
       const creaturesById = getCreaturesById(creatures);
       setCreaturesById(creaturesById);
