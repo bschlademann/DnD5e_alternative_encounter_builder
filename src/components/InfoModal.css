@@ -41,6 +41,13 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  opacity: 0;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modal-content {
@@ -52,8 +59,79 @@
   max-height: 80vh;
   overflow-y: auto;
   position: relative;
-  transition: transform 0.3s ease, opacity 0.3s ease, border-radius 0.3s ease, background-color 0.3s ease;
-  will-change: transform, opacity, border-radius, background-color;
+  transform: scale(0.8);
+  animation: modalAppear 0.2s ease forwards;
+}
+
+@keyframes modalAppear {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.modal-text-content {
+  opacity: 1 !important;
+}
+
+.modal-text-content h2,
+.modal-text-content p,
+.modal-text-content h3,
+.modal-text-content ol,
+.modal-text-content li {
+  opacity: 1 !important;
+}
+
+.modal-text-content h2 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.modal-text-content p {
+  line-height: 1.6;
+  color: #444;
+}
+
+.modal-text-content h3 {
+  color: #34495e;
+  margin-top: 1.5rem;
+}
+
+.modal-text-content ol {
+  padding-left: 1.5rem;
+  line-height: 1.6;
+}
+
+.modal-text-content li {
+  margin-bottom: 0.5rem;
+  color: #444;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+
+.modal-content p {
+  line-height: 1.6;
+  color: #444;
+}
+
+.modal-content h3 {
+  color: #34495e;
+  margin-top: 1.5rem;
+}
+
+.modal-content ol {
+  padding-left: 1.5rem;
+  line-height: 1.6;
+}
+
+.modal-content li {
+  margin-bottom: 0.5rem;
+  color: #444;
 }
 
 .modal-content.expanding {
@@ -79,32 +157,9 @@
   cursor: pointer;
   color: #666;
   padding: 0.5rem;
+  opacity: 1 !important;
 }
 
 .close-button:hover {
   color: #333;
-}
-
-.modal-content h2 {
-  margin-top: 0;
-  color: #2c3e50;
-}
-
-.modal-content h3 {
-  color: #34495e;
-  margin-top: 1.5rem;
-}
-
-.modal-content p {
-  line-height: 1.6;
-  color: #444;
-}
-
-.modal-content ol {
-  padding-left: 1.5rem;
-  line-height: 1.6;
-}
-
-.modal-content li {
-  margin-bottom: 0.5rem;
 } 
