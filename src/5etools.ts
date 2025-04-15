@@ -57,10 +57,18 @@ export type Creature = {
   id: string;
 };
 
-const bestiaryPath = "/bestiaries";
+const bestiaryPath = `${import.meta.env.BASE_URL}bestiaries`;
 
 const getLocalBestiaryFileNames = async (): Promise<string[]> => {
-  return ["bestiary-mm.json", "bestiary-vgm.json", "bestiary-mtf.json"];
+  return [
+    "bestiary-mm.json",
+    "bestiary-vgm.json",
+    "bestiary-mtf.json",
+    "bestiary-cos.json",
+    "bestiary-pota.json",
+    "bestiary-tob1-2023.json",
+    "bestiary-wdh.json"
+  ];
 };
 
 const fetchLocalRawData = async (fileNames: string[]): Promise<RawData[]> => {
