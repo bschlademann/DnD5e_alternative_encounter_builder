@@ -19,6 +19,7 @@ import { CustomCreature } from "./components/CustomCreature";
 import { Party, TParty } from "./components/Party";
 import { BorderDecoration } from "./components/BorderDecoration";
 import { borderDecorationsByComponent } from "./borderDecorationImages";
+import { InfoModal } from "./components/InfoModal";
 
 export type MobsState = {
   [creatureId: string]: {
@@ -58,18 +59,21 @@ function App() {
         <MobsContext.Provider value={[mobs, setMobs]}>
           <CreatureContext.Provider value={creatures}>
             <PartyContext.Provider value={[party, setParty]}>
-
-
+              <InfoModal />
               <div className={layout.container}>
                 <div className={layout["mobs-selector"]}>
-                <BorderDecoration
+                  <BorderDecoration
                     borderStyles={borderDecorationsByComponent.border_1}
                   >
-                  <MobsSelector />
+                    <MobsSelector />
                   </BorderDecoration>
                 </div>
                 <div className={layout.difficulty}>
-                  <Difficulty />
+                  <BorderDecoration
+                    borderStyles={borderDecorationsByComponent.border_1}
+                  >
+                    <Difficulty />
+                  </BorderDecoration>
                 </div>
                 <div className={layout["mobs-list"]}>
                   <BorderDecoration
